@@ -1,6 +1,6 @@
 {
   "name": "mrjackwills_vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "vite",
     "serve": "vite",
@@ -40,5 +40,5 @@
     "vite-plugin-vuetify": "^1.0.2",
     "vue-tsc": "^1.1.5"
   },
-  "buildDate": "Mon 20 2023 February 23:12:53 EST"
+  "buildDate": "Tue 21 2023 February 15:37:50 EST"
 }
