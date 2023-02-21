@@ -1,10 +1,10 @@
 <template>
 	<v-row align='start' justify='space-around' no-gutters class='ma-0 pa-0 mt-md-12 mt-4 no-gutters'  :class='text_color'  >
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
-
-			<v-row align='center' :justify='mobile?"center":"space-around"' no-gutters class='ma-0 pa-0'>
+			<!-- :justify='mobile?"center":"space-around"'  -->
+			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 				
-				<v-col cols='12' lg='auto' class='ma-0 pa-0 text-h1 cl' :class='mobile?"text-h3 text-center":"text-h1"' @click='home' >
+				<v-col cols='auto' class='ma-0 pa-0 text-h1 cl' :class='mobile?"text-h3 text-center":"text-h1"' @click='home' >
 					Mr Jack Wills
 				</v-col>
 				<v-col cols='auto' class='ma-0 pa-0'>
@@ -24,7 +24,7 @@
 				</v-col>
 			</v-row>
 			
-			<AppDivider v-if='mobile' />
+			<!-- <AppDivider v-if='mobile' /> -->
 
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 
@@ -43,8 +43,10 @@
 
 			<AppDivider  />
 
-			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0 my-4'>
+			<v-row align='center' justify='space-around' no-gutters class=' my-4'>
+				<!-- <v-col cols='11' md='8' class='ma-0 pa-0'> -->
 				Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Nginx, Linux, Vuetify, and more.
+				<!-- </v-col> -->
 			</v-row>
 
 			<AppDivider  />

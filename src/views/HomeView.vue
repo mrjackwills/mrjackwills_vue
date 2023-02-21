@@ -1,92 +1,90 @@
 <template>
-	<v-container class='unselectable pa-0' >
-		<v-row align='start' justify='space-around' no-gutters class='mt-md-8 ma-0 pa-0' :class='text_color' >
+	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0 unselectable' :class='text_color' >
 				
-			<v-col cols='11' md='8' class='ma-0 pa-0'>
+		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
-				<v-container class='card_height ma-a pa-0'  v-touch='{
-					left: () => next(),
-					right: () => previous()
-				}'>
+			<v-container class='card_height ma-a pa-0'  v-touch='{
+				left: () => next(),
+				right: () => previous()
+			}'>
 					
-					<v-row justify='center' align='center' class='ma-0 pa-0 ' >
-						<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
-							{{ current_project.name }}
-						</v-col>
-					</v-row>
+				<v-row justify='center' align='center' class='ma-0 pa-0 ' >
+					<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
+						{{ current_project.name }}
+					</v-col>
+				</v-row>
 					
-					<v-row justify='space-between' align='center' class='ma-0 pa-0' >
+				<v-row justify='space-between' align='center' class='ma-0 pa-0' >
 						
-						<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
-							<v-img
-								:class='mobile?"":"mt-3"'
-								:src='image'
-								class='max-img'
-								contain
-							>
-								<template #sources>
-									<source :srcset='webp'>
-								</template>
-							</v-img>
+					<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
+						<v-img
+							:class='mobile?"":"mt-3"'
+							:src='image'
+							class='max-img'
+							contain
+						>
+							<template #sources>
+								<source :srcset='webp'>
+							</template>
+						</v-img>
 							
-						</v-col>
+					</v-col>
 
-						<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
-							<v-btn :disabled='previous_disabled' variant='outlined' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronLeft' />
-						</v-col>
+					<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
+						<v-btn :disabled='previous_disabled' variant='outlined' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronLeft' />
+					</v-col>
 						
-						<v-col cols='auto' class='ma-0 pa-0' order='3' >
-							<v-btn :disabled='next_disabled' variant='outlined' @click='next' :size='icon_size' :color='color' :icon='mdiChevronRight' />
-						</v-col>
-					</v-row>
+					<v-col cols='auto' class='ma-0 pa-0' order='3' >
+						<v-btn :disabled='next_disabled' variant='outlined' @click='next' :size='icon_size' :color='color' :icon='mdiChevronRight' />
+					</v-col>
+				</v-row>
 
-					<v-row justify='start' align='center' class='ma-0 pa-0 mt-2 mb-4'>
+				<v-row justify='start' align='center' class='ma-0 pa-0 mt-2 mb-4'>
 
-						<v-col cols='auto' class='center ma-0 pa-0' :class='mobile?"":"center"'>
+					<v-col cols='auto' class='center ma-0 pa-0' :class='mobile?"":"center"'>
 
-							<AHref :href='computed_github' text='explore source code' >
-								<template v-slot:icon>
-									<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
-									<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
-										<span>see {{ current_project.name }} on GitHub</span>
-									</v-tooltip>
-								</template>
-							</AHref>
+						<AHref :href='computed_github' text='explore source code' >
+							<template v-slot:icon>
+								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
+								<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+									<span>see {{ current_project.name }} on GitHub</span>
+								</v-tooltip>
+							</template>
+						</AHref>
 							
-						</v-col>
+					</v-col>
 
-						<v-spacer v-if='mobile'/>
+					<v-spacer v-if='mobile'/>
 
-						<v-col cols='auto' class='ma-0 pa-0' v-if='current_project.link' :class='mobile?"":"ml-12"'>
+					<v-col cols='auto' class='ma-0 pa-0' v-if='current_project.link' :class='mobile?"":"ml-12"'>
 
-							<AHref :href='current_project.link.href' text='live site' >
-								<template v-slot:icon>
-									<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
-									<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
-										<span>{{ current_project.link.tooltip }}</span>
-									</v-tooltip>
-								</template>
-							</AHref>
+						<AHref :href='current_project.link.href' text='live site' >
+							<template v-slot:icon>
+								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
+								<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+									<span>{{ current_project.link.tooltip }}</span>
+								</v-tooltip>
+							</template>
+						</AHref>
 
-						</v-col>
+					</v-col>
 
-					</v-row>
+				</v-row>
 
-					<v-row justify='center' align='center' class='ma-0 pa-0'>
+				<v-row justify='center' align='center' class='ma-0 pa-0'>
 
-						<v-col cols='12' class='text-body-1 ma-0 pa-0' >
-							<component
-								:is='current_project.component'
-								@set_index='set_index'
-							/>
-						</v-col>
+					<v-col cols='12' class='text-body-1 ma-0 pa-0' >
+						<component
+							:is='current_project.component'
+							@set_index='set_index'
+						/>
+					</v-col>
 
-					</v-row>
+				</v-row>
 				
-				</v-container>
-			</v-col>
-		</v-row>
-	</v-container>
+			</v-container>
+		</v-col>
+	</v-row>
 </template>
 
 <script setup lang="ts">
@@ -301,7 +299,10 @@ const projects = computed((): Array<TProject> => {
 			name: 'Mr Jack Wills',
 			github: 'mrjackwills_vue',
 			component: MrJackWills,
-			link: undefined
+			link: {
+				href: 'https://www.mrjackwills.com/?project=mrjackwills_vue',
+				tooltip: `You're already here`
+			}
 		}
 	];
 });
