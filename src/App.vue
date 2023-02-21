@@ -35,6 +35,10 @@ watch(() => mobile.value, (i) => {
 	mobileModule().set_mobile(i);
 });
 
+onMounted(() => {
+	mobileModule().set_mobile(mobile.value);
+});
+
 onBeforeMount(() => {
 	// Prevent Chrome 67 and earlier from automatically showing the prompt
 	document.addEventListener('beforeinstallprompt', (e) => {

@@ -21,8 +21,8 @@
 							<v-img
 								:class='mobile?"":"mt-3"'
 								:src='image'
-								contain
 								class='max-img'
+								contain
 							>
 								<template #sources>
 									<source :srcset='webp'>
@@ -319,6 +319,7 @@ const webp = computed((): string => {
 <style>
 .max-img{
 	max-height: 33dvh!important;
+	min-height: 20dvh!important;
 }
 
 </style>
