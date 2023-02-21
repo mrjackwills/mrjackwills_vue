@@ -1,0 +1,324 @@
+<template>
+	<v-container class='unselectable pa-0' >
+		<v-row align='start' justify='space-around' no-gutters class='mt-md-8 ma-0 pa-0' :class='text_color' >
+				
+			<v-col cols='11' md='8' class='ma-0 pa-0'>
+
+				<v-container class='card_height ma-a pa-0'  v-touch='{
+					left: () => next(),
+					right: () => previous()
+				}'>
+					
+					<v-row justify='center' align='center' class='ma-0 pa-0 ' >
+						<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
+							{{ current_project.name }}
+						</v-col>
+					</v-row>
+					
+					<v-row justify='space-between' align='center' class='ma-0 pa-0' >
+						
+						<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
+							<v-img
+								:class='mobile?"":"mt-3"'
+								:src='image'
+								contain
+								class='max-img'
+							>
+								<template #sources>
+									<source :srcset='webp'>
+								</template>
+							</v-img>
+							
+						</v-col>
+
+						<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
+							<v-btn :disabled='previous_disabled' variant='outlined' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronLeft' />
+						</v-col>
+						
+						<v-col cols='auto' class='ma-0 pa-0' order='3' >
+							<v-btn :disabled='next_disabled' variant='outlined' @click='next' :size='icon_size' :color='color' :icon='mdiChevronRight' />
+						</v-col>
+					</v-row>
+
+					<v-row justify='start' align='center' class='ma-0 pa-0 mt-2 mb-4'>
+
+						<v-col cols='auto' class='center ma-0 pa-0' :class='mobile?"":"center"'>
+
+							<AHref :href='computed_github' text='explore source code' >
+								<template v-slot:icon>
+									<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
+									<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+										<span>see {{ current_project.name }} on GitHub</span>
+									</v-tooltip>
+								</template>
+							</AHref>
+							
+						</v-col>
+
+						<v-spacer v-if='mobile'/>
+
+						<v-col cols='auto' class='ma-0 pa-0' v-if='current_project.link' :class='mobile?"":"ml-12"'>
+
+							<AHref :href='current_project.link.href' text='live site' >
+								<template v-slot:icon>
+									<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
+									<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+										<span>{{ current_project.link.tooltip }}</span>
+									</v-tooltip>
+								</template>
+							</AHref>
+
+						</v-col>
+
+					</v-row>
+
+					<v-row justify='center' align='center' class='ma-0 pa-0'>
+
+						<v-col cols='12' class='text-body-1 ma-0 pa-0' >
+							<component
+								:is='current_project.component'
+								@set_index='set_index'
+							/>
+						</v-col>
+
+					</v-row>
+				
+				</v-container>
+			</v-col>
+		</v-row>
+	</v-container>
+</template>
+
+<script setup lang="ts">
+import { mdiChevronLeft, mdiChevronRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
+import { useDisplay } from 'vuetify';
+import type { TProject } from '@/types';
+
+import AHref from '@/components/AHref.vue';
+
+import Adsbdb from '@/components/Projects/AdsbdbVue.vue';
+import BelugasnoozeClient from '@/components/Projects/BelugasnoozeClient.vue';
+import BelugasnoozeSite from '@/components/Projects/BelugasnoozeSite.vue';
+import LeafcastClient from '@/components/Projects/LeafcastPi.vue';
+import LeafcastSite from '@/components/Projects/LeafcastSite.vue';
+import MealpedantApi from '@/components/Projects/MealpedantApi.vue';
+import MealpedantSite from '@/components/Projects/MealpedantSite.vue';
+import MrJackWills from '@/components/Projects/MrJackWills.vue';
+import Obliqoro from '@/components/Projects/ObliqoroVue.vue';
+import Oxker from '@/components/Projects/OxkerVue.vue';
+import StaticpiBackend from '@/components/Projects/StaticpiBackend.vue';
+import StaticpiSite from '@/components/Projects/StaticpiVue.vue';
+
+const route = useRoute();
+const router = useRouter();
+const darkmodeStore = darkmodeModule();
+const image_store = imageModule();
+
+const text_color = computed((): string => {
+	return darkmodeStore.text_color;
+});
+
+const next_disabled = computed((): boolean => {
+	return project_index.value === projects.value.length -1;
+});
+
+const previous_disabled = computed((): boolean => {
+	return project_index.value === 0;
+});
+
+const mobile = computed((): boolean => {
+	return useDisplay().mdAndDown.value;
+});
+
+const icon_size = computed((): string => {
+	return mobile.value ? 'small' : 'large';
+});
+
+const dark_mode = computed({
+	get (): boolean {
+		return darkmodeStore.darkmode;
+	},
+	set (b: boolean): void {
+		darkmodeStore.set_darkmode(b);
+	}
+});
+
+const color = computed((): string => {
+	return darkmodeStore.color;
+});
+
+const next = (): void => {
+	if (project_index.value === projects.value.length -1) {
+		// don't allow looping around, mainly as would have to re-do mrjackwills screenshots
+		// project_index.value = 0;
+	} else {
+		project_index.value += 1;
+	}
+};
+
+const previous = (): void => {
+	if (project_index.value == 0) {
+		// don't allow looping around, mainly as would have to re-do mrjackwills screenshots
+		// project_index.value = projects.value.length -1;
+	} else {
+		project_index.value -= 1;
+	}
+};
+
+const computed_github = computed((): string => {
+	return `https://www.github.com/mrjackwills/${current_project.value.github}`;
+});
+
+const project_index = ref(0);
+const current_project = computed(() => {
+	return projects.value[project_index.value];
+});
+
+const set_index = (name: string): void => {
+	const index = projects.value.findIndex((i) => i.github === name);
+	if (index >=0) {
+		project_index.value = index;
+	}
+};
+
+onBeforeMount(() => {
+	const query = route.query?.project;
+	const index = projects.value.findIndex((i) => i.github === query);
+	if (index) {
+		set_index(`${query}`);
+	} else {
+		router.push({ path: route.path, query: undefined });
+	}
+});
+
+const url_query = computed((): undefined | string => {
+	return route.query?.project ? `${route.query.project}` : undefined;
+});
+
+watch(project_index, () => {
+	router.push({ path: route.path, query: { project: current_project.value.github } });
+});
+
+watch(url_query, (i) => {
+	if (!i) {
+		project_index.value = 0;
+	}
+});
+
+const projects = computed((): Array<TProject> => {
+	return [
+		{
+			name: 'oxker',
+			github: 'oxker',
+			link: undefined,
+			component: Oxker,
+		},
+		{
+			name: 'adsbdb',
+			github: 'adsbdb',
+			component: Adsbdb,
+			link: {
+				href: 'https://www.adsbdb.com',
+				tooltip: 'live site'
+			}
+		},
+		{
+			name: 'staticPi site',
+			github: 'staticpi_vue',
+			component: StaticpiSite,
+			link: {
+				href: 'https://www.staticpi.com',
+				tooltip: 'invite on request'
+			}
+		},
+		{
+			name: 'staticPi backend',
+			github: 'staticpi_backend',
+			component: StaticpiBackend,
+			link: {
+				href: 'https://www.staticpi.com',
+				tooltip: 'invite on request'
+			}
+		},
+		{
+			name: 'Obliqoro',
+			github: 'obliqoro',
+			component: Obliqoro,
+			link: undefined
+		},
+		{
+			name: 'Leafcast site',
+			github: 'leafcast_vue',
+			component: LeafcastSite,
+			link: {
+				href: 'https://plants.mrjackwills.com',
+				tooltip: 'password on request'
+			}
+		},
+		{
+			name: 'Leafcast client',
+			github: 'leafcast_pi',
+			component: LeafcastClient,
+			link: {
+				href: 'https://plants.mrjackwills.com',
+				tooltip: 'password on request'
+			}
+		},
+		{
+			name: 'Meal Pedant site',
+			github: 'mealpedant_vue',
+			component: MealpedantSite,
+			link: {
+				href: 'https://www.mealpedant.com',
+				tooltip: 'invite on request'
+			}
+		},
+		{
+			name: 'Meal Pedant api',
+			github: 'mealpedant_api',
+			component: MealpedantApi,
+			link: {
+				href: 'https://api.mealpedant.com/v1/incognito/online',
+				tooltip: 'live api'
+			}
+		},
+		{
+			name: 'Beluga Snooze site',
+			component: BelugasnoozeSite,
+			github: 'belugasnooze_vue',
+			link: {
+				href: 'https://www.belugasnooze.com',
+				tooltip: 'invite on request'
+			}
+		},
+		{
+			name: 'Beluga Snooze client',
+			component: BelugasnoozeClient,
+			github: 'belugasnooze_pi',
+			link: undefined
+		},
+		{
+			name: 'Mr Jack Wills',
+			github: 'mrjackwills_vue',
+			component: MrJackWills,
+			link: undefined
+		}
+	];
+});
+
+const image = computed((): string => {
+	return image_store.image;
+});
+
+const webp = computed((): string => {
+	return image_store.webp;
+});
+
+</script>
+
+<style>
+.max-img{
+	max-height: 33dvh!important;
+}
+
+</style>
