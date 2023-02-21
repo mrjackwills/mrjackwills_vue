@@ -5,7 +5,7 @@
 	Built in <CHref text='Vue' />,
 	with <CHref text='Typescript' />,
 	styled with <CHref  text='Vuetify' />,
-	and deployed via <CHref  text='Nginx' />,
+	and deployed via <CHref  text='Nginx' />.
 
 </template>
 
@@ -19,7 +19,6 @@ import MobileDarkJpg from '@/assets/jpg/mrjackwills_dark_mobile.jpg';
 import MobileDarkWebp from '@/assets/webp/mrjackwills_dark_mobile.webp';
 import MobileLightJpg from '@/assets/jpg/mrjackwills_light_mobile.jpg';
 import MobileLightWebp from '@/assets/webp/mrjackwills_light_mobile.webp';
-import type { TGithubRepos } from '@/types';
 
 const image_store = imageModule();
 
@@ -65,8 +64,4 @@ watch(() => darkmode.value, async (_) => {
 	update_images();
 });
 
-const _click = (name: TGithubRepos): void => {
-	emits('set_index', name);
-};
-const emits = defineEmits([ 'set_index' ]);
 </script>

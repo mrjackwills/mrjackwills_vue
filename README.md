@@ -12,6 +12,15 @@
 	in <a href='https://www.typescriptlang.org' target='_blank' rel='noopener noreferrer'>Typescript</a>,
 	using <a href='https://vitejs.dev/' target='_blank' rel='noopener noreferrer'>vite</a>,
 	and <a href='https://vuetifyjs.com/en/' target='_blank' rel='noopener noreferrer'>Vuetify</a>,
+
+</p>
+
+<p align="center">
+	<ul>
+		<li>`A+` <a href='https://www.ssllabs.com/ssltest/analyze.html?d=www.mrjackwills.com' target='_blank' rel='noopener noreferrer'>ssllabs</a> rating</li>
+		<li>`A+` <a href='https://securityheaders.com/?q=https%3A%2F%2Fwww.mrjackwills.com%2F&followRedirects=on' target='_blank' rel='noopener noreferrer'>security headers</a> rating</li>
+		<li>`A+` <a href='https://observatory.mozilla.org/analyze/www.mrjackwills.com' target='_blank' rel='noopener noreferrer'>Mozilla observatory</a> rating</li>
+	</ul>
 </p>
 
 ## Required software

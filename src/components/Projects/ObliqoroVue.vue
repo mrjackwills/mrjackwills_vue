@@ -8,7 +8,7 @@
 	in <CHref text='Rust' /> and <CHref text='Vue' />,
 	with <CHref text='Typescript' />,
 	data stored using <CHref text='SQLite' />,
-	and styled with <CHref text='Vuetify' />
+	and styled with <CHref text='Vuetify' />.
 
 </template>
 
@@ -16,7 +16,6 @@
 import AHref from '@/components/AHref.vue';
 import CHref from '@/components/CHref.vue';
 import Jpg from '@/assets/jpg/obliqoro.jpg';
-import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/obliqoro.webp';
 
 onMounted(() => {
@@ -24,8 +23,4 @@ onMounted(() => {
 	imageModule().set_webp(Webp);
 });
 
-const _click = (name: TGithubRepos): void => {
-	emits('set_index', name);
-};
-const emits = defineEmits([ 'set_index' ]);
 </script>

@@ -17,6 +17,7 @@ export type TSnackPosition = {x: u<TPositions>, y: u<TPositions> }
 export enum ModuleName {
 	DarkMode ='darkmode',
 	Image = 'image',
+	CurrentProject = 'current_project',
 	Mobile = 'mobile',
 	Snack = 'snackbar',
 }
@@ -58,3 +59,12 @@ export type TGithubRepos =
 'oxker'|
 'staticpi_backend'|
 'staticpi_vue'
+
+export enum Routes {
+	oxker ='oxker',
+	adsbdb ='adsbdb',
+	// oxker ='oxker',
+	// oxker ='oxker',
+	// oxker ='oxker',
+
+}

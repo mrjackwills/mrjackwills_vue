@@ -23,8 +23,6 @@
 					</v-row>
 				</v-col>
 			</v-row>
-			
-			<!-- <AppDivider v-if='mobile' /> -->
 
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 
@@ -32,7 +30,7 @@
 					<AHref :href='item.href' :aria-label='item.tooltip'>
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
-							<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+							<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
 								<span>{{ item.tooltip }}</span>
 							</v-tooltip>
 						</template>
@@ -44,9 +42,9 @@
 			<AppDivider  />
 
 			<v-row align='center' justify='space-around' no-gutters class=' my-4'>
-				<!-- <v-col cols='11' md='8' class='ma-0 pa-0'> -->
-				Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Nginx, Linux, Vuetify, and more.
-				<!-- </v-col> -->
+				<v-col cols='auto' class='ma-0 pa-0'>
+					Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Nginx, Linux, Vuetify, and more.
+				</v-col>
 			</v-row>
 
 			<AppDivider  />
