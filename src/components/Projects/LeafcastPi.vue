@@ -19,7 +19,6 @@ import CHref from '@/components/CHref.vue';
 import Jpg from '@/assets/jpg/leafcast_pi.jpg';
 import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/leafcast_pi.webp';
-import { currentProjectModule } from '@/store';
 
 onMounted(() => {
 	imageModule().set_image(Jpg);

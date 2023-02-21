@@ -20,7 +20,6 @@ import CHref from '@/components/CHref.vue';
 import Jpg from '@/assets/jpg/belugasnooze_pi.jpg';
 import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/belugasnooze_pi.webp';
-import { currentProjectModule } from '@/store';
 
 const href_pizero = 'https://www.raspberrypi.com/products/raspberry-pi-zero-w';
 const href_blinkt ='https://shop.pimoroni.com/products/blinkt';

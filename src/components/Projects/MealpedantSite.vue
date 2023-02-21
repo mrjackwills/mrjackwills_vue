@@ -17,7 +17,6 @@ import CHref from '@/components/CHref.vue';
 import Jpg from '@/assets/jpg/mealpedant_vue.jpg';
 import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/mealpedant_vue.webp';
-import { currentProjectModule } from '@/store';
 
 onMounted(() => {
 	imageModule().set_image(Jpg);

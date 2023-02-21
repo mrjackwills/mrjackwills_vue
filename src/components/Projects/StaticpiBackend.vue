@@ -37,7 +37,6 @@ import CHref from '@/components/CHref.vue';
 import Png from '@/assets/png/adsbdb.png';
 import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/staticpi_backend.webp';
-import { currentProjectModule } from '@/store';
 
 onMounted(() => {
 	imageModule().set_image(Png);

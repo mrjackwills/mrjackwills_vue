@@ -22,7 +22,6 @@ import CHref from '@/components/CHref.vue';
 import Png from '@/assets/png/mealpedant_api.png';
 import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/mealpedant_api.webp';
-import { currentProjectModule } from '@/store';
 
 onMounted(() => {
 	imageModule().set_image(Png);
