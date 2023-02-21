@@ -1,7 +1,6 @@
 <template>
 	<v-row align='start' justify='space-around' no-gutters class='ma-0 pa-0 mt-md-12 mt-4 no-gutters'  :class='text_color'  >
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
-			<!-- :justify='mobile?"center":"space-around"'  -->
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 				
 				<v-col cols='auto' class='ma-0 pa-0 text-h1 cl' :class='mobile?"text-h3 text-center":"text-h1"' @click='home' >
@@ -26,11 +25,11 @@
 
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 
-				<v-col v-for='(item, index) in links' :key='index' cols='auto' class='ma-0 pa-0 cl'>
-					<AHref :href='item.href' :aria-label='item.tooltip'>
+				<v-col v-for='(item, index) in links' :key='index' cols='auto' class='ma-0 pa-0'>
+					<AHref :href='item.href' :aria-label='item.tooltip' :id='`nav_${index}`'>
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
-							<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+							<v-tooltip v-if='!mobile' :activator='`#nav_${index}`' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
 								<span>{{ item.tooltip }}</span>
 							</v-tooltip>
 						</template>
