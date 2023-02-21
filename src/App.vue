@@ -3,8 +3,8 @@
 		<v-main>
 			<AppBar />
 			<RouterView  />
+			<AppSnackBar />
 		</v-main>
-		<AppSnackBar />
 		<AppFooter />
 	</v-app>
 </template>
@@ -46,6 +46,7 @@ onMounted(() => {
 });
 
 onBeforeMount(() => {
+
 	if (!darkmodeModule().init) {
 		darkmodeModule().set_darkmode(useDark().value);
 	}

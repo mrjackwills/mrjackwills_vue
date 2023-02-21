@@ -21,6 +21,11 @@ html, .v-snackbar__content, [class*='text-']{
 	text-decoration: underline;
 }
 
+// This is a, hopefully, temporary fix for a snackbar issue
+div.v-snackbar:not(.v-snackbar--absolute) {
+    height: 100% !important;
+}
+
 .unselectable {
 	-webkit-user-select: none;
 	-moz-user-select: none;
