@@ -1,5 +1,5 @@
 <template>
-	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0 unselectable' :class='text_color' >
+	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0' :class='text_color' >
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
@@ -103,7 +103,6 @@ import Obliqoro from '@/components/Projects/ObliqoroVue.vue';
 import Oxker from '@/components/Projects/OxkerVue.vue';
 import StaticpiBackend from '@/components/Projects/StaticpiBackend.vue';
 import StaticpiSite from '@/components/Projects/StaticpiVue.vue';
-import { currentProjectModule } from '@/store';
 
 const route = useRoute();
 const router = useRouter();
