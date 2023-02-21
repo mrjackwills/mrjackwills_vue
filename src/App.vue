@@ -4,6 +4,7 @@
 			<AppBar />
 			<RouterView  />
 			<AppSnackBar />
+			<AppFooter />
 		</v-main>
 	</v-app>
 </template>
@@ -16,6 +17,7 @@ import { useDisplay } from 'vuetify';
 import { useHead } from '@vueuse/head';
 import { useRegisterSW } from 'virtual:pwa-register/vue';
 import AppBar from '@/components/AppBar.vue';
+import AppFooter from '@/components/AppFooter.vue';
 import AppSnackBar from '@/components/SnackBar.vue';
 
 const { updateServiceWorker } = useRegisterSW();
@@ -36,15 +38,15 @@ watch(() => mobile.value, (i) => {
 });
 
 onMounted(() => {
+	// Prevent Chrome 67 and earlier from automatically showing the prompt
+	window.addEventListener('beforeinstallprompt', (e) => {
+		e.preventDefault();
+	});
+
 	mobileModule().set_mobile(mobile.value);
 });
 
 onBeforeMount(() => {
-	// Prevent Chrome 67 and earlier from automatically showing the prompt
-	document.addEventListener('beforeinstallprompt', (e) => {
-		e.preventDefault();
-	});
-
 	if (!darkmodeModule().init) {
 		darkmodeModule().set_darkmode(useDark().value);
 	}
