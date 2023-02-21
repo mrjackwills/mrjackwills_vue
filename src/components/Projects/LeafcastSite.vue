@@ -1,13 +1,15 @@
 <template>
-	The Leafcast site is a website/PWA, that enables a user to view live imagery of a plant-filled corner,
-	it is powered by <span class='font-weight-bold link cl' @click='click(`staticpi_backend`)'>staticPi</span>,
+	The Leafcast site is a website/PWA, that enables a user to view live imagery of a plant-filled corner.
+	<br>
+	<br>
+	It is powered by <span class='font-weight-bold link cl' @click='click(`staticpi_backend`)'>staticPi</span>,
 	and is the companion to the <span class='font-weight-bold link cl' @click='click(`leafcast_pi`)'>Leafcast client</span>.
 	<br>
 	<br>
 	Built in <CHref text='Vue' />,
 	with <CHref text='Typescript' />,
 	styled with <CHref  text='Vuetify' />,
-	and deployed via <CHref  text='Nginx' />,
+	and deployed via <CHref  text='Nginx' />.
 
 </template>
 
@@ -23,7 +25,6 @@ onMounted(() => {
 });
 
 const click = (name: TGithubRepos): void => {
-	emits('set_index', name);
+	currentProjectModule().set_current_project(name);
 };
-const emits = defineEmits([ 'set_index' ]);
 </script>

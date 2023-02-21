@@ -20,10 +20,10 @@ const pwaOptions: Partial<VitePWAOptions> = {
 	manifest: {
 		display: 'standalone',
 		name: 'Mr Jack Wills',
-		description: 'Self facilitating online fool',
+		description: 'Autodidactic digital dweller',
 		short_name: 'Mr Jack Wills',
 		theme_color: '#000000',
-		background_color: '#ffffff',
+		background_color: '#FFFFFF',
 		icons: [
 			{
 				src: 'img/icons/android-chrome-192x192.png',
@@ -74,6 +74,8 @@ export default defineConfig({
 	],
 	define: {
 		'process.env': {},
+		'import.meta.env.BUILD_DATE': Date.now(),
+		'import.meta.env.VERSION': JSON.stringify(process.env.npm_package_version),
 	},
 	resolve: {
 		alias: {

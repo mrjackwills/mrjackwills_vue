@@ -1,9 +1,9 @@
 <template>
-	<v-divider thickness='2px' class='my-1 mt-md-2'/>
+	<v-divider thickness='1px' class='my-1 mt-md-2'/>
 </template>
 
 <style>
 .v-divider {
-	opacity: .3!important;
+	opacity: .5!important;
 }
 </style>

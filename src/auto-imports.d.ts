@@ -7,6 +7,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
+  const currentProjectModule: typeof import('./store/index')['currentProjectModule']
   const customRef: typeof import('vue')['customRef']
   const darkmodeModule: typeof import('./store/index')['darkmodeModule']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']

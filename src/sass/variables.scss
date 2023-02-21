@@ -14,11 +14,16 @@ html, .v-snackbar__content, [class*='text-']{
 }
 
 .cl {
-	cursor: pointer!important;
+	cursor: pointer;
 }
 
 .link {
 	text-decoration: underline;
+}
+
+// This is a, hopefully, temporary fix for a snackbar issue
+div.v-snackbar:not(.v-snackbar--absolute) {
+    height: 100% !important;
 }
 
 .unselectable {

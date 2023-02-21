@@ -10,6 +10,7 @@
     "VNode": true,
     "computed": true,
     "createApp": true,
+    "currentProjectModule": true,
     "customRef": true,
     "darkmodeModule": true,
     "defineAsyncComponent": true,

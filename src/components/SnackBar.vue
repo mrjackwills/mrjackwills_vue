@@ -1,5 +1,5 @@
 <template>
-	<v-snackbar v-model='visible' :color='color' >
+	<v-snackbar v-model='visible' :color='color' app >
 		<v-row justify='center' align='center' no-gutters class='ma-0 pa-0'>
 			<v-col v-if='icon && !loading' cols='auto' class=''>
 				<v-icon :color='color_invert' :icon='icon' />

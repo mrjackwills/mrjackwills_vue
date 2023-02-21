@@ -1,5 +1,5 @@
 <template>
-	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0 unselectable' :class='text_color' >
+	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0' :class='text_color' >
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
@@ -46,7 +46,7 @@
 						<AHref :href='computed_github' text='explore source code' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
-								<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+								<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
 									<span>see {{ current_project.name }} on GitHub</span>
 								</v-tooltip>
 							</template>
@@ -61,7 +61,7 @@
 						<AHref :href='current_project.link.href' text='live site' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
-								<v-tooltip activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+								<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
 									<span>{{ current_project.link.tooltip }}</span>
 								</v-tooltip>
 							</template>
@@ -74,10 +74,7 @@
 				<v-row justify='center' align='center' class='ma-0 pa-0'>
 
 					<v-col cols='12' class='text-body-1 ma-0 pa-0' >
-						<component
-							:is='current_project.component'
-							@set_index='set_index'
-						/>
+						<component :is='current_project.component' />
 					</v-col>
 
 				</v-row>
@@ -90,7 +87,7 @@
 <script setup lang="ts">
 import { mdiChevronLeft, mdiChevronRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
 import { useDisplay } from 'vuetify';
-import type { TProject } from '@/types';
+import type { TGithubRepos, TProject, u } from '@/types';
 
 import AHref from '@/components/AHref.vue';
 
@@ -198,8 +195,19 @@ watch(project_index, () => {
 });
 
 watch(url_query, (i) => {
-	if (!i) {
+	if (i) {
+		set_index(i);
+	} else {
 		project_index.value = 0;
+	}
+});
+const current_project_name = computed((): u<TGithubRepos> => {
+	return currentProjectModule().current_project;
+});
+
+watch(() => current_project_name.value, (i) => {
+	if (i) {
+		set_index(i);
 	}
 });
 
@@ -233,10 +241,6 @@ const projects = computed((): Array<TProject> => {
 			name: 'staticPi backend',
 			github: 'staticpi_backend',
 			component: StaticpiBackend,
-			link: {
-				href: 'https://www.staticpi.com',
-				tooltip: 'invite on request'
-			}
 		},
 		{
 			name: 'Obliqoro',
@@ -257,10 +261,6 @@ const projects = computed((): Array<TProject> => {
 			name: 'Leafcast client',
 			github: 'leafcast_pi',
 			component: LeafcastClient,
-			link: {
-				href: 'https://plants.mrjackwills.com',
-				tooltip: 'password on request'
-			}
 		},
 		{
 			name: 'Meal Pedant site',
@@ -272,13 +272,9 @@ const projects = computed((): Array<TProject> => {
 			}
 		},
 		{
-			name: 'Meal Pedant api',
+			name: 'Meal Pedant API',
 			github: 'mealpedant_api',
 			component: MealpedantApi,
-			link: {
-				href: 'https://api.mealpedant.com/v1/incognito/online',
-				tooltip: 'live api'
-			}
 		},
 		{
 			name: 'Beluga Snooze site',
