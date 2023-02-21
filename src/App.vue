@@ -3,9 +3,9 @@
 		<v-main>
 			<AppBar />
 			<RouterView  />
-			<AppSnackBar />
-			<AppFooter />
 		</v-main>
+		<AppSnackBar />
+		<AppFooter />
 	</v-app>
 </template>
 
@@ -42,7 +42,6 @@ onMounted(() => {
 	window.addEventListener('beforeinstallprompt', (e) => {
 		e.preventDefault();
 	});
-
 	mobileModule().set_mobile(mobile.value);
 });
 
@@ -70,7 +69,7 @@ useHead({
 
 const appUpdate = (): void => {
 	snackSuccess({
-		message: 'Downloading Updates',
+		message: 'updating website',
 		loading: true,
 		timeout: 4500,
 	});
