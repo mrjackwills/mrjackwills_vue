@@ -246,6 +246,17 @@ const projects: Array<TProject> = [
 		link: undefined,
 		component: Oxker,
 	},
+
+	{
+		name: 'adsbdb',
+		github: 'adsbdb',
+		component: Adsbdb,
+		link: {
+			href: 'https://www.adsbdb.com',
+			tooltip: 'live site'
+		}
+	},
+
 	{
 		name: 'staticPi site',
 		github: 'staticpi_vue',
@@ -259,16 +270,6 @@ const projects: Array<TProject> = [
 		name: 'staticPi backend',
 		github: 'staticpi_backend',
 		component: StaticpiBackend,
-	},
-
-	{
-		name: 'adsbdb',
-		github: 'adsbdb',
-		component: Adsbdb,
-		link: {
-			href: 'https://www.adsbdb.com',
-			tooltip: 'live site'
-		}
 	},
 
 	{

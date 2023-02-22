@@ -29,7 +29,13 @@
 					<AHref :href='item.href' :aria-label='item.tooltip' :id='`nav_${index}`'>
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
-							<v-tooltip v-if='!mobile' :activator='`#nav_${index}`' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+							<v-tooltip
+								:activator='`#nav_${index}`'
+								:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
+								:open-on-click='false'
+								:open-on-focus='false'
+								location='top center'
+							>
 								<span>{{ item.tooltip }}</span>
 							</v-tooltip>
 						</template>
