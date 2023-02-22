@@ -3,7 +3,7 @@
 	It enables users of the staticPi service to;
 	<ul class='ml-10 mt-4'>
 		<li>
-			interact with the <span class='font-weight-bold link cl' @click='click(`staticpi_vue`)'>frontend</span>, via a JSON based API
+			interact with the <IHref repo='staticpi_vue'/>, via a JSON based API
 		</li>
 		<li>
 			generate access tokens for their devices
@@ -16,26 +16,21 @@
 	Its other features include, but are not limited to, password hashing with Argon2,
 	<AHref href='https://haveibeenpwned.com/' text='HIBP' />-powered weak password detection, two-factor authentication with backup codes, secure cookie based user sessions using Redis,
 	automated email templating, rate limiting, multiple User Level authorization controls.
-	<br>
-	<br>
-	It is the backend that powers the <span class='font-weight-bold link cl' @click='click(`staticpi_vue`)'>staticPi site</span>, and is used by the
-	<span class='font-weight-bold link cl' @click='click(`leafcast_vue`)'>leafcast client</span>,
-	<span class='font-weight-bold link cl' @click='click(`leafcast_pi`)'>leafcast site</span>,
-	<span class='font-weight-bold link cl' @click='click(`belugasnooze_pi`)'>belugasnooze client</span>, and
-	<span class='font-weight-bold link cl' @click='click(`belugasnooze_vue`)'>belugasnooze site</span>.
-	<br>
-	<br>
-	Built in <CHref text='Rust' />,
-	with data stored using <CHref text='PostgreSQL' /> and <CHref text='Redis' />,
-	and deployed via <CHref text='Docker' /> and <CHref text='Nginx' />.
-
+	<Companion repo='staticpi_vue' />, and is used by the
+	<IHref repo='leafcast_vue' />,
+	the <IHref repo='leafcast_pi' />,
+	the <IHref repo='belugasnooze_vue' />,
+	and the <IHref repo='belugasnooze_pi' />.
+	<BackendApi/>
+	
 </template>
 
 <script setup lang="ts">
 import AHref from '@/components/AHref.vue';
-import CHref from '@/components/CHref.vue';
+import BackendApi from '@/components/BackendApi.vue';
+import Companion from '@/components/CompanionVue.vue';
+import IHref from '@/components/IHref.vue';
 import Png from '@/assets/png/adsbdb.png';
-import type { TGithubRepos } from '@/types';
 import Webp from '@/assets/webp/staticpi_backend.webp';
 
 onMounted(() => {
@@ -43,7 +38,4 @@ onMounted(() => {
 	imageModule().set_webp(Webp);
 });
 
-const click = (name: TGithubRepos): void => {
-	currentProjectModule().set_current_project(name);
-};
 </script>

@@ -2,10 +2,10 @@
 	<v-footer
 		color='transparent'
 		id='footer'
-		absolute
 		app
+		absolute
 	>
-		<v-row justify='center' align='center' class='no-gutters ma-0 pa-0 mt-4'>
+		<v-row justify='center' align='center' class='no-gutters ma-0 pa-0'>
 
 			<v-col cols='auto' class='no-gutters ma-0 pa-0' @click='buildInfo'>
 				

@@ -1,5 +1,6 @@
 <template>
 	Obliqoro is a cross platform graphical application, although currently only tested and published for Windows and Linux.
+	<br>
 	It combines the creative approach of <AHref href='https://en.wikipedia.org/wiki/Oblique_Strategies' text='Oblique Strategies' />,
 	with the time management system of the <AHref href='https://en.wikipedia.org/wiki/Pomodoro_Technique' text='Pomodoro Technique'/>.
 	<br>
