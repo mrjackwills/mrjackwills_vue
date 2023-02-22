@@ -5,7 +5,7 @@
 + Home.vue spacing, [d126b208602b6dd2c8f2bbba6afe05e4a24b9ca2]
 
 ### Refactors
-+ refactor common strings & design patterns in components: UseStaticPi, IHhref, TSBranch, BackendApi, FrontendVue, [0a7bc4cde17b1919627288d76f6eb3f3ed94b64d]
++ refactor common strings & design patterns in components: UseStaticPi, IHref, TSBranch, BackendApi, FrontendVue, [0a7bc4cde17b1919627288d76f6eb3f3ed94b64d]
 
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.1'>v1.0.1</a>
 ### 2023-02-21
