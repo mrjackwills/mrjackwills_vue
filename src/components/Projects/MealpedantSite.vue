@@ -1,7 +1,7 @@
 <template>
 	The Meal Pedant site is the frontend PWA for a pedantic and meticulous daily log of evening meals. It enables an authenticated user to views the meals, whilst Admin Users
 	are able to add, edit, and delete meals, as well are perform Administrative actions for the backend.
-	<Companion repo='mealpedant_api' />
+	<Companion repo='mealpedant_api' />.
 	<FrontendVue />
 	
 </template>

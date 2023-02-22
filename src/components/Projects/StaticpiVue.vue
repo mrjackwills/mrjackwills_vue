@@ -25,7 +25,7 @@
 	<br>
 	The site also enables Admin Users to perform a variety of administrative tasks, including killing websocket connections, de-activating devices, examine and remove rate-limits,
 	viewing any contact messages sent, and much more.
-	<Companion repo='staticpi_backend' />
+	<Companion repo='staticpi_backend' />.
 	<FrontendVue />
 </template>
 
