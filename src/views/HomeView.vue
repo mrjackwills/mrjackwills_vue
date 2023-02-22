@@ -176,18 +176,20 @@ const set_index = (name: string): void => {
 	}
 };
 
+const arrow_key = (i: KeyboardEvent) : void => {
+	if (i.key === 'ArrowRight') {
+		next();
+	} else if (i.key === 'ArrowLeft') {
+		previous();
+	}
+};
+
 onUnmounted(() => {
-	document.removeEventListener('keyup');
+	document.removeEventListener('keyup', arrow_key);
 });
 
 onMounted(() => {
-	document.addEventListener('keyup', (i) => {
-		if (i.key === 'ArrowRight') {
-			next();
-		} else if (i.key === 'ArrowLeft') {
-			previous();
-		}
-	});
+	document.addEventListener('keyup', arrow_key);
 
 });
 onBeforeMount(() => {
