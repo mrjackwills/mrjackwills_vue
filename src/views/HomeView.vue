@@ -176,6 +176,20 @@ const set_index = (name: string): void => {
 	}
 };
 
+onUnmounted(() => {
+	document.removeEventListener('keyup');
+});
+
+onMounted(() => {
+	document.addEventListener('keyup', (i) => {
+		if (i.key === 'ArrowRight') {
+			next();
+		} else if (i.key === 'ArrowLeft') {
+			previous();
+		}
+	});
+
+});
 onBeforeMount(() => {
 	const query = route.query?.project;
 	const index = projects.value.findIndex((i) => i.github === query);
