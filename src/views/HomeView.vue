@@ -1,5 +1,5 @@
 <template>
-	<v-row align='start' justify='space-around' class='mt-md-8 ma-0 pa-0' :class='text_color' >
+	<v-row align='start' justify='space-around' class='mt-md-4 ma-0 pa-0' :class='text_color' >
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
@@ -18,7 +18,7 @@
 						
 					<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
 						<v-img
-							:class='mobile?"":"mt-3"'
+							:class='mobile?"":"mt-1"'
 							:src='image'
 							class='max-img'
 							contain
