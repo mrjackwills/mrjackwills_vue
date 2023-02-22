@@ -46,7 +46,13 @@
 						<AHref :href='computed_github' text='explore source code' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
-								<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+								<v-tooltip
+									:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
+									:open-on-click='false'
+									:open-on-focus='false'
+									activator='parent'
+									location='top center'
+								>
 									<span>see {{ current_project.name }} on GitHub</span>
 								</v-tooltip>
 							</template>
@@ -61,7 +67,13 @@
 						<AHref :href='current_project.link.href' text='live site' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
-								<v-tooltip v-if='!mobile' activator='parent' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+								<v-tooltip
+									activator='parent'
+									:open-on-click='false'
+									:open-on-focus='false'
+									location='top center'
+									:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
+								>
 									<span>{{ current_project.link.tooltip }}</span>
 								</v-tooltip>
 							</template>
@@ -114,7 +126,7 @@ const text_color = computed((): string => {
 });
 
 const next_disabled = computed((): boolean => {
-	return project_index.value === projects.value.length -1;
+	return project_index.value === projects.length -1;
 });
 
 const previous_disabled = computed((): boolean => {
@@ -143,7 +155,7 @@ const color = computed((): string => {
 });
 
 const next = (): void => {
-	if (project_index.value === projects.value.length -1) {
+	if (project_index.value === projects.length -1) {
 		// don't allow looping around, mainly as would have to re-do mrjackwills screenshots
 		// project_index.value = 0;
 	} else {
@@ -166,11 +178,11 @@ const computed_github = computed((): string => {
 
 const project_index = ref(0);
 const current_project = computed(() => {
-	return projects.value[project_index.value];
+	return projects[project_index.value];
 });
 
 const set_index = (name: string): void => {
-	const index = projects.value.findIndex((i) => i.github === name);
+	const index = projects.findIndex((i) => i.github === name);
 	if (index >=0) {
 		project_index.value = index;
 	}
@@ -190,11 +202,11 @@ onUnmounted(() => {
 
 onMounted(() => {
 	document.addEventListener('keyup', arrow_key);
-
 });
+
 onBeforeMount(() => {
 	const query = route.query?.project;
-	const index = projects.value.findIndex((i) => i.github === query);
+	const index = projects.findIndex((i) => i.github === query);
 	if (index) {
 		set_index(`${query}`);
 	} else {
@@ -227,97 +239,97 @@ watch(() => current_project_name.value, (i) => {
 	}
 });
 
-const projects = computed((): Array<TProject> => {
-	return [
-		{
-			name: 'oxker',
-			github: 'oxker',
-			link: undefined,
-			component: Oxker,
-		},
-		{
-			name: 'adsbdb',
-			github: 'adsbdb',
-			component: Adsbdb,
-			link: {
-				href: 'https://www.adsbdb.com',
-				tooltip: 'live site'
-			}
-		},
-		{
-			name: 'staticPi site',
-			github: 'staticpi_vue',
-			component: StaticpiSite,
-			link: {
-				href: 'https://www.staticpi.com',
-				tooltip: 'invite on request'
-			}
-		},
-		{
-			name: 'staticPi backend',
-			github: 'staticpi_backend',
-			component: StaticpiBackend,
-		},
-		{
-			name: 'Obliqoro',
-			github: 'obliqoro',
-			component: Obliqoro,
-			link: undefined
-		},
-		{
-			name: 'Leafcast site',
-			github: 'leafcast_vue',
-			component: LeafcastSite,
-			link: {
-				href: 'https://plants.mrjackwills.com',
-				tooltip: 'password on request'
-			}
-		},
-		{
-			name: 'Leafcast client',
-			github: 'leafcast_pi',
-			component: LeafcastClient,
-		},
-		{
-			name: 'Meal Pedant site',
-			github: 'mealpedant_vue',
-			component: MealpedantSite,
-			link: {
-				href: 'https://www.mealpedant.com',
-				tooltip: 'invite on request'
-			}
-		},
-		{
-			name: 'Meal Pedant API',
-			github: 'mealpedant_api',
-			component: MealpedantApi,
-		},
-		{
-			name: 'Beluga Snooze site',
-			component: BelugasnoozeSite,
-			github: 'belugasnooze_vue',
-			link: {
-				href: 'https://www.belugasnooze.com',
-				tooltip: 'invite on request'
-			}
-		},
-		{
-			name: 'Beluga Snooze client',
-			component: BelugasnoozeClient,
-			github: 'belugasnooze_pi',
-			link: undefined
-		},
-		{
-			name: 'Mr Jack Wills',
-			github: 'mrjackwills_vue',
-			component: MrJackWills,
-			link: {
-				href: 'https://www.mrjackwills.com/?project=mrjackwills_vue',
-				tooltip: `You're already here`
-			}
+const projects: Array<TProject> = [
+	{
+		name: 'oxker',
+		github: 'oxker',
+		link: undefined,
+		component: Oxker,
+	},
+	{
+		name: 'staticPi site',
+		github: 'staticpi_vue',
+		component: StaticpiSite,
+		link: {
+			href: 'https://www.staticpi.com',
+			tooltip: 'invite on request'
 		}
-	];
-});
+	},
+	{
+		name: 'staticPi backend',
+		github: 'staticpi_backend',
+		component: StaticpiBackend,
+	},
+
+	{
+		name: 'adsbdb',
+		github: 'adsbdb',
+		component: Adsbdb,
+		link: {
+			href: 'https://www.adsbdb.com',
+			tooltip: 'live site'
+		}
+	},
+
+	{
+		name: 'Obliqoro',
+		github: 'obliqoro',
+		component: Obliqoro,
+		link: undefined
+	},
+	{
+		name: 'Leafcast site',
+		github: 'leafcast_vue',
+		component: LeafcastSite,
+		link: {
+			href: 'https://plants.mrjackwills.com',
+			tooltip: 'password on request'
+		}
+	},
+	{
+		name: 'Leafcast client',
+		github: 'leafcast_pi',
+		component: LeafcastClient,
+	},
+	{
+		name: 'Meal Pedant site',
+		github: 'mealpedant_vue',
+		component: MealpedantSite,
+		link: {
+			href: 'https://www.mealpedant.com',
+			tooltip: 'invite on request'
+		}
+	},
+	{
+		name: 'Meal Pedant API',
+		github: 'mealpedant_api',
+		component: MealpedantApi,
+	},
+	{
+		name: 'Beluga Snooze site',
+		component: BelugasnoozeSite,
+		github: 'belugasnooze_vue',
+		link: {
+			href: 'https://www.belugasnooze.com',
+			tooltip: 'invite on request'
+		}
+	},
+	{
+		name: 'Beluga Snooze client',
+		component: BelugasnoozeClient,
+		github: 'belugasnooze_pi',
+		link: undefined
+	},
+	{
+		name: 'Mr Jack Wills',
+		github: 'mrjackwills_vue',
+		component: MrJackWills,
+		link: {
+			href: 'https://www.mrjackwills.com/?project=mrjackwills_vue',
+			tooltip: `You're already here`
+		}
+	}
+];
 
 const image = computed((): string => {
 	return image_store.image;
