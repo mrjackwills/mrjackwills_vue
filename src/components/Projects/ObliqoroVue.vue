@@ -16,11 +16,11 @@
 <script setup lang="ts">
 import AHref from '@/components/AHref.vue';
 import CHref from '@/components/CHref.vue';
-import Jpg from '@/assets/jpg/obliqoro.jpg';
+import Png from '@/assets/png/obliqoro.png';
 import Webp from '@/assets/webp/obliqoro.webp';
 
 onMounted(() => {
-	imageModule().set_image(Jpg);
+	imageModule().set_image(Png);
 	imageModule().set_webp(Webp);
 });
 
