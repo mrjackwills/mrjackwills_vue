@@ -48,7 +48,7 @@
 
 			<v-row align='center' justify='space-around' no-gutters class=' my-4'>
 				<v-col cols='auto' class='ma-0 pa-0'>
-					Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Nginx, Linux, Vuetify, and more.
+					Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Linux, and more.
 				</v-col>
 			</v-row>
 
