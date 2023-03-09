@@ -26,7 +26,7 @@ const computed_href = computed((): string => {
 		return 'https://www.sqlite.org/index.html';
 	case 'tauri':
 		return 'https://www.tauri.app';
-	case 'Typescript':
+	case 'TypeScript':
 		return 'https://www.typescriptlang.org/';
 	case 'Vue':
 		return 'https://www.vuejs.org/';

@@ -7,7 +7,7 @@
 	<br>
 	Built using <CHref text='tauri' />
 	in <CHref text='Rust' /> and <CHref text='Vue' />,
-	with <CHref text='Typescript' />,
+	with <CHref text='TypeScript' />,
 	data stored using <CHref text='SQLite' />,
 	and styled with <CHref text='Vuetify' />.
 

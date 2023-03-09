@@ -3,7 +3,7 @@
 	<br>
 	<br>
 	Built in <CHref text='Vue' />,
-	with <CHref text='Typescript' />,
+	with <CHref text='TypeScript' />,
 	styled with <CHref  text='Vuetify' />,
 	and deployed via <CHref  text='Nginx' />.
 
