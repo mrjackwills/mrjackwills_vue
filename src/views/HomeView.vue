@@ -47,6 +47,7 @@
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
 								<v-tooltip
+									v-if='show_tooltip'
 									:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
 									:open-on-click='false'
 									:open-on-focus='false'
@@ -68,6 +69,7 @@
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
 								<v-tooltip
+									v-if='show_tooltip'
 									activator='parent'
 									:open-on-click='false'
 									:open-on-focus='false'
@@ -98,7 +100,7 @@
 
 <script setup lang="ts">
 import { mdiChevronLeft, mdiChevronRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
-import { useDisplay } from 'vuetify';
+// import { useDisplay } from 'vuetify';
 import type { TGithubRepos, TProject, u } from '@/types';
 
 import AHref from '@/components/AHref.vue';
@@ -129,12 +131,17 @@ const next_disabled = computed((): boolean => {
 	return project_index.value === projects.length -1;
 });
 
+/// Don't show tooltips when on android or ios if also on mobile view!
+const show_tooltip = computed((): boolean => {
+	return !(mobileModule().android_ios && mobile.value);
+});
+
 const previous_disabled = computed((): boolean => {
 	return project_index.value === 0;
 });
 
 const mobile = computed((): boolean => {
-	return useDisplay().mdAndDown.value;
+	return mobileModule().mobile;
 });
 
 const icon_size = computed((): string => {

@@ -43,6 +43,8 @@ onMounted(() => {
 		e.preventDefault();
 	});
 	mobileModule().set_mobile(mobile.value);
+	const platform = useDisplay().platform.value;
+	mobileModule().set_android_ios(platform.ios || platform.android);
 });
 
 onBeforeMount(() => {

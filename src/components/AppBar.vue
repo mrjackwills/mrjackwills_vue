@@ -30,6 +30,7 @@
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
 							<v-tooltip
+								v-if='show_tooltip'
 								:activator='`#nav_${index}`'
 								:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
 								:open-on-click='false'
@@ -78,6 +79,11 @@ const home = ():void => {
 	router.push({ path: route.path, query: undefined });
 
 };
+
+/// Don't show tooltips when on android or ios if also on mobile view!
+const show_tooltip = computed((): boolean => {
+	return !(mobileModule().android_ios && mobile.value);
+});
 
 const links = [
 	{
