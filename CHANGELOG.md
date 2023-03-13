@@ -14,7 +14,7 @@
 + mrjackwills image updated, [c92fc2db1178e0d9d8cde782c8b1f96ef6069c34]
 
 ### Reverts
-+ tempory devcontainer buildkit fix removed, [51efa94921a466c487846174e1282b2cfb72063c]
++ temporary devcontainer buildkit fix removed, [51efa94921a466c487846174e1282b2cfb72063c]
 
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.2'>v1.0.2</a>
 ### 2023-02-21
