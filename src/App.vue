@@ -36,6 +36,11 @@ const mobile = useDisplay().mdAndDown;
 watch(() => mobile.value, (i) => {
 	mobileModule().set_mobile(i);
 });
+const platform = useDisplay().platform;
+
+watch(() => platform.value, (i) => {
+	mobileModule().set_android_ios(i.ios || i.android);
+});
 
 onMounted(() => {
 	// Prevent Chrome 67 and earlier from automatically showing the prompt
