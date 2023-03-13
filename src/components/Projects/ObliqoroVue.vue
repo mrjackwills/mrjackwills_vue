@@ -7,7 +7,7 @@
 	<br>
 	Built using <CHref text='tauri' />
 	in <CHref text='Rust' /> and <CHref text='Vue' />,
-	with <CHref text='Typescript' />,
+	with <CHref text='TypeScript' />,
 	data stored using <CHref text='SQLite' />,
 	and styled with <CHref text='Vuetify' />.
 
@@ -16,11 +16,11 @@
 <script setup lang="ts">
 import AHref from '@/components/AHref.vue';
 import CHref from '@/components/CHref.vue';
-import Jpg from '@/assets/jpg/obliqoro.jpg';
+import Png from '@/assets/png/obliqoro.png';
 import Webp from '@/assets/webp/obliqoro.webp';
 
 onMounted(() => {
-	imageModule().set_image(Jpg);
+	imageModule().set_image(Png);
 	imageModule().set_webp(Webp);
 });
 

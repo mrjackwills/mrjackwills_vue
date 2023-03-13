@@ -42,7 +42,7 @@ export type TCommon =
 	'Rust' |
 	'SQLite' |
 	'tauri' |
-	'Typescript' |
+	'TypeScript' |
 	'Vue'|
 	'Vuetify';
 
@@ -59,12 +59,3 @@ export type TGithubRepos =
 'oxker'|
 'staticpi_backend'|
 'staticpi_vue'
-
-export enum Routes {
-	oxker ='oxker',
-	adsbdb ='adsbdb',
-	// oxker ='oxker',
-	// oxker ='oxker',
-	// oxker ='oxker',
-
-}

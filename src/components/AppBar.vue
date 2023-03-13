@@ -29,7 +29,14 @@
 					<AHref :href='item.href' :aria-label='item.tooltip' :id='`nav_${index}`'>
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
-							<v-tooltip v-if='!mobile' :activator='`#nav_${index}`' location='top center' :content-class='dark_mode?"tooltip_light":"tooltip_dark"'>
+							<v-tooltip
+								v-if='show_tooltip'
+								:activator='`#nav_${index}`'
+								:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
+								:open-on-click='false'
+								:open-on-focus='false'
+								location='top center'
+							>
 								<span>{{ item.tooltip }}</span>
 							</v-tooltip>
 						</template>
@@ -42,7 +49,7 @@
 
 			<v-row align='center' justify='space-around' no-gutters class=' my-4'>
 				<v-col cols='auto' class='ma-0 pa-0'>
-					Autodidactic digital dweller. Adept at Rust, Typescript, PostgreSQL, Redis, Docker, Vue, Nginx, Linux, Vuetify, and more.
+					Autodidactic digital dweller. Adept at Rust, TypeScript, PostgreSQL, Redis, Docker, Vue, Linux, and more.
 				</v-col>
 			</v-row>
 
@@ -72,6 +79,11 @@ const home = ():void => {
 	router.push({ path: route.path, query: undefined });
 
 };
+
+/// Don't show tooltips when on android or ios if also on mobile view!
+const show_tooltip = computed((): boolean => {
+	return !(mobileModule().android_ios && mobile.value);
+});
 
 const links = [
 	{
