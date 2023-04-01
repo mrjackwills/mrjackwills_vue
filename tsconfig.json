@@ -5,6 +5,7 @@
 	"target": "esnext",
 	"resolveJsonModule": true,
 	"compilerOptions": {
+	"ignoreDeprecations": "5.0",
 	"lib": ["esnext", "dom"],
 	  "experimentalDecorators": true,
 	  "baseUrl": ".",

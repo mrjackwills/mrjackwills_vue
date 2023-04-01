@@ -1,5 +1,5 @@
 <template>
-	<v-app class='ma-0 pa-0 unselectable fill-height' :class='bg'>
+	<v-app class='ma-0 pa-0 fill-height' :class='bg'>
 		<v-main>
 			<AppBar />
 			<RouterView  />
