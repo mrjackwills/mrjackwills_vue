@@ -1,3 +1,12 @@
+### Chores
++ dependencies updated, [2304d3898de9e8b2e65929cfd1aab298f37bb37b]
+
+### Features
++ oxker description & images updated, [61794bd3ebcdb2496a50c8072b5cf9744e33c02d]
+
+### Fixes
++ remove unselectable css, [b19bb3eb3fb4cf54e1da120e0312998caddbfd50]
+
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.3'>v1.0.3</a>
 ### 2023-03-13
 
