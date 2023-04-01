@@ -1,6 +1,7 @@
 <template>
-	oxker is a simple tui to view & control docker containers, using an asynchronous and multi-threaded architecture. It is published to <AHref :href='href_crates' text='crates.io' />
-	& <AHref :href='href_dockerhub' text='DockerHub' />. Using a <AHref :href='href_github_action' text='GitHub Action'/>, executables for Linux x86, armv6 & arm64, and Windows x86 platforms, are automatically built.
+	oxker is a simple tui to view & control docker containers, using an asynchronous and multi-threaded architecture. It is published to <AHref :href='href_crates' text='crates.io' />,
+	<AHref :href='href_dockerhub' text='DockerHub' />, and <AHref :href='href_ghcr' text='ghcr' />.
+	Using a <AHref :href='href_github_action' text='GitHub Action'/>, executables for Linux x86, armv6 & arm64, and Windows x86 platforms, are automatically built.
 	<br>
 	Inspired by <AHref :href='href_lazy_docker' text='Lazy Docker' />, but created with an aim to work even more proficiently  on low powered Raspberry Pi Zero computers.
 	<br>
@@ -18,6 +19,7 @@ const href_dockerhub = 'https://hub.docker.com/r/mrjackwills/oxker';
 const href_crates ='https://crates.io/crates/oxker';
 const href_github_action ='https://github.com/mrjackwills/oxker/blob/main/.github/workflows/create_release_and_build.yml';
 const href_lazy_docker = 'https://github.com/jesseduffield/lazydocker';
+const href_ghcr = 'https://ghcr.io/mrjackwills/oxker';
 
 onMounted(() => {
 	imageModule().set_image(Jpg);
