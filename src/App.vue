@@ -117,7 +117,4 @@ https://www.github.com/mrjackwills/mrjackwills_vue`;
 	color: white!important;
 }
 
-.v-application__wrap {
-  min-height: 100dvh !important;
-}
 </style>

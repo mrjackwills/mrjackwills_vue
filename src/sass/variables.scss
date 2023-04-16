@@ -22,6 +22,6 @@ html, .v-snackbar__content, [class*='text-']{
 }
 
 // This is a, hopefully, temporary fix for a snackbar issue
-div.v-snackbar:not(.v-snackbar--absolute) {
-	height: 100% !important;
-}
+// div.v-snackbar:not(.v-snackbar--absolute) {
+	// height: 100% !important;
+// }
