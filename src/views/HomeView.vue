@@ -246,6 +246,7 @@ watch(() => current_project_name.value, (i) => {
 	}
 });
 
+// The order here is the order that they appear when navigating through them all
 const projects: Array<TProject> = [
 	{
 		name: 'oxker',
@@ -263,7 +264,14 @@ const projects: Array<TProject> = [
 			tooltip: 'live site'
 		}
 	},
-
+	
+	{
+		name: 'Obliqoro',
+		github: 'obliqoro',
+		component: Obliqoro,
+		link: undefined
+	},
+	
 	{
 		name: 'staticPi site',
 		github: 'staticpi_vue',
@@ -273,18 +281,13 @@ const projects: Array<TProject> = [
 			tooltip: 'invite on request'
 		}
 	},
+
 	{
 		name: 'staticPi backend',
 		github: 'staticpi_backend',
 		component: StaticpiBackend,
 	},
 
-	{
-		name: 'Obliqoro',
-		github: 'obliqoro',
-		component: Obliqoro,
-		link: undefined
-	},
 	{
 		name: 'Leafcast site',
 		github: 'leafcast_vue',
@@ -294,11 +297,13 @@ const projects: Array<TProject> = [
 			tooltip: 'password on request'
 		}
 	},
+
 	{
 		name: 'Leafcast client',
 		github: 'leafcast_pi',
 		component: LeafcastClient,
 	},
+
 	{
 		name: 'Meal Pedant site',
 		github: 'mealpedant_vue',
@@ -308,11 +313,13 @@ const projects: Array<TProject> = [
 			tooltip: 'invite on request'
 		}
 	},
+
 	{
 		name: 'Meal Pedant API',
 		github: 'mealpedant_api',
 		component: MealpedantApi,
 	},
+
 	{
 		name: 'Beluga Snooze site',
 		component: BelugasnoozeSite,
@@ -322,12 +329,14 @@ const projects: Array<TProject> = [
 			tooltip: 'invite on request'
 		}
 	},
+
 	{
 		name: 'Beluga Snooze client',
 		component: BelugasnoozeClient,
 		github: 'belugasnooze_pi',
 		link: undefined
 	},
+
 	{
 		name: 'Mr Jack Wills',
 		github: 'mrjackwills_vue',
