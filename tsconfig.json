@@ -1,24 +1,27 @@
 {
-	"extends": "@vue/tsconfig/tsconfig.web.json",
-	"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-	"module": "ESNext",
-	"target": "esnext",
-	"resolveJsonModule": true,
 	"compilerOptions": {
-	"ignoreDeprecations": "5.0",
-	"lib": ["esnext", "dom"],
-	  "experimentalDecorators": true,
-	  "baseUrl": ".",
+		"baseUrl": ".",
+		"target": "ESNext",
+	  "useDefineForClassFields": true,
+	  "module": "ESNext",
+	  "moduleResolution": "Node",
+	  "strict": true,
+	  "jsx": "preserve",
+	  "resolveJsonModule": true,
+	  "isolatedModules": true,
+	  "esModuleInterop": true,
+	  "lib": ["ESNext", "DOM"],
+	  "skipLibCheck": true,
+	  "noEmit": true,
 	  "paths": {
-		"@/*": ["./src/*"]
-	  }
+		  "@/*": [
+			  "src/*"
+			]
+		}
 	},
-	
-  
-	"references": [
-	  {
-		"path": "./tsconfig.config.json"
-	  }
-	]
+	"types": ["node", "vite-plugin-pwa/client", "vuetify", ],
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"references": [{ "path": "./tsconfig.config.json" }],
+	"exclude": ["node_modules"]
   }
   
