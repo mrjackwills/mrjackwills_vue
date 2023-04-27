@@ -21,7 +21,8 @@ const pwaOptions: Partial<VitePWAOptions> = {
 	registerType: 'prompt',
 	includeAssets: [ 'favicon.ico' ],
 	workbox: {
-		cleanupOutdatedCaches: true
+		cleanupOutdatedCaches: true,
+		navigateFallback: undefined
 	},
 	manifest: {
 		display: 'standalone',
