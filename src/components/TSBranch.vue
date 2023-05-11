@@ -12,10 +12,6 @@ const computed_href = computed((): string => {
 	return `https://github.com/mrjackwills/${props.repo}/tree/typescript`;
 });
 
-const props = defineProps({
-	repo: {
-		type: String as PropType<TGithubRepos>,
-		required: true
-	}
-});
+const props = defineProps<{repo: TGithubRepos}>();
+
 </script>
