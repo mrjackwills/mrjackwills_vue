@@ -108,6 +108,7 @@ import AHref from '@/components/AHref.vue';
 import Adsbdb from '@/components/Projects/AdsbdbVue.vue';
 import BelugasnoozeClient from '@/components/Projects/BelugasnoozeClient.vue';
 import BelugasnoozeSite from '@/components/Projects/BelugasnoozeSite.vue';
+import Havn from '@/components/Projects/HavnVue.vue';
 import LeafcastClient from '@/components/Projects/LeafcastPi.vue';
 import LeafcastSite from '@/components/Projects/LeafcastSite.vue';
 import MealpedantApi from '@/components/Projects/MealpedantApi.vue';
@@ -263,6 +264,13 @@ const projects: Array<TProject> = [
 			href: 'https://www.adsbdb.com',
 			tooltip: 'live site'
 		}
+	},
+
+	{
+		name: 'havn',
+		github: 'havn',
+		component: Havn,
+		link: undefined
 	},
 	
 	{
