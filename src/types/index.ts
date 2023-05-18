@@ -50,6 +50,7 @@ export type TGithubRepos =
 'adsbdb'|
 'belugasnooze_pi'|
 'belugasnooze_vue'|
+'havn'|
 'leafcast_pi'|
 'leafcast_vue'|
 'mealpedant_api'|

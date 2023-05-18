@@ -1,14 +1,10 @@
 <template>
-	<AHref :href='computed_href' :text='computed_text' />
+	<AHref :href='computed_href' :text='text' />
 </template>
 
 <script setup lang="ts">
 import AHref from '@/components/AHref.vue';
 import type { TCommon } from '@/types';
-
-const computed_text = computed((): string => {
-	return props.text;
-});
 
 const computed_href = computed((): string => {
 	switch (props.text) {
@@ -35,11 +31,6 @@ const computed_href = computed((): string => {
 	}
 });
 
-const props = defineProps({
-	text: {
-		type: String as PropType<TCommon>,
-		required: true
-	}
-});
+const props = defineProps<{text: TCommon}>();
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-	The Meal Pedant API is an asynchronous, multi-threaded, CRUD application. With features including, but not limited to, password hashing with Argon2;
+	The Meal Pedant API is an asynchronous, multithreaded, CRUD application. With features including, but not limited to, password hashing with Argon2;
 	<AHref href='https://haveibeenpwned.com/' text='HIBP' />-powered weak password detection; two-factor authentication with backup codes; secure cookie based user sessions using Redis;
 	automated email templating and sending; rate limiting; image uploading, watermarking, and compression.
 	<Companion repo='mealpedant_vue' />.

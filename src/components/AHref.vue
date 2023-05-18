@@ -8,14 +8,5 @@ const text_color = computed((): string => {
 	return darkmodeModule().text_color;
 });
 
-defineProps({
-	href: {
-		type: String,
-		required: true
-	},
-	text: {
-		type: String,
-		required: false
-	}
-});
+defineProps<{href: string, text?: string}>();
 </script>

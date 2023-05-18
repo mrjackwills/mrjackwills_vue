@@ -14,7 +14,8 @@
 	and <a href='https://vuetifyjs.com/en/' target='_blank' rel='noopener noreferrer'>Vuetify</a>.
 </p>
 
-<p align="center">
+<p align="">
+	My personal portfolio website, showcasing a selection of my projects.
 	<ul>
 		<li><strong>A+</strong> <a href='https://www.ssllabs.com/ssltest/analyze.html?d=www.mrjackwills.com' target='_blank' rel='noopener noreferrer'>ssllabs</a> rating</li>
 		<li><strong>A+</strong> <a href='https://securityheaders.com/?q=https%3A%2F%2Fwww.mrjackwills.com%2F&followRedirects=on' target='_blank' rel='noopener noreferrer'>security headers</a> rating</li>

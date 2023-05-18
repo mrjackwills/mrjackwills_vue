@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ModuleName, type TGithubRepos, type u } from '@/types';
 
-export const currentProjectStore = defineStore(ModuleName.CurrentProject, {
+export const currentProjectModule = defineStore(ModuleName.CurrentProject, {
 
 	state: () => ({
 		current_project: undefined as u<TGithubRepos>

@@ -16,11 +16,6 @@ const computed_text = computed((): string => {
 	return props.repo.endsWith('_vue') ? 'backend' : 'frontend';
 });
 
-const props = defineProps({
-	repo: {
-		type: String as PropType<TGithubRepos>,
-		required: true
-	}
-});
+const props = defineProps<{repo: TGithubRepos}>();
 
 </script>

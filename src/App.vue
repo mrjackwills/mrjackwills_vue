@@ -1,5 +1,5 @@
 <template>
-	<v-app class='ma-0 pa-0 unselectable fill-height' :class='bg'>
+	<v-app class='ma-0 pa-0 fill-height' :class='bg'>
 		<v-main>
 			<AppBar />
 			<RouterView  />
@@ -117,7 +117,4 @@ https://www.github.com/mrjackwills/mrjackwills_vue`;
 	color: white!important;
 }
 
-.v-application__wrap {
-  min-height: 100dvh !important;
-}
 </style>

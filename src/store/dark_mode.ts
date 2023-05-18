@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ModuleName } from '@/types';
 
-export const darkmodeStore = defineStore(ModuleName.DarkMode, {
+export const darkmodeModule = defineStore(ModuleName.DarkMode, {
 
 	state: () => ({
 		darkmode: false,

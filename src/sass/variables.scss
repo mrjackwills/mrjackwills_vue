@@ -22,14 +22,6 @@ html, .v-snackbar__content, [class*='text-']{
 }
 
 // This is a, hopefully, temporary fix for a snackbar issue
-div.v-snackbar:not(.v-snackbar--absolute) {
-	height: 100% !important;
-}
-
-.unselectable {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-}
+// div.v-snackbar:not(.v-snackbar--absolute) {
+	// height: 100% !important;
+// }

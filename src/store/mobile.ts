@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ModuleName } from '@/types';
 
-export const mobileStore = defineStore(ModuleName.Mobile, {
+export const mobileModule = defineStore(ModuleName.Mobile, {
 
 	state: () => ({
 		mobile: false,

@@ -21,6 +21,8 @@ const computed_text = computed((): string => {
 		return `Beluga Snooze client`;
 	case 'belugasnooze_vue':
 		return `Beluga Snooze site`;
+	case 'havn':
+		return `havn`;
 	case 'leafcast_pi':
 		return `Leafcast client`;
 	case 'leafcast_vue':
@@ -41,11 +43,7 @@ const computed_text = computed((): string => {
 		return `staticPi site`;
 	}
 });
-const props = defineProps({
-	repo: {
-		type: String as PropType<TGithubRepos>,
-		required: true
-	}
-});
+
+const props = defineProps<{repo: TGithubRepos}>();
 
 </script>
