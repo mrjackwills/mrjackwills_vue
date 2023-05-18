@@ -1,12 +1,13 @@
 ### Chores
-+ dependencies updated, [2304d3898de9e8b2e65929cfd1aab298f37bb37b], [df0f2d0f025e68f114bdac083992042df120ede2]
++ dependencies updated, [2304d3898de9e8b2e65929cfd1aab298f37bb37b], [df0f2d0f025e68f114bdac083992042df120ede2], [fce5cf249f77d10dbc00cec0027d6bb67c578cd2]
 + devcontainer plugin added, [2ca369a02442c0594280e02d8a8f8bcbd2b886f6]
 
 ### Docs
 + `README.md` updated, [ee276f966ac54a85e504a6405a87d207b47a8124]
 
 ### Features
-+ oxker description & images updated, [61794bd3ebcdb2496a50c8072b5cf9744e33c02d]
++ `oxker` description & images updated, [61794bd3ebcdb2496a50c8072b5cf9744e33c02d]
++ `havn` project added, [6e942a161f6812137e66d7ea054ac2b4a65aafb5], [d527441a9709e71938ddb6da7e78946049533c6f]
 
 ### Fixes
 + remove unselectable css, [b19bb3eb3fb4cf54e1da120e0312998caddbfd50]
