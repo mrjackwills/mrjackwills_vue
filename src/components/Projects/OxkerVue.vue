@@ -1,5 +1,5 @@
 <template>
-	oxker is a simple tui to view & control docker containers, using an asynchronous and multi-threaded architecture. It is published to <AHref :href='href_crates' text='crates.io' />,
+	oxker is a simple tui to view & control docker containers, using an asynchronous and multithreaded architecture. It is published to <AHref :href='href_crates' text='crates.io' />,
 	<AHref :href='href_dockerhub' text='DockerHub' />, and <AHref :href='href_ghcr' text='ghcr' />.
 	Using a <AHref :href='href_github_action' text='GitHub Action'/>, executables for Linux x86, armv6 & arm64, and Windows x86 platforms, are automatically built.
 	<br>

@@ -1,5 +1,5 @@
 <template>
-	The staticPi backend is an asynchronous, multi-threaded, CRUD application, token server, and WebSocket message forwarder.
+	The staticPi backend is an asynchronous, multithreaded, CRUD application, token server, and WebSocket message forwarder.
 	It enables users of the staticPi service to;
 	<ul class='ml-10 mt-4'>
 		<li>
