@@ -1,21 +1,23 @@
-### 2023-03-13
+### 2023-05-18
 
 ### Chores
-+ dependencies updated, [3afdf861d6c6ad0162a53f91f541fc34907c6087], [e387473f7d6090c5dafe720b719c8e5523fe49fe], [71e9d4499f3ead7de5f3ca0c76770fd238bd26d7], [27a9353f9245aaabe9e53a633f30680c4740bf6b], [697602c029313a23bdde510257f8ac60d7653126]
++ dependencies updated, [2304d3898de9e8b2e65929cfd1aab298f37bb37b], [df0f2d0f025e68f114bdac083992042df120ede2], [fce5cf249f77d10dbc00cec0027d6bb67c578cd2]
++ devcontainer plugin added, [2ca369a02442c0594280e02d8a8f8bcbd2b886f6]
+
+### Docs
++ `README.md` updated, [ee276f966ac54a85e504a6405a87d207b47a8124]
 
 ### Features
-+ obliqoro image use png & transparency, [a6f26b18121a761919d032fd7adaf3f8c0ca0fd6]
-+ Array\<projects> no longer computed, [b09ec7aa2b801f071b9f80f075fb03671ad9c218]
-+ set android_ios in mobileModule, display tooltip based on this, [4ff895f6340b3f47be32297f6c4428a88e272b6a]
++ `oxker` description & images updated, [61794bd3ebcdb2496a50c8072b5cf9744e33c02d]
++ `havn` project added, [6e942a161f6812137e66d7ea054ac2b4a65aafb5], [d527441a9709e71938ddb6da7e78946049533c6f]
 
 ### Fixes
-+ Typescript > TypeScript, [7eb5f83873e1d75903c9865793011c02cc9fde8a], [b275c9678d4e1ddc2a3b882585f40dcd5015711b]
-+ AppBar description updated, [03d709e2b2e21509b85a67057280d3fe0b31f1a4]
-+ mealpedant description update, [986d372a368beadc238efd3a49952143c792c92a]
-+ companion `the` computed, [a55d91f6b04e69a31f887d02793fffc38e133652]
-+ mrjackwills image updated, [c92fc2db1178e0d9d8cde782c8b1f96ef6069c34]
-
-### Reverts
-+ temporary devcontainer buildkit fix removed, [51efa94921a466c487846174e1282b2cfb72063c]
++ remove unselectable css, [b19bb3eb3fb4cf54e1da120e0312998caddbfd50]
++ env.d.ts shenanigans, [c35449d3fcab3929c3ed7e108062d2920d78b377]
++ pwa navigate fallback, [b016ed2f3440616f09cc406abd2df4487f85953a]
++ header adept sentence re-ordered, [32b5c6dd723fc4ffe21c49198a16c5211fa56568]
++ height fix removed, [80d7bc913d5b9f300c46d402fd138b37298a8d19]
++ Obliqoro description, and order, [f4e4c4e9f94417b7700406f6b13d1d8300bf3fca]
++ oxker screenshot updated, [74d8a1b6fcc671884ce7152323da52e042ed99b3]
 
 see <a href='https://github.com/mrjackwills/mrjackwills_vue/blob/main/CHANGELOG.md'>CHANGELOG.md</a> for more details
