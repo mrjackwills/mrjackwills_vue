@@ -7,5 +7,4 @@
 </template>
 
 <script setup lang="ts">
-import CHref from '@/components/CHref.vue';
 </script>

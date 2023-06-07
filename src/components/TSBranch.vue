@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
 import type { TGithubRepos } from '@/types';
 
 const computed_href = computed((): string => {

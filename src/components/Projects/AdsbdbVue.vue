@@ -17,10 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
-import BackendApi from '@/components/BackendApi.vue';
 import Png from '@/assets/png/adsbdb.png';
-import TSBranch from '@/components/TSBranch.vue';
 import Webp from '@/assets/webp/adsbdb.webp';
 
 onMounted(() => {

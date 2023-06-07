@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import IHref from '@/components/IHref.vue';
 import type { TGithubRepos } from '@/types';
 
 const the = computed((): string => {

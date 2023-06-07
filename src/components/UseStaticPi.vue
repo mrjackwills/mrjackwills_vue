@@ -3,5 +3,4 @@
 </template>
 
 <script setup lang="ts">
-import IHref from '@/components/IHref.vue';
 </script>
