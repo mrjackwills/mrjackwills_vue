@@ -1,11 +1,14 @@
+# <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.5'>v1.0.5</a>
+### 2023-06-07
+
 ### Chores
-+ dependencies updated, [2ec56ce05636686cbe0e505e5f2492e10850615b], [2921f9e6e196a6014494330c0a7d26a022c74165]
++ dependencies updated, [2ec56ce0](https://github.com/mrjackwills/mrjackwills_vue/commit/2ec56ce05636686cbe0e505e5f2492e10850615b), [2921f9e6](https://github.com/mrjackwills/mrjackwills_vue/commit/2921f9e6e196a6014494330c0a7d26a022c74165)
 
 ### Features
-+ use unplugin-vue-components autoimport, [160eb1ee877a301477fe5d3fb283106b3c5860de]
++ use unplugin-vue-components autoimport, [160eb1ee](https://github.com/mrjackwills/mrjackwills_vue/commit/160eb1ee877a301477fe5d3fb283106b3c5860de)
 
 ### Fixes
-+ github workflow fix, [a4cf6ff70886d712e032c44643b225350252df4a]
++ github workflow fix, [a4cf6ff7](https://github.com/mrjackwills/mrjackwills_vue/commit/a4cf6ff70886d712e032c44643b225350252df4a)
 
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.4'>v1.0.4</a>
 ### 2023-05-18
