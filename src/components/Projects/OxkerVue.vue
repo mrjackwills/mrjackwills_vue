@@ -10,8 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
-import CHref from '@/components/CHref.vue';
 import Jpg from '@/assets/jpg/oxker.jpg';
 import Webp from '@/assets/webp/oxker.webp';
 

@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
-import CHref from '@/components/CHref.vue';
 import Png from '@/assets/png/obliqoro.png';
 import Webp from '@/assets/webp/obliqoro.webp';
 

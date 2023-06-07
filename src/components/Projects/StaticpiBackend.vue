@@ -16,7 +16,7 @@
 	Its other features include, but are not limited to, password hashing with Argon2,
 	<AHref href='https://haveibeenpwned.com/' text='HIBP' />-powered weak password detection, two-factor authentication with backup codes, secure cookie based user sessions using Redis,
 	automated email templating, rate limiting, multiple User Level authorization controls.
-	<Companion repo='staticpi_vue' />, and is used by the
+	<CompanionVue repo='staticpi_vue' />, and is used by the
 	<IHref repo='leafcast_vue' />,
 	the <IHref repo='leafcast_pi' />,
 	the <IHref repo='belugasnooze_vue' />,
@@ -26,10 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
-import BackendApi from '@/components/BackendApi.vue';
-import Companion from '@/components/CompanionVue.vue';
-import IHref from '@/components/IHref.vue';
 import Png from '@/assets/png/adsbdb.png';
 import Webp from '@/assets/webp/staticpi_backend.webp';
 

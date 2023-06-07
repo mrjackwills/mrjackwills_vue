@@ -16,9 +16,6 @@ import { useDark } from '@vueuse/core';
 import { useDisplay } from 'vuetify';
 import { useHead } from '@vueuse/head';
 import { useRegisterSW } from 'virtual:pwa-register/vue';
-import AppBar from '@/components/AppBar.vue';
-import AppFooter from '@/components/AppFooter.vue';
-import AppSnackBar from '@/components/SnackBar.vue';
 
 const { updateServiceWorker } = useRegisterSW();
 

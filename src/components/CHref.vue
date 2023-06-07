@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
 import type { TCommon } from '@/types';
 
 const computed_href = computed((): string => {

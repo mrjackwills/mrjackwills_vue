@@ -60,8 +60,6 @@
 
 <script setup lang="ts">
 import { mdiEmail, mdiGithub, mdiLightbulbNight, mdiTwitter, } from '@mdi/js';
-import AHref from '@/components/AHref.vue';
-import AppDivider from '@/components/AppDivider.vue';
 
 const mobile = computed((): boolean => {
 	return mobileModule().mobile;

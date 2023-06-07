@@ -25,13 +25,11 @@
 	<br>
 	The site also enables Admin Users to perform a variety of administrative tasks, including killing websocket connections, de-activating devices, examine and remove rate-limits,
 	viewing any contact messages sent, and much more.
-	<Companion repo='staticpi_backend' />.
+	<CompanionVue repo='staticpi_backend' />.
 	<FrontendVue />
 </template>
 
 <script setup lang="ts">
-import Companion from '@/components/CompanionVue.vue';
-import FrontendVue from '@/components/FrontendVue.vue';
 import Jpg from '@/assets/jpg/staticpi_vue.jpg';
 import Webp from '@/assets/webp/staticpi_vue.webp';
 

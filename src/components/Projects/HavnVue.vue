@@ -1,5 +1,5 @@
 <template>
-	havn is a fast configurable port scanner with reasonable defaults. It is lightweight, configurable, and uses asynchronous multithreaded requests to deliver fast and reliable results.
+	havn is a fast configurable port scanner with reasonable defaults. It is lightweight, configurable, and uses asynchronous multithreaded requests to deliver rapid reliable results.
 	It is published to <AHref :href='href_crates' text='crates.io' />,
 	<AHref :href='href_dockerhub' text='DockerHub' />, and <AHref :href='href_ghcr' text='ghcr' />.
 	<br>
@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import AHref from '@/components/AHref.vue';
-import CHref from '@/components/CHref.vue';
 import Gif from '@/assets/gif/havn.gif';
 import Webp from '@/assets/webp/havn.webp';
 
