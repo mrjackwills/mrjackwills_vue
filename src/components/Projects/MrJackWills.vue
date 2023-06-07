@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import CHref from '@/components/CHref.vue';
 import DarkJpg from '@/assets/jpg/mrjackwills_dark_desktop.jpg';
 import DarkWebp from '@/assets/webp/mrjackwills_dark_desktop.webp';
 import LightJpg from '@/assets/jpg/mrjackwills_light_desktop.jpg';
