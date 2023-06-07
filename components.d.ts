@@ -30,7 +30,6 @@ declare module 'vue' {
     OxkerVue: typeof import('./src/components/Projects/OxkerVue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SnackBar: typeof import('./src/components/SnackBar.vue')['default']
     StaticpiBackend: typeof import('./src/components/Projects/StaticpiBackend.vue')['default']
     StaticpiVue: typeof import('./src/components/Projects/StaticpiVue.vue')['default']
     TSBranch: typeof import('./src/components/TSBranch.vue')['default']
