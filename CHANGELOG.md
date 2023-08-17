@@ -1,3 +1,10 @@
+### Chores
++ dependencies updated, [47be86c6084c59c2b71a4a8d850eb3bfae435ad5]
+
+### Fixes
++ project arrow icon changed, [f824137579a50961d774b9f74aecd174989b2620]
+
+
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.6'>v1.0.6</a>
 ### 2023-07-29
 
