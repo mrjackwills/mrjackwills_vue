@@ -31,11 +31,11 @@
 					</v-col>
 
 					<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
-						<v-btn :disabled='previous_disabled' variant='outlined' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronLeft' />
+						<v-btn class='ma-0 pa-0' :disabled='previous_disabled' variant='text' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronDoubleLeft' />
 					</v-col>
 						
 					<v-col cols='auto' class='ma-0 pa-0' order='3' >
-						<v-btn :disabled='next_disabled' variant='outlined' @click='next' :size='icon_size' :color='color' :icon='mdiChevronRight' />
+						<v-btn class='ma-0 pa-0' :disabled='next_disabled' @click='next' variant='text' :size='icon_size' :color='color' :icon='mdiChevronDoubleRight' />
 					</v-col>
 				</v-row>
 
@@ -99,8 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiChevronLeft, mdiChevronRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
-// import { useDisplay } from 'vuetify';
+import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
 import type { TGithubRepos, TProject, u } from '@/types';
 
 import AHref from '@/components/AHref.vue';
@@ -146,7 +145,7 @@ const mobile = computed((): boolean => {
 });
 
 const icon_size = computed((): string => {
-	return mobile.value ? 'small' : 'large';
+	return mobile.value ? 'large' : 'x-large';
 });
 
 const dark_mode = computed({
