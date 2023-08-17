@@ -31,11 +31,11 @@
 					</v-col>
 
 					<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
-						<v-btn class='ma-0 pa-0' :disabled='previous_disabled' variant='text' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronDoubleLeft' />
+						<v-btn class='' :disabled='previous_disabled' variant='text' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronDoubleLeft' />
 					</v-col>
 						
 					<v-col cols='auto' class='ma-0 pa-0' order='3' >
-						<v-btn class='ma-0 pa-0' :disabled='next_disabled' @click='next' variant='text' :size='icon_size' :color='color' :icon='mdiChevronDoubleRight' />
+						<v-btn class='' :disabled='next_disabled' @click='next' variant='text' :size='icon_size' :color='color' :icon='mdiChevronDoubleRight' />
 					</v-col>
 				</v-row>
 
@@ -145,7 +145,7 @@ const mobile = computed((): boolean => {
 });
 
 const icon_size = computed((): string => {
-	return mobile.value ? 'large' : 'x-large';
+	return mobile.value ? 'small' : 'x-large';
 });
 
 const dark_mode = computed({
