@@ -16,7 +16,7 @@
 					
 				<v-row justify='space-between' align='center' class='ma-0 pa-0' >
 						
-					<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
+					<v-col cols='12' lg='9' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
 						<v-img
 							:class='mobile?"":"mt-1"'
 							:src='image'
@@ -367,7 +367,7 @@ const webp = computed((): string => {
 
 <style>
 .max-img{
-	max-height: 33dvh!important;
+	max-height: 35dvh!important;
 	min-height: 20dvh!important;
 }
 
