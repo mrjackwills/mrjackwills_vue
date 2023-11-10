@@ -3,11 +3,8 @@
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
-			<v-container class='card_height ma-a pa-0'  v-touch='{
-				left: () => next(),
-				right: () => previous()
-			}'>
-					
+			<v-container class='card_height ma-a pa-0' ref='swipe'>
+				
 				<v-row justify='center' align='center' class='ma-0 pa-0 ' >
 					<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
 						{{ current_project.name }}
@@ -117,6 +114,19 @@ import Obliqoro from '@/components/Projects/ObliqoroVue.vue';
 import Oxker from '@/components/Projects/OxkerVue.vue';
 import StaticpiBackend from '@/components/Projects/StaticpiBackend.vue';
 import StaticpiSite from '@/components/Projects/StaticpiVue.vue';
+import { useSwipe } from '@vueuse/core';
+
+const swipe = ref<HTMLElement | null>(null);
+const { isSwiping, direction } = useSwipe(swipe);
+watch(isSwiping, (i) => {
+	if (i) {
+		if (direction.value === 'right') {
+			previous();
+		} else if (direction.value === 'left') {
+			next();
+		}
+	}
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -240,7 +250,7 @@ const current_project_name = computed((): u<TGithubRepos> => {
 	return currentProjectModule().current_project;
 });
 
-watch(() => current_project_name.value, (i) => {
+watch(current_project_name, (i) => {
 	if (i) {
 		set_index(i);
 	}
