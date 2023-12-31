@@ -7,6 +7,8 @@
 <script setup lang="ts">
 import type { TGithubRepos } from '@/types';
 
+const props = defineProps<{repo: TGithubRepos}>();
+
 const the = computed((): string => {
 	return props.repo == 'staticpi_backend' ? `` : `the `;
 });
@@ -14,7 +16,5 @@ const the = computed((): string => {
 const computed_text = computed((): string => {
 	return props.repo.endsWith('_vue') ? 'backend' : 'frontend';
 });
-
-const props = defineProps<{repo: TGithubRepos}>();
 
 </script>

@@ -7,10 +7,10 @@
 <script setup lang="ts">
 import type { TGithubRepos } from '@/types';
 
+const props = defineProps<{repo: TGithubRepos}>();
+
 const computed_href = computed((): string => {
 	return `https://github.com/mrjackwills/${props.repo}/tree/typescript`;
 });
-
-const props = defineProps<{repo: TGithubRepos}>();
 
 </script>

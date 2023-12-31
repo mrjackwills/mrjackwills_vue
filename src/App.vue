@@ -30,12 +30,12 @@ if ('serviceWorker' in navigator) {
 
 const mobile = useDisplay().mdAndDown;
 
-watch(() => mobile.value, (i) => {
+watch(mobile, (i) => {
 	mobileModule().set_mobile(i);
 });
 const platform = useDisplay().platform;
 
-watch(() => platform.value, (i) => {
+watch(platform, (i) => {
 	mobileModule().set_android_ios(i.ios || i.android);
 });
 
