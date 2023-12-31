@@ -6,7 +6,7 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": { 
-			"VARIANT": "16"
+			"VARIANT": "20"
 		}
 	},
 
@@ -26,9 +26,11 @@
 				"bungcip.better-toml",
 				"christian-kohler.path-intellisense",
 				"dbaeumer.vscode-eslint",
+				"foxundermoon.shell-format",
 				"meganrogge.template-string-converter",
 				"mutantdino.resourcemonitor",
 				"timonwong.shellcheck",
+				"redhat.vscode-yaml",
 				"vue.volar",
 				"vue.vscode-typescript-vue-plugin",
 				"wix.vscode-import-cost",
