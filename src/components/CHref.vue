@@ -5,6 +5,8 @@
 <script setup lang="ts">
 import type { TCommon } from '@/types';
 
+const props = defineProps<{text: TCommon}>();
+
 const computed_href = computed((): string => {
 	switch (props.text) {
 	case 'Docker':
@@ -29,7 +31,5 @@ const computed_href = computed((): string => {
 		return 'https://www.vuetifyjs.com/';
 	}
 });
-
-const props = defineProps<{text: TCommon}>();
 
 </script>

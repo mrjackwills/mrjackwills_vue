@@ -1,2 +1,2 @@
-*.md eol=lf
-*.sh eol=lf
+# Set consistent line endings for all text files
+* text=auto

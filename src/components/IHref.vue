@@ -5,6 +5,8 @@
 <script setup lang="ts">
 import type { TGithubRepos } from '@/types';
 
+const props = defineProps<{repo: TGithubRepos}>();
+
 const text_color = computed((): string => {
 	return darkmodeModule().text_color;
 });
@@ -43,7 +45,5 @@ const computed_text = computed((): string => {
 		return `staticPi site`;
 	}
 });
-
-const props = defineProps<{repo: TGithubRepos}>();
 
 </script>

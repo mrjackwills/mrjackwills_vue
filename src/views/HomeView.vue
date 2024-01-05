@@ -3,11 +3,8 @@
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
-			<v-container class='card_height ma-a pa-0'  v-touch='{
-				left: () => next(),
-				right: () => previous()
-			}'>
-					
+			<v-container class='card_height ma-a pa-0' ref='swipe'>
+				
 				<v-row justify='center' align='center' class='ma-0 pa-0 ' >
 					<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
 						{{ current_project.name }}
@@ -16,7 +13,7 @@
 					
 				<v-row justify='space-between' align='center' class='ma-0 pa-0' >
 						
-					<v-col cols='12' lg='6' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
+					<v-col cols='12' lg='9' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
 						<v-img
 							:class='mobile?"":"mt-1"'
 							:src='image'
@@ -31,11 +28,11 @@
 					</v-col>
 
 					<v-col cols='auto' class='ma-0 pa-0' :order='mobile?"2":"1"'>
-						<v-btn :disabled='previous_disabled' variant='outlined' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronLeft' />
+						<v-btn class='' :disabled='previous_disabled' variant='text' :size='icon_size' :color='color' @click='previous' :icon='mdiChevronDoubleLeft' />
 					</v-col>
 						
 					<v-col cols='auto' class='ma-0 pa-0' order='3' >
-						<v-btn :disabled='next_disabled' variant='outlined' @click='next' :size='icon_size' :color='color' :icon='mdiChevronRight' />
+						<v-btn class='' :disabled='next_disabled' @click='next' variant='text' :size='icon_size' :color='color' :icon='mdiChevronDoubleRight' />
 					</v-col>
 				</v-row>
 
@@ -99,8 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiChevronLeft, mdiChevronRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
-// import { useDisplay } from 'vuetify';
+import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiFileCode, mdiOpenInNew, } from '@mdi/js';
 import type { TGithubRepos, TProject, u } from '@/types';
 
 import AHref from '@/components/AHref.vue';
@@ -118,6 +114,19 @@ import Obliqoro from '@/components/Projects/ObliqoroVue.vue';
 import Oxker from '@/components/Projects/OxkerVue.vue';
 import StaticpiBackend from '@/components/Projects/StaticpiBackend.vue';
 import StaticpiSite from '@/components/Projects/StaticpiVue.vue';
+import { useSwipe } from '@vueuse/core';
+
+const swipe = ref<HTMLElement | null>(null);
+const { isSwiping, direction } = useSwipe(swipe);
+watch(isSwiping, (i) => {
+	if (i) {
+		if (direction.value === 'right') {
+			previous();
+		} else if (direction.value === 'left') {
+			next();
+		}
+	}
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -146,7 +155,7 @@ const mobile = computed((): boolean => {
 });
 
 const icon_size = computed((): string => {
-	return mobile.value ? 'small' : 'large';
+	return mobile.value ? 'small' : 'x-large';
 });
 
 const dark_mode = computed({
@@ -241,7 +250,7 @@ const current_project_name = computed((): u<TGithubRepos> => {
 	return currentProjectModule().current_project;
 });
 
-watch(() => current_project_name.value, (i) => {
+watch(current_project_name, (i) => {
 	if (i) {
 		set_index(i);
 	}
@@ -368,7 +377,7 @@ const webp = computed((): string => {
 
 <style>
 .max-img{
-	max-height: 33dvh!important;
+	max-height: 35dvh!important;
 	min-height: 20dvh!important;
 }
 

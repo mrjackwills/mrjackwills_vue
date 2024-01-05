@@ -55,11 +55,11 @@ const jpg = computed((): string => {
 	}
 });
 
-watch(() => mobile.value, (_) => {
+watch(mobile, (_) => {
 	update_images();
 });
 
-watch(() => darkmode.value, async (_) => {
+watch(darkmode, (_) => {
 	update_images();
 });
 
