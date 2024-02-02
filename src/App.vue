@@ -2,7 +2,7 @@
 	<v-app class='ma-0 pa-0 fill-height' :class='bg'>
 		<v-main>
 			<AppBar />
-			<RouterView  />
+			<RouterView />
 			<AppSnackBar />
 		</v-main>
 		<AppFooter />

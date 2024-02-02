@@ -11,7 +11,7 @@
 					</v-col>
 				</v-row>
 					
-				<v-row justify='space-between' align='center' class='ma-0 pa-0' >
+				<v-row justify='space-between' align='center' class='ma-0 pa-0' :class='mobile?"mb-3":""' >
 						
 					<v-col cols='12' lg='9' class='text-center ma-0 pa-0' :order='mobile?"1":"2"' :class='mobile?"mb-1":""'>
 						<v-img
@@ -155,7 +155,7 @@ const mobile = computed((): boolean => {
 });
 
 const icon_size = computed((): string => {
-	return mobile.value ? 'small' : 'x-large';
+	return mobile.value ? 'large' : 'x-large';
 });
 
 const dark_mode = computed({
@@ -376,9 +376,9 @@ const webp = computed((): string => {
 </script>
 
 <style>
+
 .max-img{
-	max-height: 35dvh!important;
-	min-height: 20dvh!important;
+	height: 30dvh;
 }
 
 </style>
