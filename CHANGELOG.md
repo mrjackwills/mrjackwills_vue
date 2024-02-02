@@ -1,3 +1,10 @@
+### CHores
++ oxker screenshot updated, [62af0beebed1b3479268831ee18b2f748e585529]
++ dependencies updated, [d51d192c7a2f63bc7688b12aa67db1e12fc74ff0]
+
+### Fixes
++ button sizes, [a858c928a63b50fc974c29044442edc9f2f690a2]
+
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.7'>v1.0.7</a>
 ### 2024-01-05
 
