@@ -1,11 +1,14 @@
+# <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.9'>v1.0.9</a>
+### 2024-04-11
+
 ### Chores
-+ GitHub action dependencies updated, [ea89a075eef713efa59d6de563c05daef365771c]
-+ obliqoro screenshots updated, [2506f937a6ad70bebd9e522f62e70a2ffd04cc9d]
-+ .devcontainer updated, [0b66095253134e3e3fe63b5e18a27ba8c700f2f3]
-+ dependencies updated, [a9b978e7f75ba9ac376b101fb5129398597fb8e8]
++ GitHub action dependencies updated, [ea89a075](https://github.com/mrjackwills/mrjackwills_vue/commit/ea89a075eef713efa59d6de563c05daef365771c)
++ obliqoro screenshots updated, [2506f937](https://github.com/mrjackwills/mrjackwills_vue/commit/2506f937a6ad70bebd9e522f62e70a2ffd04cc9d)
++ .devcontainer updated, [0b660952](https://github.com/mrjackwills/mrjackwills_vue/commit/0b66095253134e3e3fe63b5e18a27ba8c700f2f3)
++ dependencies updated, [a9b978e7](https://github.com/mrjackwills/mrjackwills_vue/commit/a9b978e7f75ba9ac376b101fb5129398597fb8e8)
 
 ### Fixes
-+ adsbdb description updated, [68cd5e79d2b625283f24c6512802587b04f47159]
++ adsbdb description updated, [68cd5e79](https://github.com/mrjackwills/mrjackwills_vue/commit/68cd5e79d2b625283f24c6512802587b04f47159)
 
 # <a href='https://github.com/mrjackwills/mrjackwills_vue/releases/tag/v1.0.8'>v1.0.8</a>
 ### 2024-02-02
