@@ -1,5 +1,5 @@
 <template>
-	<v-row align='start' justify='space-around' no-gutters class='ma-0 pa-0 mt-md-12 mt-4 no-gutters'  :class='text_color'  >
+	<v-row align='start' justify='space-around' no-gutters class='ma-0 pa-0 mt-md-12 mt-4 no-gutters' :class='text_color' >
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 				
@@ -45,15 +45,15 @@
 				</v-col>
 			</v-row>
 
-			<AppDivider  />
+			<AppDivider />
 
-			<v-row align='center' justify='space-around' no-gutters class=' my-4'>
-				<v-col cols='auto' class='ma-0 pa-0'>
+			<v-row align='center' justify='space-around' no-gutters class='my-4'>
+				<v-col cols='auto' class='ma-0 pa-0 text-h6'>
 					Autodidactic digital dweller. Adept at Rust, TypeScript, PostgreSQL, Docker, Vue, Redis, Linux, and more.
 				</v-col>
 			</v-row>
 
-			<AppDivider  />
+			<AppDivider />
 		</v-col>
 	</v-row>
 </template>

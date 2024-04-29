@@ -17,9 +17,9 @@ html, .v-snackbar__content, [class*='text-']{
 	cursor: pointer;
 }
 
-.link {
-	text-decoration: underline;
-}
+// .link {
+// 	text-decoration: underline;
+// }
 
 // This is a, hopefully, temporary fix for a snackbar issue
 // div.v-snackbar:not(.v-snackbar--absolute) {

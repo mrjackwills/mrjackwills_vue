@@ -1,7 +1,7 @@
 <template>
 	<br>
 	<br>
-	It is the {{ computed_text }} companion to  {{ the }}<IHref :repo='repo' />
+	It is the {{ computed_text }} companion to {{ the }}<IHref :repo='repo' />
 </template>
 
 <script setup lang="ts">

@@ -3,7 +3,7 @@
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
-			<v-container class='card_height ma-a pa-0' ref='swipe'>
+			<v-container class='card_height ma-a pa-0 font-boost' ref='swipe'>
 				
 				<v-row justify='center' align='center' class='ma-0 pa-0 ' >
 					<v-col cols='12' class='text-center font-weight-bold ma-0 pa-0 mb-2' :class='mobile?"text-h6":"text-h4"'>
@@ -40,9 +40,9 @@
 
 					<v-col cols='auto' class='center ma-0 pa-0' :class='mobile?"":"center"'>
 
-						<AHref :to='computed_github' text='explore source code' >
-							<template v-slot:icon>
-								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
+						<AHref :to='computed_github' txt='explore source code' >
+							<template #icon>
+								<v-icon :color='color' size='sm' class='mr-2' :icon='mdiFileCode' />
 								<v-tooltip
 									v-if='show_tooltip'
 									:content-class='dark_mode?"tooltip_light":"tooltip_dark"'
@@ -62,9 +62,9 @@
 
 					<v-col cols='auto' class='ma-0 pa-0' v-if='current_project.link' :class='mobile?"":"ml-12"'>
 
-						<AHref :to='current_project.link.href' text='live site' >
-							<template v-slot:icon>
-								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
+						<AHref :to='current_project.link.href' txt='live site' >
+							<template #icon>
+								<v-icon :color='color' size='sm' class='mr-2' :icon='mdiOpenInNew' />
 								<v-tooltip
 									v-if='show_tooltip'
 									activator='parent'
@@ -381,4 +381,9 @@ const webp = computed((): string => {
 	height: 30dvh;
 }
 
+/* todo rename me */
+
+.font-boost {
+	font-size: 1.25rem;
+}
 </style>

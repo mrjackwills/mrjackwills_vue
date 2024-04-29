@@ -57,6 +57,7 @@ onBeforeMount(() => {
 });
 
 const bg = computed((): string => {
+	
 	return darkmodeModule().bg_color;
 });
 

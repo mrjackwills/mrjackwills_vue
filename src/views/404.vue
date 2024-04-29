@@ -1,5 +1,5 @@
 <template>
-	<v-row align='start' justify='space-around' class='mt-md-4 ma-0 pa-0'  >
+	<v-row align='start' justify='space-around' class='mt-md-4 ma-0 pa-0' >
 				
 		<v-col cols='11' md='8' class='ma-0 pa-0'>
 
