@@ -1,9 +1,9 @@
 <template>
 	<br>
 	<br>
-	Built in <CHref text='Rust' />,
-	with data stored using <CHref text='PostgreSQL' /> & <CHref text='Redis' />,
-	and deployed via <CHref text='Docker' /> & <CHref text='Nginx' />.
+	Built in <CHref txt='Rust' />,
+	with data stored using <CHref txt='PostgreSQL' /> & <CHref txt='Redis' />,
+	and deployed via <CHref txt='Docker' /> & <CHref txt='Nginx' />.
 </template>
 
 <script setup lang="ts">

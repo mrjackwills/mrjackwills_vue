@@ -14,7 +14,7 @@
 	</ul>
 	<br>
 	Its other features include, but are not limited to, password hashing with Argon2,
-	<AHref href='https://haveibeenpwned.com/' text='HIBP' />-powered weak password detection, two-factor authentication with backup codes, secure cookie based user sessions using Redis,
+	<AHref to='https://haveibeenpwned.com/' text='HIBP' />-powered weak password detection, two-factor authentication with backup codes, secure cookie based user sessions using Redis,
 	automated email templating, rate limiting, multiple User Level authorization controls.
 	<CompanionVue repo='staticpi_vue' />, and is used by the
 	<IHref repo='leafcast_vue' />,

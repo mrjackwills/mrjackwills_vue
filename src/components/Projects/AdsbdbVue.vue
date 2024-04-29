@@ -2,7 +2,7 @@
 	adsbdb is a free, open, public flightroute & aircraft callsign API, using an asynchronous and multithreaded approach, and allows anybody to query for;
 	<ul class='ml-10 mt-4 mb-n4'>
 		<li>
-			over 400,000 aircraft, by registration or <AHref :href='href_icao_adsbdb' text='hex code' />
+			over 400,000 aircraft, by registration or <AHref :to='href_icao_adsbdb' text='hex code' />
 		</li>
 		<li>
 			over 250,000 flightroutes by callsign

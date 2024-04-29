@@ -1,10 +1,10 @@
 <template>
 	havn is a fast configurable port scanner with reasonable defaults. It is lightweight, configurable, and uses asynchronous multithreaded requests to deliver rapid reliable results.
-	It is published to <AHref :href='href_crates' text='crates.io' />,
-	<AHref :href='href_dockerhub' text='DockerHub' />, and <AHref :href='href_ghcr' text='ghcr' />.
+	It is published to <AHref :to='href_crates' text='crates.io' />,
+	<AHref :to='href_dockerhub' text='DockerHub' />, and <AHref :to='href_ghcr' text='ghcr' />.
 	<br>
 	<br>
-	Built in <CHref text='Rust'/>.
+	Built in <CHref txt='Rust'/>.
 </template>
 
 <script setup lang="ts">

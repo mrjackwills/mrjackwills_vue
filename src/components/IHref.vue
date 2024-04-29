@@ -1,5 +1,5 @@
 <template>
-	<router-link :class='text_color' class='font-weight-bold' :to='computed_href' :text='computed_text' />
+	<router-link :class='text_color' class='font-weight-bold' :to='computed_href' :txt='computed_text' />
 </template>
 
 <script setup lang="ts">

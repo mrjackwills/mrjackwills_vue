@@ -1,10 +1,10 @@
 <template>
 	<br>
 	<br>
-	Built in <CHref text='Vue' />,
-	with <CHref text='TypeScript' />,
-	styled with <CHref text='Vuetify' />,
-	and deployed via <CHref text='Nginx' />.
+	Built in <CHref txt='Vue' />,
+	with <CHref txt='TypeScript' />,
+	styled with <CHref txt='Vuetify' />,
+	and deployed via <CHref txt='Nginx' />.
 </template>
 
 <script setup lang="ts">

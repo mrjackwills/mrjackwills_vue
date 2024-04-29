@@ -26,7 +26,7 @@
 			<v-row align='center' justify='space-around' no-gutters class='ma-0 pa-0'>
 
 				<v-col v-for='(item, index) in links' :key='index' cols='auto' class='ma-0 pa-0'>
-					<AHref :href='item.href' :aria-label='item.tooltip' :id='`nav_${index}`'>
+					<AHref :to='item.href' :aria-label='item.tooltip' :id='`nav_${index}`' :internal='item.internal'>
 						<template v-slot:icon>
 							<v-icon :color='color' class='mr-2' size='x-large' :icon='item.icon' />
 							<v-tooltip
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiEmail, mdiGithub, mdiLightbulbNight, mdiTwitter, } from '@mdi/js';
+import { mdiBookOpenVariantOutline,mdiEmail, mdiGithub, mdiLightbulbNight, mdiTwitter } from '@mdi/js';
 
 const mobile = computed((): boolean => {
 	return mobileModule().mobile;
@@ -74,7 +74,7 @@ const text_color = computed((): string => {
 const router = useRouter();
 const route = useRoute();
 const home = ():void => {
-	router.push({ path: route.path, query: undefined });
+	router.push({ path: '/', query: undefined });
 
 };
 
@@ -98,8 +98,16 @@ const links = [
 		icon: mdiEmail,
 		href: 'mailto:email@mrjackwills.com',
 		tooltip: 'email me'
-	}
+	},
+	{
+		icon: mdiBookOpenVariantOutline,
+		href: '/words',
+		tooltip: 'Words',
+		internal: true
+	},
 ];
+
+
 
 const dark_mode = computed({
 	get (): boolean {

@@ -1,13 +1,13 @@
 <template>
-	The Beluga Snooze client is the specifically built client for a <AHref :href='href_pizero' text='Raspberry Pi Zero W' />,
-	with an accompanying <AHref :href='href_blinkt' text='Blinkt LED strip' />, which functions as a sunrise alarm clock.
+	The Beluga Snooze client is the specifically built client for a <AHref :to='href_pizero' text='Raspberry Pi Zero W' />,
+	with an accompanying <AHref :to='href_blinkt' text='Blinkt LED strip' />, which functions as a sunrise alarm clock.
 	<CompanionVue repo='belugasnooze_vue' />
 	<UseStaticPi />
 	<br>
 	<br>
-	Built in <CHref text='Rust' />,
-	with data stored using <CHref text='SQLite' />,
-	and deployed via <CHref text='Docker' />.
+	Built in <CHref txt='Rust' />,
+	with data stored using <CHref txt='SQLite' />,
+	and deployed via <CHref txt='Docker' />.
 	<TSBranch repo='belugasnooze_pi' />
 
 </template>

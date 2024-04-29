@@ -1,7 +1,7 @@
 <template>
 	<br>
 	<br>
-	A previous, now outdated and unmaintained, TypeScript <AHref :href='computed_href' text='branch' /> is available in the GitHub repository.
+	A previous, now outdated and unmaintained, TypeScript <AHref :to='computed_href' text='branch' /> is available in the GitHub repository.
 </template>
 
 <script setup lang="ts">

@@ -23,7 +23,6 @@ if ('serviceWorker' in navigator) {
 	registerSW({
 		onNeedRefresh () {
 			appUpdate();
-
 		}
 	});
 }
@@ -60,6 +59,10 @@ onBeforeMount(() => {
 const bg = computed((): string => {
 	return darkmodeModule().bg_color;
 });
+
+
+// todo use something in pinia for this, 
+// need to add meta information as well, e.g. twitter links facebook etc
 
 useHead({
 	title: `Mr Jack Wills`,

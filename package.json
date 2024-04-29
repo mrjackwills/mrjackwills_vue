@@ -7,8 +7,7 @@
     "serve": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "check": "vue-tsc --noEmit"
   },
   "homepage": "https://github.com/mrjackwills/mrjackwills_vue",
   "dependencies": {
@@ -18,9 +17,9 @@
     "fontaine": "^0.5.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
-    "vuetify": "^3.5.15"
+    "vue": "^3.4.25",
+    "vue-router": "^4.3.2",
+    "vuetify": "^3.5.17"
   },
   "devDependencies": {
     "@mdi/js": "^7.4.47",
@@ -29,18 +28,18 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
-    "eslint": "^9.0.0",
-    "eslint-plugin-vue": "^9.24.1",
+    "eslint": "^9.1.1",
+    "eslint-plugin-vue": "^9.25.0",
     "prettier": "^3.2.5",
-    "sass": "^1.74.1",
+    "sass": "^1.75.0",
     "typescript": "^5.4.5",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.2.8",
+    "vite": "^5.2.10",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.19.8",
     "vite-plugin-vuetify": "^2.0.3",
-    "vue-tsc": "^2.0.12"
+    "vue-tsc": "^2.0.14"
   },
   "buildDate": "Thu 11 2024 April 20:45:25 BST"
 }

@@ -40,7 +40,7 @@
 
 					<v-col cols='auto' class='center ma-0 pa-0' :class='mobile?"":"center"'>
 
-						<AHref :href='computed_github' text='explore source code' >
+						<AHref :to='computed_github' text='explore source code' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiFileCode' />
 								<v-tooltip
@@ -62,7 +62,7 @@
 
 					<v-col cols='auto' class='ma-0 pa-0' v-if='current_project.link' :class='mobile?"":"ml-12"'>
 
-						<AHref :href='current_project.link.href' text='live site' >
+						<AHref :to='current_project.link.href' text='live site' >
 							<template v-slot:icon>
 								<v-icon :color='color' class='mr-2' :icon='mdiOpenInNew' />
 								<v-tooltip
