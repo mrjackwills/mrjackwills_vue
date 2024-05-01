@@ -25,7 +25,6 @@
 						to
 						do so, and had an urge to write about various aspects of the process.
 					</p>
-					<br>
 					<p>
 						This rambling post touches on traits, async, generics, multi-threading, SQL, deserializing,
 						channels, macros, web-scraping, using the Rust
@@ -37,7 +36,6 @@
 						<AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> and more.
 
 					</p>
-					<br>
 					<p>
 						I created and maintain
 						<AHref :to='links.adsbdb.to' :txt='links.adsbdb.txt' />, which is a public API for searching
@@ -52,7 +50,6 @@
 						the database up to date.
 
 					</p>
-					<br>
 					<p>
 						A user kindly submitted an
 						<AHref :to='links.adsbdb_data_issue.to' :text='links.adsbdb_data_issue.txt' />, listing a number
@@ -63,7 +60,6 @@
 						any, and hopefully all, UK registered
 						aircraft.
 					</p>
-					<br>
 					<p>
 						The CAA will happily
 						<AHref :to='links.caa_pdf.to' :text='links.caa_pdf.txt' /> the entire dataset, for an excessive
@@ -92,7 +88,6 @@
 						</ul>
 
 					</p>
-					<br>
 					<p>
 						So, lets search for an aircraft with registration
 						<AHref :to='links.gviij.to' :text='links.gviij.txt' /> and see what result we get back.
@@ -136,25 +131,25 @@
 							</v-row>
 						</section>
 					</p>
+
 					<p>
 						When we delve into the browsers developer tools, we can see two requests are made.
 						The first request, which sends a POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
-						with the following request and response bodies;
+						with the following body and response;
 					</p>
 
 					<v-row justify='space-around' class='my-3' align='end' >
-						<CodeBlock cols='5' :code='post_body' lang='json' label='POST body'/>
-						<CodeBlock cols='5' :code='post_response' lang='json' label='POST response'/>
+						<CodeBlock cols='5' key='POST_body' :code='post_body' lang='json' label='POST body' id='post_body'/>
+						<CodeBlock cols='5' key='POST_response' :code='post_response' lang='json' label='POST response'/>
 					</v-row>
+
 					<p>
 						This seems like a good start, but this response is nowhere near as information rich as rendered in the browser, so the second request must be where the good stuff is.
-
 					</p>
 
 					<p>
-						
 						The second request, this time a GET request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details/46457' />,
-						which clearly has the <RedSpan text='AircraftID' /> appeneded to it,
+						which clearly has the <RedSpan text='AircraftID' /> obtained from the first request appended to it,
 						and returns a large response stuffed with all the detailed information that we are after.
 					</p>
 					<v-row justify='space-around' class='my-3' align='end' >
@@ -164,65 +159,90 @@
 						Unfortunately, one simply can't visit the URL from the GET request to see the data for yourself, as a ReCaptchaToken header is required, but more on that later.
 
 					</p>
-
-					<br>
 					<p>
 						So the process so far seems to be, make POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
 						with an aircraft’s registration, then use the <RedSpan text='AircraftID' /> field from this to make a GET request
 						to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details' />.
 
 					</p>
-					<br>
-					<p>
-
-					</p>
 					<p>
 						UK registered aircraft have a registration in the format G-XXXX, where X can be a letter from A to Z.
 						<AHref :to='links.wikipedia.to' text='This Wikipedia article' /> sheds some light on the conventions,
-						but to make things easy we can just search from G-AAAA to G-ZZZZ, which will be a total of 456,976 registrations (26 * 26 * 26 *26).
-						The CAA website tells us that the G-INFO Compact Disc, the one we are doing all of this in order to avoid pay £400, contains over 18,000 aircraft,
+						but to make things easy we can just scrape from G-AAAA to G-ZZZZ, which will be a total of 456,976 registrations (26 * 26 * 26 * 26).
+						The CAA website tells us that the G-INFO Compact Disc, the one we are doing all of this in order to avoid pay £400 for, contains over 18,000 aircraft,
 						so the majority of our requests will be futile.
 					</p>
-					<br>
 					<p>
-
 						Finally, after all of this pre-amble, some Rust code.
-
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock cols='auto' :code='generate_registrations'  :lang='"rust"' label='Generate all registrations from AAAA to ZZZZ'/>
 						</v-row>
-					</p>
 
+						<!-- <v-row justify='space-around' class='my-3' align='end' > -->
+						<!-- <CodeBlock :code='reg_new_type' :lang='"rust"' label='Registration new type'/> -->
+						<!-- </v-row> -->
+					</p>
 					<p>
-						Starting with this simple function, it will create all possible registrations using nested loops. We know the length of the output, so we can create a Vec with the
+						We are using the new type pattern here to create a distinct <RedSpan text='Registration' /> type, and then implementing <RedSpan text='From<String>' />.
+						Using this pattern ensures that <RedSpan text='Registration' /> instances are distinct from plain strings. A <AHref :to='links.try_from.to' txt='Try<From>' /> method could, for example,
+						guarantee that the input string is exactly four characters long, and composed only of the characters 'A' through to 'Z'.
+						<!-- Later we  combine this with our SQLite database later, to create a robust type system unique to each table, all while using a macro to reduce the amount of -->
+						<!-- code that is needed to be written. -->
+						<!-- When storing and retrieving data from the SQLite database, having unique types can reduce confusion and conflict, to further enforce a strong type system. -->
+					</p>
+					<p>
+						Next, <RedSpan text='generate_all_registrations()' /> will create all possible registrations using nested loops. We know the length of the output, so we can create a Vec with the
 						<AHref :to='links.with_capacity.to' text='desired capacity' />, which will allocate the correct heap space in one fell swoop.
 						The <RedSpan text='letter' /> variable is a <AHref :to='links.range_inclusive.to' text='Range Inclusive' /> from A to Z,
 						which make iterating over each letter simple. The <RedSpan text='letter' /> variable is cloned for each loop,
-						so that each of the loops has access to its own unique letter, independent from the other three loops.
-						The registrations themselves are stored in a new type <RedSpan text='GInfoRegistrations' />, more on this later.
+						so that each of these loops has access to its own unique letter, independent from the others.
+						<!-- We push into our output<RedSpan text='Registration' />, created using the <RedSpan text='From<String>' /> into our Vec, and return <RedSpan text='output' />. -->
+					</p>
+		
+					<p>
+						So we now have a <RedSpan text='Vec<Registration>' />, we can make a POST request for each registration, extract the <RedSpan text='AircraftID'/>, then use this for the GET request.
+					</p>
+					<p>
+						Lets make that <span class='font-italic'>simple</span> POST request.
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='first_request' :lang='"rust"' label='Simple POST request'/>
+						</v-row>
 
+						<!-- add button to highlight text! -->
+						<!-- talk about serdes body and response, can ignore the non used parts, as all we want is the caaid -->
+						<!-- Show macro for the id -->
+						<!-- <br> -->
+						It does appear that this <span class='font-italic'>simple</span> request code is verbose, and there is a lot going on here
+						- much of which we will later cut out or make generic, but by being explicit we are able to remove doubt and ambiguity.
 					</p>
-					<br>
+
 					<p>
-						So we now have an <RedSpan text='Vec<GInfoRegistrations>' />, it's time to exploit Rusts <AHref :to='links.fearless_concurrency.to' text='Fearless Concurrency' />
-						to vastly speed up the near half a million requests.
+						From playing around with the API, although the in-browser request sent a <AHref to='#post_body' :internal='true' txt='more detailed body' />, it will still happily respond when
+						all the include in an aircraft registration, minus the 'G-', hence why <RedSpan text='Registration' /> doesn't bother to include it.
 					</p>
+					<!-- <p> -->
+					<!-- The <RedSpan text='#[serde(rename = "Registration")]' /> is an <AHref :to='links.attribute_macro.to' :txt='links.attribute_macro.txt'/>, used to Serialize the -->
+					<!-- field to follow the standard Rust convention, but still . -->
+					<!-- </p> -->
+
 					<p>
-						First of all, lets make a <span class='font-italic'>simple</span> request.
-						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock :code='first_request' :lang='"rust"' label='Make a POST request with a single registration'/>
-							
-						</v-row>
-						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock :code='g_info' :lang='"rust"' label='GInfo implementation'/>
-							
-						</v-row>
-						It does appear that Rust is verbose, and there is a lot going on here - much of which we will later cut out or generic-ise - but by being explicit we are able to remove doubt and ambiguity is good.
-						The first thing we check is if this registration, and its associated data, is in our database.
-						The <RedSpan text='GInfo::exists'/> function will return an <RedSpan text='Option<()>' />at this point we only care if it exists or not,
+						The <RedSpan text='GInfo::exists'/> function will return an <RedSpan text='Option<()>'/> at this point we only care if it exists or not,
 						and an Option is preferable to a bool in this situation. Option types are on of Rusts killer features, and helps to fix the billion dollar null problem.
 						By implementing this check, we can run the scraping process multiple times without inserting duplicate data into our SQLite table.
+					</p>
 
+					<p>
+						So far, so good, but we have yet to actually run any multi threaded operations, and if each request took optimistically 100 milliseconds,
+						we would still be looking at around 12 hours for all 456,976 registrations alone, it's time to exploit Rusts <AHref :to='links.fearless_concurrency.to' text='Fearless Concurrency' />
+						to vastly speed up the near half a million requests.
+					</p>
+
+					<p>
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='sql_string_type_macro' :lang='"rust"' label='sqlx newtype macro'/>
+						</v-row>
+						
+						macro for sql string type
 					</p>
 
 					<!-- next -->
@@ -241,6 +261,8 @@ import AHref from '@/components/AHref.vue';
 const title = 'Saving £400 a year using Rust';
 const date = '2024-05-01';
 
+// const anchor = (id: string) => `/{}`
+
 const countries_data = [
 	{
 		to: 'https://www.faa.gov/licenses_certificates/aircraft_certification/aircraft_registry/releasable_aircraft_download',
@@ -256,7 +278,7 @@ const countries_data = [
 	},
 	{
 		to: 'https://www.casa.gov.au/aircraft/aircraft-registration/data-files-registered-aircraft#Tipstodownloadthefiles',
-		txt: 'Austrailia',
+		txt: 'Australia',
 	},
 ];
 
@@ -265,7 +287,6 @@ const links = {
 		to: 'https://adsbdb.com',
 		txt: 'adsbdb'
 	},
-
 	adsbdb_data_issue: {
 		to: 'https://github.com/mrjackwills/adsbdb/issues/27',
 		txt: 'issue'
@@ -281,6 +302,10 @@ const links = {
 	adsbdb_rust: {
 		to: 'https://www.github.com/mrjackwills/adsbdb',
 		txt: 're-written'
+	},
+	attribute_macro: {
+		to: 'https://doc.rust-lang.org/reference/procedural-macros.html#attribute-macros',
+		txt: 'attribute macro'
 	},
 	caa_search: {
 		to: 'https://www.caa.co.uk/aircraft-register/g-info/search-g-info/',
@@ -333,6 +358,9 @@ const links = {
 		to: 'https://github.com/tokio-rs/tokio',
 		txt: 'tokio'
 	},
+	try_from: {
+		to: 'https://doc.rust-lang.org/std/convert/trait.TryFrom.html'
+	},
 	wikipedia: {
 		to: 'https://en.wikipedia.org/wiki/United_Kingdom_aircraft_registration',
 	},
@@ -360,19 +388,37 @@ const post_body = `{
 	"IncludeDeregistered": false
 }`;
 
-const generate_registrations =`fn generate_all_registrations() -> Vec<GInfoRegistration> {
+const generate_registrations =`#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Registration(String);
+
+impl From<String> for Registration {
+    fn from(value: String) -> Self {
+        Self(value)
+    }
+}
+
+fn generate_all_registrations() -> Vec<Registration> {
     let mut output = Vec::with_capacity(26 * 26 * 26 * 26);
     let letter = 'A'..='Z';
     for one in letter.clone() {
         for two in letter.clone() {
             for three in letter.clone() {
                 for four in letter.clone() {
-                    output.push(GInfoRegistration::from(format!("{one}{two}{three}{four}")));
+                    output.push(Registration::from(format!("{one}{two}{three}{four}")));
                 }
             }
         }
     }
     output
+}`;
+
+const _reg_new_type = `#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord]
+pub struct Registration(String);
+
+impl From<String> for Registration {
+    fn from(value: String) -> Self {
+        Self(value)
+    }
 }`;
 
 const caa_full_response = `{
@@ -465,10 +511,55 @@ const caa_full_response = `{
     "ExtractDate": "30-Apr-2024 19:45"
 }`;
 
+const sql_string_type_macro = `use std::hash::Hash;
+
+use serde::Serialize;
+
+pub trait Get {
+    fn get(&self) -> &str;
+}
+
+#[macro_export]
+macro_rules! sql_string_field {
+    ($struct_name:ident) => {
+        #[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord, sqlx::Decode)]
+        pub struct $struct_name(String);
+
+        impl sqlx::Type<sqlx::Sqlite> for $struct_name {
+            fn type_info() -> <sqlx::Sqlite as sqlx::Database>::TypeInfo {
+                <String as sqlx::Type<sqlx::Sqlite>>::type_info()
+            }
+        }
+
+        impl From<String> for $struct_name {
+            fn from(value: String) -> Self {
+                Self(value)
+            }
+        }
+
+        impl Serialize for $struct_name {
+            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+            where
+                S: serde::Serializer,
+            {
+                serializer.serialize_newtype_struct(stringify!($struct_name), &self.0)
+            }
+        }
+
+        impl Get for $struct_name {
+            fn get(&self) -> &str {
+                self.0.as_str()
+            }
+        }
+    };
+}
+
+sql_string_field!(Registration);
+sql_string_field!(CaaId);`;
+
 const first_request = `// CAA API Post request body
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RegistrationPost {
-  #[serde(rename = "Registration")]
   registration: String,
 }
 
@@ -476,12 +567,12 @@ pub struct RegistrationPost {
 #[derive(Debug, Serialize, Deserialize, Hash)]
  pub struct SearchResponse {
   #[serde(rename = "AircraftID")]
-  pub aircraft_id: 64,
+  pub aircraft_id: i64,
  }
 
-// Convert from our newtype GInfoRegistration into the RegistrationPost request body
-impl From<&GInfoRegistration> for RegistrationPost {
-  fn from(value: &GInfoRegistration) -> Self {
+// Convert Registration into RegistrationPost
+impl From<&Registration> for RegistrationPost {
+  fn from(value: &Registration) -> Self {
     Self {
       registration: value.get().to_owned(),
     }
@@ -489,15 +580,11 @@ impl From<&GInfoRegistration> for RegistrationPost {
 }
 
 async fn registration_to_caa_id(
-  sqlite: &SqlitePool,
-  reg: &GInfoRegistration,
+  reg: &Registration,
   token: &str
-) -> Result<(), AppError> {
-  if GinfoId::exists(sqlite, reg).await?.is_none() {
-    let request = reqwest::Client::builder()
+) -> Result<Vec<SearchResponse>, AppError> {
+  Ok(reqwest::Client::builder()
       .connect_timeout(std::time::Duration::from_millis(20000))
-      .gzip(true)
-      .brotli(true)
       .build()?
       .post("https://ginfoapi.caa.co.uk/api/aircraft/search")
       .header("RecaptchaToken", token)
@@ -505,16 +592,11 @@ async fn registration_to_caa_id(
       .send()
       .await?
       .json::<Vec<SearchResponse>>()
-      .await?;
-    if let Some(data) = request.first() {
-      GinfoId::insert(sqlite, reg, data).await?;
-    }
-  }
-  Ok(())
+      .await?)
 }
 `;
 
-const g_info = `// This is modelled on our SQLite table
+const _g_info = `// This is modelled on our SQLite table
 #[derive(sqlx::FromRow, Debug, Clone, Serialize)]
 pub struct GinfoId {
   pub g_info_id i64,
@@ -525,7 +607,7 @@ pub struct GinfoId {
 impl GinfoId {
   pub async fn exists(
   db: &SqlitePool,
-  registration: &GInfoRegistration,
+  registration: &Registration,
   ) -> Result<Option<()>, AppError> {
   let query = "SELECT * from g_info WHERE registration = $1";
   Ok(sqlx::query_as::<_, Self>(query)
@@ -551,7 +633,10 @@ impl GinfoId {
 `;
 </script>
 
-<style>
+<style scoped>
+p{
+	margin-top: 1rem;
+}
 
 /* .article-font { */
 	/* font-size: 1.25rem;

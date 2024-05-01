@@ -17,7 +17,7 @@
 						<div v-html='code' />
 					</v-col>
 				</v-row>
-				<v-row justify='space-between'>
+				<v-row justify='space-between' class='ma-0 pa-0'>
 					<v-col cols='2' class='ma-0 pa-0 text-caption'>
 				
 					</v-col>
@@ -37,7 +37,7 @@
 								:open-on-click='true'
 								:open-on-focus='false'
 								:open-on-hover='false'
-								location='top end'
+								location='bottom end'
 							>
 								<span>code copied</span>
 							</v-tooltip>
@@ -61,7 +61,7 @@ import { useClipboard } from '@vueuse/core';
 import slack
 	from 'shiki/themes/slack-dark.mjs';
 
-const props = withDefaults(defineProps<{ code: string, label?: string, lang: string, cols: string, hidden?: boolean }>(), { cols: 'auto', hidden: false });
+const props = withDefaults(defineProps<{ code: string, label?: string, lang: string, cols?: string, hidden?: boolean }>(), { cols: 'auto', hidden: false });
 const { copy, isSupported } = useClipboard({ source: props.code });
 
 const show = ref(true);
@@ -70,7 +70,6 @@ onMounted(() => {
 	if (props.hidden) {
 		show.value = false;
 	}
-	
 });
 
 const icon = computed(() => show.value ? mdiChevronDown : mdiChevronUp);
@@ -123,7 +122,7 @@ pre {
 	content: counter(step);
 	counter-increment: step;
 	width: 1rem;
-	margin-right: 1.5rem;
+	margin-right: 1rem;
 	display: inline-block;
 	text-align: right;
 	color: rgba(115, 138, 148, 0.4);
