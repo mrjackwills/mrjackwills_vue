@@ -217,13 +217,68 @@
 					</p>
 
 					<p>
-						From playing around with the API, although the in-browser request sent a <AHref to='#post_body' :internal='true' txt='more detailed body' />, it will still happily respond when
-						all the include in an aircraft registration, minus the 'G-', hence why <RedSpan text='Registration' /> doesn't bother to include it.
+						After playing around with the API, although the in-browser request sends a <AHref to='#post_body' :internal='true' txt='more detailed body' />, it will still happily respond when
+						all that is sent is a JSON containing the single, not capitalised, "registration" field.
 					</p>
-					<!-- <p> -->
-					<!-- The <RedSpan text='#[serde(rename = "Registration")]' /> is an <AHref :to='links.attribute_macro.to' :txt='links.attribute_macro.txt'/>, used to Serialize the -->
-					<!-- field to follow the standard Rust convention, but still . -->
-					<!-- </p> -->
+
+					<p>
+						The <RedSpan text='#[serde(rename = "AircraftID")]'/> is an <AHref :to='links.attribute_macro.to' :txt='links.attribute_macro.txt'/>, used when deserializing the received
+						JSON response, into a <RedSpan text='SearchResponse'/> struct, in order to follow the standard Rust naming convention.
+						Again, the <AHref to='#post_body' :internal='true' txt='POST response' /> contained multiple fields,
+						but the only one that we are concerned with is the <RedSpan text='AircraftID' />, so we can disregard all others.
+					</p>
+
+					<p>
+						As for the request itelf, we are using the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
+						<AHref :to='links.reqwest_client.to' txt='Client' /> instance, with a 20 second connection timeout, POST'ing to the given URL, using our <RedSpan text='RegistrationPost' />
+						as the body, which will be Serialized into JSON, and adding a <RedSpan text='ReCaptchaToken'/>, sending the request, then Serializing the response into a
+						<RedSpan text='Vec<SearchResponse>' />.
+					</p>
+
+					<p>
+						Annoyingly, this <RedSpan text='ReCaptchaToken'/> isn't an automated process. When searching on the CAA website, a simple captcha needs to be solved
+						in order to continue. We will have to complete one of these captchas, save the resultant <RedSpan text='ReCaptchaToken'/>, found in the Headers section of the devtools,
+						in our .env file. Doing so means can then easily update the token value without having to re-compile the entire application.
+						<section class='my-4'>
+							<v-row justify='space-around' align='center'>
+								<v-col cols='7' md='3'>
+									<v-row justify='center' class='ma-0 pa-0'>
+										<v-col cols='12' class='ma-0 pa-0'>
+											<v-img src='@/assets/blog/2024-05-01/captcha.jpg' class='ma-0 pa-0' alt='Screenshot of a captcha to be solved'>
+												<template #sources>
+													<source srcset='@/assets/blog/2024-05-01/captcha.webp'>
+												</template>
+											</v-img>
+										</v-col>
+									</v-row>
+									<v-row justify='center' class='ma-0 pa-0 mb-2'>
+										<v-col cols='auto' class='ma-0 pa-0 text-caption'>
+											The simple captcha to be solved
+										</v-col>
+									</v-row>
+								</v-col>
+
+								<v-col cols='7' md='7'>
+									<v-row justify='center' class='ma-0 pa-0'>
+										<v-col cols='12' class='ma-0 pa-0'>
+											<v-img src='@/assets/blog/2024-05-01/token.jpg' class='ma-0 pa-0' alt='Screenshot of devtools containing the token, pixelised'>
+												<template #sources>
+													<source srcset='@/assets/blog/2024-05-01/token.webp'>
+												</template>
+											</v-img>
+										</v-col>
+									</v-row>
+									<v-row justify='center' class='ma-0 pa-0 mb-2'>
+										<v-col cols='auto' class='ma-0 pa-0 text-caption'>
+											Screenshot of devtools containing the token, pixelised because you never know
+										</v-col>
+									</v-row>
+								</v-col>
+							</v-row>
+						</section>
+						Fortunately the token generated seems to have generous permission, it isn't locked to our IP address, and has a substantial lifespane, which in my testing seems valid for many, many, many hours.
+
+					</p>
 
 					<p>
 						The <RedSpan text='GInfo::exists'/> function will return an <RedSpan text='Option<()>'/> at this point we only care if it exists or not,
@@ -337,6 +392,9 @@ const links = {
 	reqwest: {
 		to: 'https://github.com/seanmonstar/reqwest',
 		txt: 'reqwest'
+	},
+	reqwest_client: {
+		to: 'https://docs.rs/reqwest/latest/reqwest/struct.Client.html',
 	},
 	rust: {
 		to: 'https://rust-lang.org',
@@ -558,13 +616,13 @@ sql_string_field!(Registration);
 sql_string_field!(CaaId);`;
 
 const first_request = `// CAA API Post request body
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize)]
 pub struct RegistrationPost {
   registration: String,
 }
 
 // CAA API Post request response
-#[derive(Debug, Serialize, Deserialize, Hash)]
+#[derive(Debug, Deserialize, Hash)]
  pub struct SearchResponse {
   #[serde(rename = "AircraftID")]
   pub aircraft_id: i64,
@@ -587,8 +645,8 @@ async fn registration_to_caa_id(
       .connect_timeout(std::time::Duration::from_millis(20000))
       .build()?
       .post("https://ginfoapi.caa.co.uk/api/aircraft/search")
-      .header("RecaptchaToken", token)
       .json(&RegistrationPost::from(reg))
+      .header("RecaptchaToken", token)
       .send()
       .await?
       .json::<Vec<SearchResponse>>()

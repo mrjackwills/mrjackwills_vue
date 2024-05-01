@@ -13,6 +13,7 @@ declare module 'vue' {
     AppDivider: typeof import('./src/components/AppDivider.vue')['default']
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppSnackBar: typeof import('./src/components/AppSnackBar.vue')['default']
+    AppUpArrow: typeof import('./src/components/AppUpArrow.vue')['default']
     BackendApi: typeof import('./src/components/BackendApi.vue')['default']
     BelugasnoozeClient: typeof import('./src/components/Projects/BelugasnoozeClient.vue')['default']
     BelugasnoozeSite: typeof import('./src/components/Projects/BelugasnoozeSite.vue')['default']
@@ -35,6 +36,8 @@ declare module 'vue' {
     StaticpiBackend: typeof import('./src/components/Projects/StaticpiBackend.vue')['default']
     StaticpiVue: typeof import('./src/components/Projects/StaticpiVue.vue')['default']
     TSBranch: typeof import('./src/components/TSBranch.vue')['default']
+    UpArrow: typeof import('./src/components/UpArrow.vue')['default']
+    UppArrow: typeof import('./src/components/UppArrow.vue')['default']
     UseStaticPi: typeof import('./src/components/UseStaticPi.vue')['default']
   }
 }

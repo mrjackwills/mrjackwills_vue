@@ -66,6 +66,8 @@ const { copy, isSupported } = useClipboard({ source: props.code });
 
 const show = ref(true);
 
+const timeout = ref(0);
+
 onMounted(() => {
 	if (props.hidden) {
 		show.value = false;
@@ -83,9 +85,10 @@ const dark_mode = computed(() => darkmodeModule().darkmode);
 const lines = computed(() => props.lang === 'rust' ? 'numbered_line' : '');
 
 const copy_text = ():void => {
+	clearTimeout(timeout.value);
 	show_tooltip.value = true;
 	copy();
-	setTimeout(() => {
+	timeout.value = window.setTimeout(() => {
 		show_tooltip.value = false;
 	}, 3000);
 

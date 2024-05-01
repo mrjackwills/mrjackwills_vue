@@ -4,6 +4,7 @@
 			<AppBar />
 			<RouterView />
 			<AppSnackBar />
+			<AppUpArrow />
 		</v-main>
 		<AppFooter />
 	</v-app>
