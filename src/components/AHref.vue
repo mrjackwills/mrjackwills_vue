@@ -9,11 +9,11 @@
 
 <script setup lang="ts">
 
-
 const text_color = computed((): string => {
 	// return `text-${darkmodeModule().darkmode ? 'red-lighten-1' : 'deep-purple-lighten-1'}`
-	return 'text-red-lighten-1'
-	// return darkmodeModule().text_color;
+	// return 'text-red-lighten-1'
+	// return 'text-red-darken-4'
+	return darkmodeModule().text_color;
 });
 
 defineProps<{ to: string, txt?: string, internal?: boolean }>();

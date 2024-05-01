@@ -58,7 +58,7 @@ const showBuild = ref(false);
 const buildInfo = (): void => {
 	showBuild.value = !showBuild.value;
 	clearTimeout(buildTimeout.value);
-	if (showBuild) buildTimeout.value = window.setTimeout(() => {
+	if (showBuild.value) buildTimeout.value = window.setTimeout(() => {
 		showBuild.value = false;
 	}, 5000);
 };

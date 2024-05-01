@@ -1,5 +1,5 @@
 <template>
-	<router-link :class='text_color' class='font-weight-bold' :to='computed_href' :txt='computed_text' />
+	<router-link :class='text_color' class='font-weight-bold' :to='computed_href' :txt='computed_text()' />
 </template>
 
 <script setup lang="ts">
@@ -15,7 +15,7 @@ const computed_href = computed((): string => {
 	return `/?project=${props.repo}`;
 });
 
-const computed_text = computed((): string => {
+const computed_text = (): string => {
 	switch (props.repo) {
 	case 'adsbdb':
 		return `adsbdb`;
@@ -44,6 +44,6 @@ const computed_text = computed((): string => {
 	case 'staticpi_vue':
 		return `staticPi site`;
 	}
-});
+};
 
 </script>

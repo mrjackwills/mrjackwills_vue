@@ -17,6 +17,7 @@ declare module 'vue' {
     BelugasnoozeClient: typeof import('./src/components/Projects/BelugasnoozeClient.vue')['default']
     BelugasnoozeSite: typeof import('./src/components/Projects/BelugasnoozeSite.vue')['default']
     CHref: typeof import('./src/components/CHref.vue')['default']
+    CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
     CompanionVue: typeof import('./src/components/CompanionVue.vue')['default']
     FrontendVue: typeof import('./src/components/FrontendVue.vue')['default']
     HavnVue: typeof import('./src/components/Projects/HavnVue.vue')['default']

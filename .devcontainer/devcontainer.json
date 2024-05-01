@@ -30,8 +30,6 @@
 				"redhat.vscode-yaml",
 				"timonwong.shellcheck",
 				"vue.volar",
-				"vue.vscode-typescript-vue-plugin",
-				
 				"yoavbls.pretty-ts-errors"
 			]
 		}

@@ -1,5 +1,5 @@
 <template>
-	<AHref :to='computed_href' :txt='txt' />
+	<AHref :to='computed_href()' :txt='txt' />
 </template>
 
 <script setup lang="ts">
@@ -7,7 +7,7 @@ import type { TCommon } from '@/types';
 
 const props = defineProps<{txt: TCommon}>();
 
-const computed_href = computed((): string => {
+const computed_href = (): string => {
 	switch (props.txt) {
 	case 'Docker':
 		return 'https://www.docker.com/';
@@ -30,6 +30,6 @@ const computed_href = computed((): string => {
 	case 'Vuetify':
 		return 'https://www.vuetifyjs.com/';
 	}
-});
+};
 
 </script>

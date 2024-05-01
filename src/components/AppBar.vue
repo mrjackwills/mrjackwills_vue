@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiBookOpenVariantOutline,mdiEmail, mdiGithub, mdiLightbulbNight, mdiTwitter } from '@mdi/js';
+import { mdiBookOpenVariantOutline, mdiEmail, mdiGithub, mdiLightbulbNight, mdiTwitter } from '@mdi/js';
 
 const mobile = computed((): boolean => {
 	return mobileModule().mobile;
@@ -72,7 +72,7 @@ const text_color = computed((): string => {
 });
 
 const router = useRouter();
-const route = useRoute();
+// const route = useRoute();
 const home = ():void => {
 	router.push({ path: '/', query: undefined });
 
@@ -106,8 +106,6 @@ const links = [
 		internal: true
 	},
 ];
-
-
 
 const dark_mode = computed({
 	get (): boolean {

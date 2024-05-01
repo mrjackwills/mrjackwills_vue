@@ -5,12 +5,12 @@
 
 			<v-container class='card_height ma-a pa-0 font-boost'>
 				
-			<ul class='mb-6 '>
-				<li v-for="(item,index) in articles" :key=index>
-					{{ item.date }}
-					<AHref class='ml-2' tooltip='something' :to='create_href(item.title)' :id='`words_${index}`':internal='true' :txt='item.title' />
-				</li>
-			</ul>
+				<ul class='mb-6'>
+					<li v-for='(item,index) in articles' :key='index'>
+						{{ item.date }}
+						<AHref class='ml-2' tooltip='something' :to='create_href(item.title)' :id='`words_${index}`' :internal='true' :txt='item.title' />
+					</li>
+				</ul>
 
 			<!-- More in the pipeline -->
 			</v-container>
@@ -23,17 +23,16 @@ import { articles, create_href } from '@/router';
 
 import AHref from '@/components/AHref.vue';
 
-const darkmodeStore = darkmodeModule();
+// const darkmodeStore = darkmodeModule();
 
-
-const dark_mode = computed({
-	get (): boolean {
-		return darkmodeStore.darkmode;
-	},
-	set (b: boolean): void {
-		darkmodeStore.set_darkmode(b);
-	}
-});
+// const dark_mode = computed({
+// 	get (): boolean {
+// 		return darkmodeStore.darkmode;
+// 	},
+// 	set (b: boolean): void {
+// 		darkmodeStore.set_darkmode(b);
+// 	}
+// });
 
 // const create_href = (text: string): string => `/words/${ text.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
 
