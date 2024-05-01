@@ -48,7 +48,7 @@
 			<AppDivider />
 
 			<v-row align='center' justify='space-around' no-gutters class='my-4'>
-				<v-col cols='auto' class='ma-0 pa-0 text-h6'>
+				<v-col cols='auto' class='ma-0 pa-0 text-h8 font-weight-bold'>
 					Autodidactic digital dweller. Adept at Rust, TypeScript, PostgreSQL, Docker, Vue, Redis, Linux, and more.
 				</v-col>
 			</v-row>

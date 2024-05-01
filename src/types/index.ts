@@ -12,7 +12,7 @@ export type TSnack = {
 
 export type TPositions = 'bottom' | 'left' | 'right' | 'top'
 
-export type code_lang = 'JSON' | 'rust'
+export type code_lang = 'json' | 'rust'
 
 export type TSnackPosition = {x: u<TPositions>, y: u<TPositions> }
 

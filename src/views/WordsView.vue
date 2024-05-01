@@ -48,7 +48,7 @@ import AHref from '@/components/AHref.vue';
 </script>
 
 <style>
-.font-boost{
+/* .font-boost{
 	font-size: 1.4rem;
-}
+} */
 </style>

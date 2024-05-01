@@ -383,7 +383,7 @@ const webp = computed((): string => {
 
 /* todo rename me */
 
-.font-boost {
+/* .font-boost {
 	font-size: 1.25rem;
-}
+} */
 </style>
