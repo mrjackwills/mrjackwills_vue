@@ -79,6 +79,8 @@ export default defineConfig({
 		}),
 		FontaineTransform.vite(fontaine_options),
 		VitePWA(pwaOptions),
+		// compression(),
+		// compression({ algorithm: 'brotliCompress' })
 		viteCompression({ algorithm: 'brotliCompress' }),
 		viteCompression({ algorithm: 'gzip' }),
 	],
