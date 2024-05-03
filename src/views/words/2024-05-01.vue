@@ -156,13 +156,12 @@
 						<CodeBlock cols='auto' :code='caa_full_response' lang='json' label='full smörgåsbord GET response'/>
 					</v-row>
 					<p>
-						Unfortunately, one simply can't visit the URL from the GET request to see the data for yourself, as a ReCaptchaToken header is required, but more on that later.
-
+						Unfortunately, the URL can't simply be visited in browser, as a ReCaptchaToken header is required, but more on that later.
 					</p>
 					<p>
 						So the process so far seems to be, make POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
 						with an aircraft’s registration, then use the <RedSpan text='AircraftID' /> field from this to make a GET request
-						to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details' />.
+						to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details/[AircraftID]'/>.
 
 					</p>
 					<p>
@@ -175,7 +174,7 @@
 					<p>
 						Finally, after all of this pre-amble, some Rust code.
 						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock cols='auto' :code='generate_registrations'  :lang='"rust"' label='Generate all registrations from AAAA to ZZZZ'/>
+							<CodeBlock cols='auto' :code='generate_registrations' :lang='"rust"' label='Generate all registrations from AAAA to ZZZZ'/>
 						</v-row>
 
 						<!-- <v-row justify='space-around' class='my-3' align='end' > -->
@@ -184,8 +183,10 @@
 					</p>
 					<p>
 						We are using the new type pattern here to create a distinct <RedSpan text='Registration' /> type, and then implementing <RedSpan text='From<String>' />.
-						Using this pattern ensures that <RedSpan text='Registration' /> instances are distinct from plain strings. A <AHref :to='links.try_from.to' txt='Try<From>' /> method could, for example,
-						guarantee that the input string is exactly four characters long, and composed only of the characters 'A' through to 'Z'.
+						Using this pattern ensures that <RedSpan text='Registration' /> instances are distinct from plain strings, and, if so required, enables extra functionality to be attached
+						to this distinct type.
+						<!-- A <AHref :to='links.try_from.to' txt='Try<From>' /> method could, for example, -->
+						<!-- guarantee that the input string is exactly four characters long, and composed only of the characters 'A' through to 'Z'. -->
 						<!-- Later we  combine this with our SQLite database later, to create a robust type system unique to each table, all while using a macro to reduce the amount of -->
 						<!-- code that is needed to be written. -->
 						<!-- When storing and retrieving data from the SQLite database, having unique types can reduce confusion and conflict, to further enforce a strong type system. -->
@@ -204,101 +205,141 @@
 					</p>
 					<p>
 						Lets make that <span class='font-italic'>simple</span> POST request.
-						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock :code='first_request' :lang='"rust"' label='Simple POST request'/>
-						</v-row>
+					</p>
+					<v-row justify='space-around' class='my-3' align='end' >
+						<CodeBlock :code='first_request' :lang='"rust"' label='Simple POST request'/>
+					</v-row>
 
-						<!-- add button to highlight text! -->
-						<!-- talk about serdes body and response, can ignore the non used parts, as all we want is the caaid -->
-						<!-- Show macro for the id -->
-						<!-- <br> -->
-						It does appear that this <span class='font-italic'>simple</span> request code is verbose, and there is a lot going on here
-						- much of which we will later cut out or make generic, but by being explicit we are able to remove doubt and ambiguity.
+					<!-- add button to highlight text! -->
+					<!-- talk about serdes body and response, can ignore the non used parts, as all we want is the caaid -->
+					<!-- Show macro for the id -->
+					<!-- <br> -->
+					<!-- It does appear that this <span class='font-italic'>simple</span> request code is verbose, and there is a lot going on here -->
+					<!-- - much of which we will later cut out or make generic, but by being explicit we are able to remove doubt and ambiguity. -->
+
+					<p>
+						After playing around with the API, although we previously noted the more comprehensive <AHref to='#post_body' :internal='true' txt='POST body' />, it will still gladly respond when
+						when all that is sent is a JSON containing just the "registration" field.
+						The <RedSpan text='From<&Registration>' /> block will create our body from, as the name suggests, a borrowed <RedSpan text='Registration' /> instance, which will then be serialized into JSON.
 					</p>
 
 					<p>
-						After playing around with the API, although the in-browser request sends a <AHref to='#post_body' :internal='true' txt='more detailed body' />, it will still happily respond when
-						all that is sent is a JSON containing the single, not capitalised, "registration" field.
-					</p>
-
-					<p>
-						The <RedSpan text='#[serde(rename = "AircraftID")]'/> is an <AHref :to='links.attribute_macro.to' :txt='links.attribute_macro.txt'/>, used when deserializing the received
-						JSON response, into a <RedSpan text='SearchResponse'/> struct, in order to follow the standard Rust naming convention.
-						Again, the <AHref to='#post_body' :internal='true' txt='POST response' /> contained multiple fields,
-						but the only one that we are concerned with is the <RedSpan text='AircraftID' />, so we can disregard all others.
+						The <RedSpan text='SearchResponse' /> is the data that we are expecting to receive back from the API, and even though
+						the <AHref to='#post_body' :internal='true' txt='POST response' /> contained multiple fields, we can ignore all but the <RedSpan text='AircraftID' />.
+						By decorating this field with the <RedSpan text='#[serde(rename = "AircraftID")]'/> <AHref :to='links.attribute_macro.to' :txt='links.attribute_macro.txt'/>,
+						during deserialization it will automatically be renamed to follow the standard Rust naming conventions.
 					</p>
 
 					<p>
 						As for the request itelf, we are using the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
 						<AHref :to='links.reqwest_client.to' txt='Client' /> instance, with a 20 second connection timeout, POST'ing to the given URL, using our <RedSpan text='RegistrationPost' />
-						as the body, which will be Serialized into JSON, and adding a <RedSpan text='ReCaptchaToken'/>, sending the request, then Serializing the response into a
-						<RedSpan text='Vec<SearchResponse>' />.
+						as the body, adding a <RedSpan text='ReCaptchaToken'/> header, submitting the request, then Serializing the response into a <RedSpan text='Vec<SearchResponse>' />. This function
+						returns a <AHref :to='links.rust_result.to' txt='Result type' />, and by using the <RedSpan text='?'/> operator, any error encountered will be propagated up to the caller.
 					</p>
 
 					<p>
 						Annoyingly, this <RedSpan text='ReCaptchaToken'/> isn't an automated process. When searching on the CAA website, a simple captcha needs to be solved
 						in order to continue. We will have to complete one of these captchas, save the resultant <RedSpan text='ReCaptchaToken'/>, found in the Headers section of the devtools,
-						in our .env file. Doing so means can then easily update the token value without having to re-compile the entire application.
-						<section class='my-4'>
-							<v-row justify='space-around' align='center'>
-								<v-col cols='7' md='3'>
-									<v-row justify='center' class='ma-0 pa-0'>
-										<v-col cols='12' class='ma-0 pa-0'>
-											<v-img src='@/assets/blog/2024-05-01/captcha.jpg' class='ma-0 pa-0' alt='Screenshot of a captcha to be solved'>
-												<template #sources>
-													<source srcset='@/assets/blog/2024-05-01/captcha.webp'>
-												</template>
-											</v-img>
-										</v-col>
-									</v-row>
-									<v-row justify='center' class='ma-0 pa-0 mb-2'>
-										<v-col cols='auto' class='ma-0 pa-0 text-caption'>
-											The simple captcha to be solved
-										</v-col>
-									</v-row>
-								</v-col>
-
-								<v-col cols='7' md='7'>
-									<v-row justify='center' class='ma-0 pa-0'>
-										<v-col cols='12' class='ma-0 pa-0'>
-											<v-img src='@/assets/blog/2024-05-01/token.jpg' class='ma-0 pa-0' alt='Screenshot of devtools containing the token, pixelised'>
-												<template #sources>
-													<source srcset='@/assets/blog/2024-05-01/token.webp'>
-												</template>
-											</v-img>
-										</v-col>
-									</v-row>
-									<v-row justify='center' class='ma-0 pa-0 mb-2'>
-										<v-col cols='auto' class='ma-0 pa-0 text-caption'>
-											Screenshot of devtools containing the token, pixelised because you never know
-										</v-col>
-									</v-row>
-								</v-col>
-							</v-row>
-						</section>
-						Fortunately the token generated seems to have generous permission, it isn't locked to our IP address, and has a substantial lifespane, which in my testing seems valid for many, many, many hours.
-
+						then re-use this for every request. Saving the <RedSpan text='ReCaptchaToken'/> in an .env file means it can be easily updated without having to re-compile the entire application.
+					</p>
+					<p>
+						Fortunately the token generated seems to have generous permission, isn't locked to our IP address, and has a substantial lifespan, which in testing seems valid for many, many, many hours.
 					</p>
 
-					<p>
+					<section class='my-4'>
+						<v-row justify='space-around' align='end'>
+							<v-col cols='7' md='3'>
+								<v-row justify='center' class='ma-0 pa-0'>
+									<v-col cols='12' class='ma-0 pa-0'>
+										<v-img src='@/assets/blog/2024-05-01/captcha.jpg' class='ma-0 pa-0' alt='Screenshot of a captcha to be solved'>
+											<template #sources>
+												<source srcset='@/assets/blog/2024-05-01/captcha.webp'>
+											</template>
+										</v-img>
+									</v-col>
+								</v-row>
+								<v-row justify='center' class='ma-0 pa-0 mb-2'>
+									<v-col cols='auto' class='ma-0 pa-0 text-caption'>
+										The simple captcha to be solved
+									</v-col>
+								</v-row>
+							</v-col>
+
+							<v-col cols='7' md='7'>
+								<v-row justify='center' class='ma-0 pa-0'>
+									<v-col cols='12' class='ma-0 pa-0'>
+										<v-img src='@/assets/blog/2024-05-01/token.jpg' class='ma-0 pa-0' alt='Screenshot of devtools containing the token, pixelated'>
+											<template #sources>
+												<source srcset='@/assets/blog/2024-05-01/token.webp'>
+											</template>
+										</v-img>
+									</v-col>
+								</v-row>
+								<v-row justify='center' class='ma-0 pa-0 mb-2'>
+									<v-col cols='auto' class='ma-0 pa-0 text-caption'>
+										Screenshot of devtools containing the token, pixelated because you never know
+									</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+					</section>
+
+					<!-- </p> -->
+
+					<!-- <p>
 						The <RedSpan text='GInfo::exists'/> function will return an <RedSpan text='Option<()>'/> at this point we only care if it exists or not,
 						and an Option is preferable to a bool in this situation. Option types are on of Rusts killer features, and helps to fix the billion dollar null problem.
 						By implementing this check, we can run the scraping process multiple times without inserting duplicate data into our SQLite table.
-					</p>
+					</p> -->
 
 					<p>
-						So far, so good, but we have yet to actually run any multi threaded operations, and if each request took optimistically 100 milliseconds,
-						we would still be looking at around 12 hours for all 456,976 registrations alone, it's time to exploit Rusts <AHref :to='links.fearless_concurrency.to' text='Fearless Concurrency' />
+						So far, so good, but we have yet to actually run any multi-threaded operations, and if each request took, optimistically, 100 milliseconds,
+						we would still be looking at over 12 hours for all 456,976 registrations alone. It's time to exploit Rusts <AHref :to='links.fearless_concurrency.to' text='Fearless Concurrency' />
 						to vastly speed up the near half a million requests.
 					</p>
 
+					<v-row justify='space-around' class='my-3' align='end' >
+						<CodeBlock :code='first_threaded_request' :lang='"rust"' label='First multi-threaded request attempt'/>
+					</v-row>
+
 					<p>
+						The heart of the multi-threaded approach is <RedSpan text='request_thread_handler()'/> which uses a <AHref :to='links.rust_mpsc.to' txt='Multi Producer Single Consumer' />
+						channel to send and receive messages across threads.
+					</p>
+
+					<p>
+						The <RedSpan text='generate_all_registrations()' /> has been altered to return a <AHref :to='links.rust_vecdeque.to' txt='VecDeque' />,
+						making it much more suitable to this queue like situation. This VecDeque is then split into two parts, <RedSpan text='all_registrations'/> will now contain the
+						first <RedSpan text='app_env.threads'/> number of entries, <RedSpan text='registrations_to_spawn'/> will contain all of the remaining entries.
+
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='app_env' :lang='"rust"' label='.env parsing & AppEnv creation' :hidden='true'/>
+						</v-row>
+						
+						After trial-and-error testing, 375 concurrent threads seems to be roughly
+						the greatest number that won’t overload the CAA API server. For each of these first 375 <RedSpan text='Registration'/> entries
+						we call <RedSpan text='spawn_request()' />, which will spawn a request into its own <AHref :to='links.tokio_task.to' txt='tokio task thread' />.
+						When <RedSpan text='tokio::spawn()' /> is invoked, we have to to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
+						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
+						<RedSpan text='borrowed data escapes outside of associated function' />, if we have such a glaring lifetime error.
+						
+					</p>
+					<p>
+						Each spawned request <span class='font-italic'>should</span> send a Result over the channel, to be handled in the main thread. Once received,
+						the <RedSpan text='msg_count' /> is increased by one, the Result is then <AHref :to='links.rust_match.to' txt='matched' />, with the response or error printed to screen.
+						Following this, if the number of messaged received is equal to the total number of registrations, the channel is closed. This has to be done manually
+						as <RedSpan text='sx' /> is kept alive, in order to pass it as a reference into <RedSpan text='spawn_request()'/>, otherwise <RedSpan text='rx' />
+						would block by looping forever.
+						Finally, if the <RedSpan text='data_to_spawn'/> VecDeque still contains a <RedSpan text='Registration' />, it is removed, the whole spawning process is repeated.
+					</p>
+
+					<!-- <p>
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='sql_string_type_macro' :lang='"rust"' label='sqlx newtype macro'/>
 						</v-row>
 						
 						macro for sql string type
-					</p>
+					</p> -->
 
 					<!-- next -->
 
@@ -400,9 +441,21 @@ const links = {
 		to: 'https://rust-lang.org',
 		txt: 'Rust'
 	},
+	rust_mpsc: {
+		to: 'https://doc.rust-lang.org/std/sync/mpsc/'
+	},
 	rust_std: {
 		to: 'https://doc.rust-lang.org/std',
 		txt: 'standard library'
+	},
+	rust_match: {
+		to: 'https://doc.rust-lang.org/std/keyword.match.html'
+	},
+	rust_vecdeque: {
+		to: 'https://doc.rust-lang.org/std/collections/struct.VecDeque.html'
+	},
+	rust_result: {
+		to: 'https://doc.rust-lang.org/std/result/'
 	},
 	serde: {
 		to: 'https://github.com/serde-rs/serde',
@@ -415,6 +468,9 @@ const links = {
 	tokio: {
 		to: 'https://github.com/tokio-rs/tokio',
 		txt: 'tokio'
+	},
+	tokio_task: {
+		to: 'https://docs.rs/tokio/latest/tokio/task/index.html'
 	},
 	try_from: {
 		to: 'https://doc.rust-lang.org/std/convert/trait.TryFrom.html'
@@ -637,7 +693,7 @@ impl From<&Registration> for RegistrationPost {
   }
 }
 
-async fn registration_to_caa_id(
+async fn make_request(
   reg: &Registration,
   token: &str
 ) -> Result<Vec<SearchResponse>, AppError> {
@@ -687,8 +743,134 @@ impl GinfoId {
             .await?;
         Ok(())
     }
+}`;
+
+const first_threaded_request = `/// Make the request
+async fn request(reg: &Registration, token: &str) -> Result<Vec<SearchResponse>, AppError> {
+    Ok(reqwest::Client::builder()
+        .connect_timeout(std::time::Duration::from_millis(20000))
+        .build()?
+        .post("https://ginfoapi.caa.co.uk/api/aircraft/search")
+        .json(&RegistrationPost::from(reg))
+        .header("RecaptchaToken", token)
+        .send()
+        .await?
+        .json::<Vec<SearchResponse>>()
+        .await?)
 }
-`;
+
+/// Spawn a request into a tokio thread
+fn spawn_request(
+    token: &str,
+    registration: Registration,
+    sx: &std::sync::mpsc::Sender<Result<Vec<SearchResponse>, AppError>>,
+) {
+    let token = token.to_owned();
+    let sx = sx.clone();
+    tokio::spawn(async move {
+        let result = request(&registration, &token).await;
+        sx.send(result).ok();
+    });
+}
+
+/// Handle the concurrent request threads
+fn request_thread_handler(
+    app_env: &AppEnv,
+    sqlite: &SqlitePool,
+    mut all_registrations: VecDeque<Registration>,
+) {
+    let all_registrations_len = all_registrations.len();
+    let (sx, rx) = std::sync::mpsc::channel();
+
+    let mut registrations_to_spawn = all_registrations.split_off(app_env.threads);
+    let mut msg_count = 0;
+
+    for reg in all_registrations {
+        spawn_request(&app_env.captcha_token, reg, &sx);
+    }
+
+    while let Ok(response) = rx.recv() {
+        msg_count += 1;
+
+        match response {
+            Ok(data) => println!("{data:?}"),
+            Err(e) => println!("error: {e:?}"),
+        }
+
+        if msg_count == all_registrations_len {
+            break;
+        }
+
+        if let Some(reg) = registrations_to_spawn.pop_front() {
+            spawn_request(&app_env.captcha_token, reg, &sx);
+        }
+    }
+}`;
+
+const app_env =`use std::{collections::HashMap, env};
+use thiserror::Error;
+
+type EnvHashMap = HashMap<String, String>;
+
+#[derive(Debug, Error)]
+enum EnvError {
+    #[error("missing env: '{0}'")]
+    NotFound(String),
+    #[error("Invalid Type: '{0}'")]
+    TypeErr(String),
+}
+
+#[derive(Debug, Clone)]
+pub struct AppEnv {
+    pub captcha_token: String,
+    pub threads: usize,
+}
+
+impl AppEnv {
+    fn parse_string(key: &str, map: &EnvHashMap) -> Result<String, EnvError> {
+        map.get(key).map_or_else(
+            || Err(EnvError::NotFound(key.into())),
+            |value| Ok(value.into()),
+        )
+    }
+
+    fn parse_usize(map: &EnvHashMap) -> Result<usize, EnvError> {
+        let Ok(value) = Self::parse_string("THREADS", map) else {
+            return Err(EnvError::NotFound("THREADS".to_owned()));
+        };
+        value
+            .parse::<usize>()
+            .map_or(Err(EnvError::TypeErr("THREADS".to_owned())), Ok)
+    }
+
+    /// Load, and parse .env file, return AppEnv
+    fn generate() -> Result<Self, EnvError> {
+        let env_map = env::vars()
+            .map(|i| (i.0, i.1))
+            .collect::<HashMap<String, String>>();
+
+        Ok(Self {
+            captcha_token: Self::parse_string("CAPTCHA_TOKEN", &env_map)?,
+            threads: Self::parse_usize(&env_map)?,
+        })
+    }
+
+    pub fn get_env() -> Self {
+        let local_env = ".env";
+        if std::fs::metadata(local_env).is_err() {
+            println!("Unable to load env file");
+            std::process::exit(1);
+        };
+        dotenvy::from_path(local_env).ok();
+        match Self::generate() {
+            Ok(s) => s,
+            Err(e) => {
+                println!("{e:?}");
+                std::process::exit(1);
+            }
+        }
+    }
+}`;
 </script>
 
 <style scoped>
