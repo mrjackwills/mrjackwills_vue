@@ -320,8 +320,8 @@
 						the greatest number that won’t overload the CAA API server. For each of these first 375 <RedSpan text='Registration'/> entries
 						we call <RedSpan text='spawn_request()' />, which will spawn a request into its own <AHref :to='links.tokio_task.to' txt='tokio task thread' />.
 						When <RedSpan text='tokio::spawn()' /> is invoked, we have to to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
-						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
-						<RedSpan text='borrowed data escapes outside of associated function' />, if we have such a glaring lifetime error.
+						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and informs us that
+						"borrowed data escapes outside of associated function" if we have such a glaring lifetime error.
 						
 					</p>
 					<p>
@@ -330,9 +330,25 @@
 						Following this, if the number of messaged received is equal to the total number of registrations, the channel is closed. This has to be done manually
 						as <RedSpan text='sx' /> is kept alive, in order to pass it as a reference into <RedSpan text='spawn_request()'/>, otherwise <RedSpan text='rx' />
 						would block by looping forever.
-						Finally, if the <RedSpan text='data_to_spawn'/> VecDeque still contains a <RedSpan text='Registration' />, it is removed, the whole spawning process is repeated.
+						Finally, if the <RedSpan text='data_to_spawn'/> VecDeque still contains any <RedSpan text='Registration' />'s', it is taken from the front, and the whole spawning process is repeated.
 					</p>
 
+					<p>
+						Using this approach, my home internet connection can complete all 456,976 requests in under 30 minutes. However, as the <RedSpan text='RecaptchaToken' /> has such generous
+						and lax permissions, we can deploy this application on a remote server with an order of magnitude more bandwidth, and potentially lower latency, to further speed up the process.
+					</p>
+					
+					<p>
+						Things seem to be going well, but so far we aren't actually storing the data we receive, nor are we handling any errors, nor do we have a generic approach to make
+						requests - needed to complete the second part of the data scraping process. SO the next step should be to create methods that are agnostic to the reqeust type,
+						write the response into a SQLite database, and then check for errors.
+					</p>
+					<p>
+						We only have two request types, each with it's own url, to make, so this can be stored in an <AHref to='enum' txt='enum'/>
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='scrape_enum' :lang='"rust"' label='ScrapeStep enum'/>
+						</v-row>
+					</p>
 					<!-- <p>
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='sql_string_type_macro' :lang='"rust"' label='sqlx newtype macro'/>
@@ -871,6 +887,57 @@ impl AppEnv {
         }
     }
 }`;
+
+const scrape_enum = `#[derive(Debug, Hash, PartialEq, Eq)]
+pub enum ScrapeStep {
+    Details(CaaId),
+    Search(Registration),
+}
+
+impl From<Registration> for ScrapeStep {
+    fn from(reg: Registration) -> Self {
+        Self::Search(reg)
+    }
+}
+
+impl From<RegCaaDetails> for ScrapeStep {
+    fn from(value: RegCaaDetails) -> Self {
+        Self::Details(value.caa_id)
+    }
+}
+
+impl From<CaaId> for ScrapeStep {
+    fn from(caa_id: CaaId) -> Self {
+        Self::Details(caa_id)
+    }
+}
+
+impl ScrapeStep {
+    fn build_request(&self, req: &reqwest::Client) -> reqwest::RequestBuilder {
+        match self {
+            Self::Search(registration) => req
+                .post("https://ginfoapi.caa.co.uk/api/aircraft/search")
+                .json(&RegistrationPost::from(registration)),
+
+            Self::Details(caa_id) => req.get(format!(
+                "https://ginfoapi.caa.co.uk/api/aircraft/details/{}",
+                caa_id.get()
+            )),
+        }
+    }
+
+    async fn insert(&self, sqlite: &SqlitePool, response: String) -> Result<(), AppError> {
+        match self {
+            Self::Search(registration) => {
+                let data = serde_json::from_str::<Vec<SearchResponse>>(&response)?;
+                RegCaaDetails::insert(sqlite, registration, data.first()).await?;
+            }
+            Self::Details(id) => {
+                Aircraft::insert(sqlite, id, &response).await?;
+            }
+        }
+        Ok(())
+    }`;
 </script>
 
 <style scoped>
