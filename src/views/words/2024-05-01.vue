@@ -183,7 +183,7 @@
 					</p>
 					<p>
 						We are using the new type pattern here to create a distinct <RedSpan text='Registration' /> type, and then implementing <RedSpan text='From<String>' />.
-						Using this pattern ensures that <RedSpan text='Registration' /> instances are distinct from plain strings, and, if so required, enables extra functionality to be attached
+						Using this pattern ensures that <RedSpan text='Registration' /> instances are distinct from plain strings, and, if required, enables extra functionality to be added
 						to this distinct type.
 						<!-- A <AHref :to='links.try_from.to' txt='Try<From>' /> method could, for example, -->
 						<!-- guarantee that the input string is exactly four characters long, and composed only of the characters 'A' through to 'Z'. -->
@@ -192,8 +192,8 @@
 						<!-- When storing and retrieving data from the SQLite database, having unique types can reduce confusion and conflict, to further enforce a strong type system. -->
 					</p>
 					<p>
-						Next, <RedSpan text='generate_all_registrations()' /> will create all possible registrations using nested loops. We know the length of the output, so we can create a Vec with the
-						<AHref :to='links.with_capacity.to' text='desired capacity' />, which will allocate the correct heap space in one fell swoop.
+						Next, <RedSpan text='generate_all_registrations()' /> will create all possible registrations using nested loops. We know the length of the output, so we can create a
+						<AHref :to='links.rust_vecdeque.to' txt='VecDeque' /> with the <AHref :to='links.with_capacity.to' text='desired capacity' />, which will allocate the correct heap space in one fell swoop.
 						The <RedSpan text='letter' /> variable is a <AHref :to='links.range_inclusive.to' text='Range Inclusive' /> from A to Z,
 						which make iterating over each letter simple. The <RedSpan text='letter' /> variable is cloned for each loop,
 						so that each of these loops has access to its own unique letter, independent from the others.
@@ -218,8 +218,8 @@
 					<!-- - much of which we will later cut out or make generic, but by being explicit we are able to remove doubt and ambiguity. -->
 
 					<p>
-						After playing around with the API, although we previously noted the more comprehensive <AHref to='#post_body' :internal='true' txt='POST body' />, it will still gladly respond when
-						when all that is sent is a JSON containing just the "registration" field.
+						After playing around with the API it will still gladly respond when when all that is sent is a JSON containing just the "registration" field,
+						rather than the previously detailed <AHref to='#post_body' :internal='true' txt='POST body' />,
 						The <RedSpan text='From<&Registration>' /> block will create our body from, as the name suggests, a borrowed <RedSpan text='Registration' /> instance, which will then be serialized into JSON.
 					</p>
 
@@ -231,7 +231,7 @@
 					</p>
 
 					<p>
-						As for the request itelf, we are using the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
+						Next we use the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
 						<AHref :to='links.reqwest_client.to' txt='Client' /> instance, with a 20 second connection timeout, POST'ing to the given URL, using our <RedSpan text='RegistrationPost' />
 						as the body, adding a <RedSpan text='ReCaptchaToken'/> header, submitting the request, then Serializing the response into a <RedSpan text='Vec<SearchResponse>' />. This function
 						returns a <AHref :to='links.rust_result.to' txt='Result type' />, and by using the <RedSpan text='?'/> operator, any error encountered will be propagated up to the caller.
@@ -243,7 +243,7 @@
 						then re-use this for every request. Saving the <RedSpan text='ReCaptchaToken'/> in an .env file means it can be easily updated without having to re-compile the entire application.
 					</p>
 					<p>
-						Fortunately the token generated seems to have generous permission, isn't locked to our IP address, and has a substantial lifespan, which in testing seems valid for many, many, many hours.
+						Fortunately the generated token seems to have generous permission, isn't locked to our IP address, and has a substantial lifespan, which in testing seems valid for many, many, many hours.
 					</p>
 
 					<section class='my-4'>
@@ -308,46 +308,87 @@
 					</p>
 
 					<p>
-						The <RedSpan text='generate_all_registrations()' /> has been altered to return a <AHref :to='links.rust_vecdeque.to' txt='VecDeque' />,
-						making it much more suitable to this queue like situation. This VecDeque is then split into two parts, <RedSpan text='all_registrations'/> will now contain the
+						The VecDeque created from  <RedSpan text='generate_all_registrations()' />  is first split into two parts, <RedSpan text='all_registrations'/> will now contain the
 						first <RedSpan text='app_env.threads'/> number of entries, <RedSpan text='registrations_to_spawn'/> will contain all of the remaining entries.
-
-						<v-row justify='space-around' class='my-3' align='end' >
+						After some trial-and-error testing, 375 concurrent threads seems to be roughly the greatest number that won’t overload the CAA API server.
+					</p>
+					<p>
+						<!-- <v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='app_env' :lang='"rust"' label='.env parsing & AppEnv creation' :hidden='true'/>
-						</v-row>
+						</v-row> -->
 						
-						After trial-and-error testing, 375 concurrent threads seems to be roughly
-						the greatest number that won’t overload the CAA API server. For each of these first 375 <RedSpan text='Registration'/> entries
-						we call <RedSpan text='spawn_request()' />, which will spawn a request into its own <AHref :to='links.tokio_task.to' txt='tokio task thread' />.
+						For each of these first 375 <RedSpan text='Registration'/> entries we call <RedSpan text='spawn_request()' />, which will spawn a request into its own
+						<AHref :to='links.tokio_task.to' txt='tokio task thread' />.
 						When <RedSpan text='tokio::spawn()' /> is invoked, we have to to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
-						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and informs us that
-						"borrowed data escapes outside of associated function" if we have such a glaring lifetime error.
+						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
+						"borrowed data escapes outside of associated function" if we had such a glaring lifetime error.
 						
 					</p>
 					<p>
 						Each spawned request <span class='font-italic'>should</span> send a Result over the channel, to be handled in the main thread. Once received,
 						the <RedSpan text='msg_count' /> is increased by one, the Result is then <AHref :to='links.rust_match.to' txt='matched' />, with the response or error printed to screen.
 						Following this, if the number of messaged received is equal to the total number of registrations, the channel is closed. This has to be done manually
-						as <RedSpan text='sx' /> is kept alive, in order to pass it as a reference into <RedSpan text='spawn_request()'/>, otherwise <RedSpan text='rx' />
-						would block by looping forever.
-						Finally, if the <RedSpan text='data_to_spawn'/> VecDeque still contains any <RedSpan text='Registration' />'s', it is taken from the front, and the whole spawning process is repeated.
+						as <RedSpan text='sx' /> is kept alive, in order to pass it as a reference into <RedSpan text='spawn_request()'/>, and as such <RedSpan text='rx' /> would loop forever
+						Finally, if the <RedSpan text='data_to_spawn'/> VecDeque still contains any <RedSpan text='Registration' />'s, we pop the first entry, and repeat the whole process.
 					</p>
 
 					<p>
 						Using this approach, my home internet connection can complete all 456,976 requests in under 30 minutes. However, as the <RedSpan text='RecaptchaToken' /> has such generous
-						and lax permissions, we can deploy this application on a remote server with an order of magnitude more bandwidth, and potentially lower latency, to further speed up the process.
+						and lax permissions, we can deploy this application on a remote server with an order of magnitude more bandwidth, and potentially lower latency, to hopefully hasten the process.
 					</p>
 					
 					<p>
 						Things seem to be going well, but so far we aren't actually storing the data we receive, nor are we handling any errors, nor do we have a generic approach to make
-						requests - needed to complete the second part of the data scraping process. SO the next step should be to create methods that are agnostic to the reqeust type,
+						the two different requests. So the next step should be to create methods that are agnostic to the request type,
 						write the response into a SQLite database, and then check for errors.
 					</p>
 					<p>
-						We only have two request types, each with it's own url, to make, so this can be stored in an <AHref to='enum' txt='enum'/>
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='scrape_enum' :lang='"rust"' label='ScrapeStep enum'/>
 						</v-row>
+						We only have two request types, each with it's own url and <AHref :to='links.http_verb.to' text='http verb' />, so this can be stored in an <AHref to='enum' txt='enum'/>, where we then add
+						methods to create the specific request for each of the variants. Not shown here, but we should extend this implementation to cover Deserializing the data, inserting said data into
+						the database, as well as inserting any errors into the database.
+					</p>
+
+					<p>
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='thread_handler_trait' :lang='"rust"' label='Generic Traits'/>
+							<CodeBlock :code='scrape_step_from' :lang='"rust"' label='impl From for ScrapeStep'/>
+						</v-row>
+						Next we need to alter <RedSpan text='request_thread_handler()' /> to accept a generic type, and also introduce two <AHref :to='links.trait_bounds.to' txt='trait bounds' />.
+						The first, <RedSpan text='T: Send + &apos;static + Sync' />, limits the generic type to one that can be safely sent and shared across threads, removing any potential data-race problems.
+						The second, <RedSpan text='ScrapeStep: std::convert::From<T>' /> further limits the generic type to only those that can be converted into a <RedSpan text='ScrapeStep' /> enum, meaning
+						we now need to implement From for both AircraftId and Registration.
+						<!--
+						<CodeBlock :code='get_trait' :lang='"rust"' label='Get trait'/>
+						Implementing the get trait on both <RedSpan text='Registration' /> and <RedSpan text='AircraftId' />
+						means we can now easily return the interior data, even though these are two distinct types. -->
+					</p>
+
+					<p>
+
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='insert_db_data' :lang='"rust"' label='insert the data into SQLite'/>
+						</v-row>
+						Next we should handle the database queries. As this is a small and portable project, SQLite seemed like the best choice. If we wanted to, we could clone
+						a <AHref :to='links.sqlx_pool.to' txt='SQLitePool' /> into each spawned task, and insert the data there,
+						but an easier solution would be to handle the database insertions in the main thread. It would also make sense to handle any errors, and data Deserializing,
+						in the main thread, so <RedSpan text='sx' /> now contains an Optional tuple of <RedSpan text='Option<(ScrapeStep, Result<String, AppError>)>' />. As seen earlier,
+						by using the match expression, each <RedSpan text='ScrapeStep' /> variant can share a method name but have different internal methods, so the SQL queries can be distinct
+						from one another by implementing the <RedSpan text='insert' /> and <RedSpan text='insert_error()' /> methods.
+							
+					</p>
+					<p>
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='make_request_hash' :lang='"rust"' label='Check a hashset for included data'/>
+						</v-row>
+						We haven't yet dealt with the possibility of duplicate data, but there is no point scraping the same url twice. Now that we're using a persistent SQLite database
+						we can check before each request to see if that URL has already been hit. The first solution to do this was to execute a simple SQL query, but due to the number of threads active,
+						and the shear number of URL's to hit, this soon became a huge bottleneck. So, instead we create a HashSet of all the <RedSpan text='ScrapeStep' />'s
+						that are already stored in the database, afterwhich a simple and ridicslouyl fast memory <RedSpan text='contains' /> method can tell us if we need to make this
+						soecific request or not.
+
 					</p>
 					<!-- <p>
 						<v-row justify='space-around' class='my-3' align='end' >
@@ -443,6 +484,9 @@ const links = {
 		to: 'https://hetzner.com/cloud',
 		txt: 'cheap VPS'
 	},
+	http_verb: {
+		to: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'
+	},
 	range_inclusive: {
 		to: 'https://doc.rust-lang.org/std/ops/struct.RangeInclusive.html'
 	},
@@ -481,12 +525,18 @@ const links = {
 		to: 'https://github.com/launchbadge/sqlx',
 		txt: 'sqlx'
 	},
+	sqlx_pool: {
+		to: 'https://docs.rs/sqlx/latest/sqlx/sqlite/type.SqlitePool.html'
+	},
 	tokio: {
 		to: 'https://github.com/tokio-rs/tokio',
 		txt: 'tokio'
 	},
 	tokio_task: {
 		to: 'https://docs.rs/tokio/latest/tokio/task/index.html'
+	},
+	trait_bounds: {
+		to: 'https://doc.rust-lang.org/reference/trait-bounds.html'
 	},
 	try_from: {
 		to: 'https://doc.rust-lang.org/std/convert/trait.TryFrom.html'
@@ -506,6 +556,28 @@ const post_response = `[
 		"RegistrationStatus": "R"
 	}
 ]`;
+
+const thread_handler_trait=`async fn request_thread_handler<T>(
+    app_env: &AppEnv,
+    sqlite: &SqlitePool,
+    mut data: VecDeque<T>,
+) -> Result<(), AppError>
+    where
+    T: Send + 'static + Sync,
+    ScrapeStep: std::convert::From<T>,
+    `;
+
+const scrape_step_from=`impl From<Registration> for ScrapeStep {
+    fn from(reg: Registration) -> Self {
+        Self::Search(reg)
+    }
+}
+
+impl From<AircraftId> for ScrapeStep {
+    fn from(aircraft_id: AircraftId) -> Self {
+        Self::Details(AircraftId)
+    }
+}`;
 const post_body = `{
 	"AircraftType": null, 
 	"AOCHolder": null,
@@ -518,6 +590,28 @@ const post_body = `{
 	"IncludeDeregistered": false
 }`;
 
+const make_request_hash=`fn spawn_request(
+    app_env: &AppEnv,
+    sx: &std::sync::mpsc::Sender<Option<(ScrapeStep, Result<String, AppError>)>>,
+    known_data: &HashSet<ScrapeStep>,
+    scrape_step: ScrapeStep,
+) {
+    if known_data.contains(&scrape_step) {
+        sx.send(None).ok();
+    } else {
+        let token = app_env.captcha_token.clone();
+        let sx = sx.clone();
+        tokio::spawn(async move {
+            let msg =
+                tokio::time::timeout(DUR + DUR, Self::_make_request(&scrape_step, &token))
+                    .await
+                    .unwrap_or(Err(AppError::Internal("timeout".to_owned())));
+
+            sx.send(Some((scrape_step, msg))).ok();
+        });
+    }
+}`;
+
 const generate_registrations =`#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Registration(String);
 
@@ -527,14 +621,14 @@ impl From<String> for Registration {
     }
 }
 
-fn generate_all_registrations() -> Vec<Registration> {
-    let mut output = Vec::with_capacity(26 * 26 * 26 * 26);
+fn generate_all_registrations() -> VecDeque<Registration> {
+    let mut output = VecDeque::with_capacity(26 * 26 * 26 * 26);
     let letter = 'A'..='Z';
     for one in letter.clone() {
         for two in letter.clone() {
             for three in letter.clone() {
                 for four in letter.clone() {
-                    output.push(Registration::from(format!("{one}{two}{three}{four}")));
+                    output.push_back(Registration::from(format!("{one}{two}{three}{four}")));
                 }
             }
         }
@@ -641,7 +735,7 @@ const caa_full_response = `{
     "ExtractDate": "30-Apr-2024 19:45"
 }`;
 
-const sql_string_type_macro = `use std::hash::Hash;
+const _sql_string_type_macro = `use std::hash::Hash;
 
 use serde::Serialize;
 
@@ -685,7 +779,21 @@ macro_rules! sql_string_field {
 }
 
 sql_string_field!(Registration);
-sql_string_field!(CaaId);`;
+sql_string_field!(AircraftId);`;
+
+const _get_trait =`pub trait Get {
+    fn get(&self) -> &str;
+}`;
+
+const insert_db_data=`while let Ok(msg_data) = rx.recv() {
+    if let Some((scrape_step, msg_data)) = msg_data {
+        if let Ok(response) = msg_data {
+            scrape_step.insert(sqlite, response).await?;
+        } else {
+            scrape_step.insert_error(sqlite).await?;
+        }
+    }
+}`;
 
 const first_request = `// CAA API Post request body
 #[derive(Debug, Serialize)]
@@ -731,7 +839,7 @@ const _g_info = `// This is modelled on our SQLite table
 pub struct GinfoId {
   pub g_info_id i64,
   pub registration: String,
-  pub caa_id: CaaId,
+  pub aircraft_id: AircraftId,
 }
 
 impl GinfoId {
@@ -823,7 +931,7 @@ fn request_thread_handler(
     }
 }`;
 
-const app_env =`use std::{collections::HashMap, env};
+const _app_env =`use std::{collections::HashMap, env};
 use thiserror::Error;
 
 type EnvHashMap = HashMap<String, String>;
@@ -890,26 +998,8 @@ impl AppEnv {
 
 const scrape_enum = `#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum ScrapeStep {
-    Details(CaaId),
+    Details(AircraftId),
     Search(Registration),
-}
-
-impl From<Registration> for ScrapeStep {
-    fn from(reg: Registration) -> Self {
-        Self::Search(reg)
-    }
-}
-
-impl From<RegCaaDetails> for ScrapeStep {
-    fn from(value: RegCaaDetails) -> Self {
-        Self::Details(value.caa_id)
-    }
-}
-
-impl From<CaaId> for ScrapeStep {
-    fn from(caa_id: CaaId) -> Self {
-        Self::Details(caa_id)
-    }
 }
 
 impl ScrapeStep {
@@ -925,19 +1015,8 @@ impl ScrapeStep {
             )),
         }
     }
-
-    async fn insert(&self, sqlite: &SqlitePool, response: String) -> Result<(), AppError> {
-        match self {
-            Self::Search(registration) => {
-                let data = serde_json::from_str::<Vec<SearchResponse>>(&response)?;
-                RegCaaDetails::insert(sqlite, registration, data.first()).await?;
-            }
-            Self::Details(id) => {
-                Aircraft::insert(sqlite, id, &response).await?;
-            }
-        }
-        Ok(())
-    }`;
+	
+}`;
 </script>
 
 <style scoped>

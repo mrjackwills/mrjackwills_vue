@@ -74,6 +74,17 @@ onMounted(() => {
 	}
 });
 
+// /NEED TO ADD NONCE
+
+// const addIndent = (input: string): string => {
+// 	const lines = input.split('\n');
+// 	if (lines.length > 1) {
+// 		return lines.map((line) => `  ${line}`).join('\n');
+// 	} else {
+// 		return input;
+// 	}
+// };
+
 const icon = computed(() => show.value ? mdiChevronDown : mdiChevronUp);
 
 const show_text = computed(() => show.value ? `hide` : `show`);

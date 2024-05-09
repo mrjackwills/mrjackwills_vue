@@ -14,6 +14,6 @@ export default createVuetify({
 	},
 	
 	theme: {
-		cspNonce: 'le82eTTKUwMLsvfITR0whqOh50xGH52QbDwQx8anWgZOSq3JkuOyDX0cbsJeauIeI77nqietIxxj6Lwn',
+		cspNonce: document.querySelector<HTMLMetaElement>('meta[property=csp-nonce]')?.nonce,
 	},
 });
