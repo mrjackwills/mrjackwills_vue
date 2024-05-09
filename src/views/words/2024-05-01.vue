@@ -153,7 +153,7 @@
 						and returns a large response stuffed with all the detailed information that we are after.
 					</p>
 					<v-row justify='space-around' class='my-3' align='end' >
-						<CodeBlock cols='auto' :code='caa_full_response' lang='json' label='full smörgåsbord GET response'/>
+						<CodeBlock cols='auto' :code='caa_full_response' lang='json' label='full smörgåsbord GET response' id='get_body'/>
 					</v-row>
 					<p>
 						Unfortunately, the URL can't simply be visited in browser, as a ReCaptchaToken header is required, but more on that later.
@@ -218,8 +218,8 @@
 					<!-- - much of which we will later cut out or make generic, but by being explicit we are able to remove doubt and ambiguity. -->
 
 					<p>
-						After playing around with the API it will still gladly respond when when all that is sent is a JSON containing just the "registration" field,
-						rather than the previously detailed <AHref to='#post_body' :internal='true' txt='POST body' />,
+						After playing around with the API it will still gladly respond when we just send a JSON containing only the "registration" field,
+						rather than the <AHref to='#post_body' :internal='true' txt='POST body' /> seen earlier.
 						The <RedSpan text='From<&Registration>' /> block will create our body from, as the name suggests, a borrowed <RedSpan text='Registration' /> instance, which will then be serialized into JSON.
 					</p>
 
@@ -295,7 +295,7 @@
 					<p>
 						So far, so good, but we have yet to actually run any multi-threaded operations, and if each request took, optimistically, 100 milliseconds,
 						we would still be looking at over 12 hours for all 456,976 registrations alone. It's time to exploit Rusts <AHref :to='links.fearless_concurrency.to' text='Fearless Concurrency' />
-						to vastly speed up the near half a million requests.
+						to vastly speed up the near half million requests.
 					</p>
 
 					<v-row justify='space-around' class='my-3' align='end' >
@@ -320,7 +320,7 @@
 						For each of these first 375 <RedSpan text='Registration'/> entries we call <RedSpan text='spawn_request()' />, which will spawn a request into its own
 						<AHref :to='links.tokio_task.to' txt='tokio task thread' />.
 						When <RedSpan text='tokio::spawn()' /> is invoked, we have to to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
-						as the spawned thread could out live the lifetime of the borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
+						as the spawned thread could out live the lifetime of this borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
 						"borrowed data escapes outside of associated function" if we had such a glaring lifetime error.
 						
 					</p>
@@ -333,33 +333,39 @@
 					</p>
 
 					<p>
-						Using this approach, my home internet connection can complete all 456,976 requests in under 30 minutes. However, as the <RedSpan text='RecaptchaToken' /> has such generous
-						and lax permissions, we can deploy this application on a remote server with an order of magnitude more bandwidth, and potentially lower latency, to hopefully hasten the process.
+						Using this approach, my home internet connection can complete all 456,976 requests in under 30 minutes, a roughly 24 times improvement compared to our single-threaded estimation.
+						However, as the <RedSpan text='RecaptchaToken' /> has such generous and lax permissions, we can deploy this application on a remote server with
+						an order of magnitude more bandwidth, and potentially lower latency, to hopefully hasten the process.
 					</p>
 					
 					<p>
 						Things seem to be going well, but so far we aren't actually storing the data we receive, nor are we handling any errors, nor do we have a generic approach to make
 						the two different requests. So the next step should be to create methods that are agnostic to the request type,
-						write the response into a SQLite database, and then check for errors.
+						write the response into a SQLite database, and then do something with any errors encountered.
 					</p>
 					<p>
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='scrape_enum' :lang='"rust"' label='ScrapeStep enum'/>
 						</v-row>
-						We only have two request types, each with it's own url and <AHref :to='links.http_verb.to' text='http verb' />, so this can be stored in an <AHref to='enum' txt='enum'/>, where we then add
-						methods to create the specific request for each of the variants. Not shown here, but we should extend this implementation to cover Deserializing the data, inserting said data into
-						the database, as well as inserting any errors into the database.
+						As there's only two kinds of requests, each with it's own url and <AHref :to='links.http_verb.to' text='http verb' />, an <AHref to='enum' txt='enum'/> is a perfect fit.
+						Methods can then be added, to create the distinct request for each of the variants.
+						Not shown here, but we should extend this implementation to cover Deserializing the data, and inserting data, or errors,  into
+						the database.
 					</p>
 
 					<p>
 						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock :code='thread_handler_trait' :lang='"rust"' label='Generic Traits'/>
+							<CodeBlock :code='request_thread_handler_trait' :lang='"rust"' label='add generic Traits'/>
 							<CodeBlock :code='scrape_step_from' :lang='"rust"' label='impl From for ScrapeStep'/>
 						</v-row>
 						Next we need to alter <RedSpan text='request_thread_handler()' /> to accept a generic type, and also introduce two <AHref :to='links.trait_bounds.to' txt='trait bounds' />.
-						The first, <RedSpan text='T: Send + &apos;static + Sync' />, limits the generic type to one that can be safely sent and shared across threads, removing any potential data-race problems.
+						The first, <RedSpan text='T: Send + Sync' />, limits this generic type to one that can be safely sent and shared across threads, removing any potential data-race problems.
 						The second, <RedSpan text='ScrapeStep: std::convert::From<T>' /> further limits the generic type to only those that can be converted into a <RedSpan text='ScrapeStep' /> enum, meaning
-						we now need to implement From for both AircraftId and Registration.
+						we now need to <RedSpan text='impl From<>'/> for both AircraftId and Registration.
+						<br>
+						<RedSpan text='request_thread_handler()' /> is now generic-ish, enough for us to use the same (lets ignore polymorphism) function for both the POST and GET requests,
+						so long as we use a VecDeque of items where every entry can be converted into a <RedSpan text='ScrapeStep' />.
+
 						<!--
 						<CodeBlock :code='get_trait' :lang='"rust"' label='Get trait'/>
 						Implementing the get trait on both <RedSpan text='Registration' /> and <RedSpan text='AircraftId' />
@@ -371,24 +377,39 @@
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='insert_db_data' :lang='"rust"' label='insert the data into SQLite'/>
 						</v-row>
-						Next we should handle the database queries. As this is a small and portable project, SQLite seemed like the best choice. If we wanted to, we could clone
-						a <AHref :to='links.sqlx_pool.to' txt='SQLitePool' /> into each spawned task, and insert the data there,
-						but an easier solution would be to handle the database insertions in the main thread. It would also make sense to handle any errors, and data Deserializing,
-						in the main thread, so <RedSpan text='sx' /> now contains an Optional tuple of <RedSpan text='Option<(ScrapeStep, Result<String, AppError>)>' />. As seen earlier,
-						by using the match expression, each <RedSpan text='ScrapeStep' /> variant can share a method name but have different internal methods, so the SQL queries can be distinct
-						from one another by implementing the <RedSpan text='insert' /> and <RedSpan text='insert_error()' /> methods.
+						As this is a small and portable project, SQLite seemed like the best choice for the database component. If we wanted to, we could clone
+						a <AHref :to='links.sqlx_pool.to' txt='SQLitePool' /> into each spawned task, and execute queries therein,
+						but an easier, and probably faster (even with <AHref :to='links.sql_wal.to' txt='WAL' /> mode enabled), solution would be to handle the database insertions, and Data Deserializing,
+						in the main thread. So <RedSpan text='sx' /> now sends a message of
+						<RedSpan text='Option<(ScrapeStep, Result<String, AppError>)>' />.
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='enum_insert_data' :lang='"rust"' label='enum matching for SQL'/>
+						</v-row>
+							
+						Again by using a match expression, our <RedSpan text='ScrapeStep' /> variants will conduct specific SQL queries.
+						Here, the <RedSpan text='Search' /> variant is also Deserializing into a Vec, and using the first, optional, item to the query function.
+						Whereas with the <RedSpan text='Details' /> variant, the resposne is kept as a string. Although I have described this <AHref to='#get_body' :internal='true' text='response above'/>,
+						I coulnd't be 100% sure of the shape of the data, by just dumping it as-is into SQLite, I was able to later probe and test various Structs to Deserialize into, without
+						halting or blocking the scraping process.
 							
 					</p>
 					<p>
 						<v-row justify='space-around' class='my-3' align='end' >
-							<CodeBlock :code='make_request_hash' :lang='"rust"' label='Check a hashset for included data'/>
+							<CodeBlock :code='make_request_hash' :lang='"rust"' label='Use a hashset to stop duplicate requests'/>
 						</v-row>
-						We haven't yet dealt with the possibility of duplicate data, but there is no point scraping the same url twice. Now that we're using a persistent SQLite database
+						We haven't yet dealt with the possibility of duplicate data, but there is no point scraping the same url more than once. As we're using a persistent SQLite database,
 						we can check before each request to see if that URL has already been hit. The first solution to do this was to execute a simple SQL query, but due to the number of threads active,
 						and the shear number of URL's to hit, this soon became a huge bottleneck. So, instead we create a HashSet of all the <RedSpan text='ScrapeStep' />'s
-						that are already stored in the database, afterwhich a simple and ridicslouyl fast memory <RedSpan text='contains' /> method can tell us if we need to make this
-						soecific request or not.
+						that are already stored in the database, afterwhich a simple <RedSpan text='contains' /> method can tell us if we need to make this
+						specific request. If we're made this request before, we just send an empty message back, which will be ignored by the <RedSpan text='rx.rec()' /> loop.
+						<br>
+						<br>
+						I've also added a 60 second <AHref :to='links.tokio_timeout.to' txt='tokio timeout' /> to each request, which if exceeded will send a custom Error type back to the main thread.
+						Any and all errors received can later re-scraped, although this time we should do it single-threaded and recusrivley, as to hopefully guarantee a valid response.
+					</p>
 
+					<p>
+						This is close to a working appliation, I think the final steps we need to do are error handling, and then creating our very own CSV file.
 					</p>
 					<!-- <p>
 						<v-row justify='space-around' class='my-3' align='end' >
@@ -411,7 +432,7 @@ import AHref from '@/components/AHref.vue';
 
 // const show_caa_full_response=ref(false);
 
-const title = 'Saving £400 a year using Rust';
+const title = 'Using threads to save £400 a year';
 const date = '2024-05-01';
 
 // const anchor = (id: string) => `/{}`
@@ -521,6 +542,9 @@ const links = {
 		to: 'https://github.com/serde-rs/serde',
 		txt: 'serde'
 	},
+	sql_wal: {
+		to: 'https://www.sqlite.org/draft/matrix/wal.html'
+	},
 	sqlx: {
 		to: 'https://github.com/launchbadge/sqlx',
 		txt: 'sqlx'
@@ -537,6 +561,9 @@ const links = {
 	},
 	trait_bounds: {
 		to: 'https://doc.rust-lang.org/reference/trait-bounds.html'
+	},
+	tokio_timeout: {
+		to: 'https://docs.rs/tokio/latest/tokio/time/struct.Timeout.html'
 	},
 	try_from: {
 		to: 'https://doc.rust-lang.org/std/convert/trait.TryFrom.html'
@@ -557,13 +584,13 @@ const post_response = `[
 	}
 ]`;
 
-const thread_handler_trait=`async fn request_thread_handler<T>(
+const request_thread_handler_trait=`async fn request_thread_handler<T>(
     app_env: &AppEnv,
     sqlite: &SqlitePool,
     mut data: VecDeque<T>,
 ) -> Result<(), AppError>
     where
-    T: Send + 'static + Sync,
+    T: Send + Sync,
     ScrapeStep: std::convert::From<T>,
     `;
 
@@ -602,11 +629,9 @@ const make_request_hash=`fn spawn_request(
         let token = app_env.captcha_token.clone();
         let sx = sx.clone();
         tokio::spawn(async move {
-            let msg =
-                tokio::time::timeout(DUR + DUR, Self::_make_request(&scrape_step, &token))
-                    .await
-                    .unwrap_or(Err(AppError::Internal("timeout".to_owned())));
-
+            let msg = tokio::time::timeout(std::time::Duration::from_secs(60), make_request(&scrape_step, &token))
+                .await
+                .unwrap_or(Err(AppError::Internal("timeout".to_owned())));
             sx.send(Some((scrape_step, msg))).ok();
         });
     }
@@ -788,7 +813,7 @@ const _get_trait =`pub trait Get {
 const insert_db_data=`while let Ok(msg_data) = rx.recv() {
     if let Some((scrape_step, msg_data)) = msg_data {
         if let Ok(response) = msg_data {
-            scrape_step.insert(sqlite, response).await?;
+            scrape_step.insert_data(sqlite, response).await?;
         } else {
             scrape_step.insert_error(sqlite).await?;
         }
@@ -869,6 +894,18 @@ impl GinfoId {
     }
 }`;
 
+const enum_insert_data =`async fn insert_data(&self, sqlite: &SqlitePool, response: String) -> Result<(), AppError> {
+    match self {
+        Self::Search(registration) => {
+            let data = serde_json::from_str::<Vec<SearchResponse>>(&response)?;
+            RegCaaDetails::insert(sqlite, registration, data.first()).await?;
+        }
+        Self::Details(id) => {
+            Aircraft::insert(sqlite, id, &response).await?;
+        }
+    }
+    Ok(())
+}`;
 const first_threaded_request = `/// Make the request
 async fn request(reg: &Registration, token: &str) -> Result<Vec<SearchResponse>, AppError> {
     Ok(reqwest::Client::builder()
@@ -892,7 +929,7 @@ fn spawn_request(
     let token = token.to_owned();
     let sx = sx.clone();
     tokio::spawn(async move {
-        let result = request(&registration, &token).await;
+        let result = make_request(&registration, &token).await;
         sx.send(result).ok();
     });
 }

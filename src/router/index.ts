@@ -7,7 +7,7 @@ export const create_href = (text: string): string => `/words/${ strip_title(text
 
 export const articles = [
 	{
-		title: 'Saving £400 a year using Rust',
+		title: 'Using threads to save £400 a year',
 		date: '2024-05-01'
 	}
 ];

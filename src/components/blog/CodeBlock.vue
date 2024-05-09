@@ -130,6 +130,7 @@ code {
 
 pre {
 	font-size: 0.75rem!important;
+	text-wrap: balance;
 }
 
 .numbered_line .line::before {
