@@ -27,15 +27,18 @@
 import { mdiArrowCollapseUp } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 
+const display = useDisplay();
+
 /// Don't show tooltips when on android or ios if also on mobile view!
-const show_tooltip = computed(() => !useDisplay().mobile.value);
+/// Have to
+const show_tooltip = computed(() => !display.mobile.value);
 
 const dark_mode = computed(() => darkmodeModule().darkmode);
 
 const bg_color = computed((): string => {
 	return dark_mode.value ? 'white' : 'black';
-
 });
+
 onMounted(() => {
 	window.addEventListener('scroll', scrollEvent);
 });

@@ -19,11 +19,8 @@
 				<section class='article-font'>
 
 					<p>
-						Yes, the title is indeed hyperbolic incendiary click-bait, the use case that I am detailing here
-						is incredible niche, and some would argue mostly pointless, but by using
-						<AHref :to='links.rust.to' :txt='links.rust.txt' />, I was able to save over $500, can continue
-						to
-						do so, and had an urge to write about various aspects of the process.
+						Yes, the title is indeed hyperbolic incendiary click-bait, the use case that I am detailing here is incredible niche, and some would argue mostly pointless, but by using
+						<AHref :to='links.rust.to' :txt='links.rust.txt' />, I was able to save over £400, can continue to do so, and had an urge to write about various aspects of the process.
 					</p>
 					<p>
 						This rambling post touches on traits, async, generics, multi-threading, SQL, deserializing,
@@ -133,9 +130,9 @@
 					</p>
 
 					<p>
-						When we delve into the browsers developer tools, we can see two requests are made.
-						The first request, which sends a POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
-						with the following body and response;
+						When we delve into the browser's developer tools, we can see two requests are made.
+						The first of which POST's to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
+						with the following body, and returns this response;
 					</p>
 
 					<v-row justify='space-around' class='my-3' align='end' >
@@ -149,8 +146,8 @@
 
 					<p>
 						The second request, this time a GET request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details/46457' />,
-						which clearly has the <RedSpan text='AircraftID' /> obtained from the first request appended to it,
-						and returns a large response stuffed with all the detailed information that we are after.
+						which clearly is appended with the <RedSpan text='AircraftID' /> obtained from the first request,
+						returns a large JSON stuffed with all the detailed information that we are after.
 					</p>
 					<v-row justify='space-around' class='my-3' align='end' >
 						<CodeBlock cols='auto' :code='caa_full_response' lang='json' label='full smörgåsbord GET response' id='get_body'/>
@@ -159,7 +156,7 @@
 						Unfortunately, the URL can't simply be visited in browser, as a ReCaptchaToken header is required, but more on that later.
 					</p>
 					<p>
-						So the process so far seems to be, make POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
+						So the process so far appears to be, make POST request to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/search' />
 						with an aircraft’s registration, then use the <RedSpan text='AircraftID' /> field from this to make a GET request
 						to <RedSpan text='https://ginfoapi.caa.co.uk/api/aircraft/details/[AircraftID]'/>.
 
@@ -201,10 +198,10 @@
 					</p>
 		
 					<p>
-						So we now have a <RedSpan text='Vec<Registration>' />, we can make a POST request for each registration, extract the <RedSpan text='AircraftID'/>, then use this for the GET request.
+						We now have a <RedSpan text='Vec<Registration>' />, we can make a POST request for each registration, extract the <RedSpan text='AircraftID'/>, then use this for the GET request.
 					</p>
 					<p>
-						Lets make that <span class='font-italic'>simple</span> POST request.
+						Let's make that <span class='font-italic'>simple</span> POST request.
 					</p>
 					<v-row justify='space-around' class='my-3' align='end' >
 						<CodeBlock :code='first_request' :lang='"rust"' label='Simple POST request'/>
@@ -231,7 +228,7 @@
 					</p>
 
 					<p>
-						Next we use the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
+						Next, we use the <AHref :to='links.reqwest.to' :txt='links.reqwest.txt' /> crate to build a
 						<AHref :to='links.reqwest_client.to' txt='Client' /> instance, with a 20 second connection timeout, POST'ing to the given URL, using our <RedSpan text='RegistrationPost' />
 						as the body, adding a <RedSpan text='ReCaptchaToken'/> header, submitting the request, then Serializing the response into a <RedSpan text='Vec<SearchResponse>' />. This function
 						returns a <AHref :to='links.rust_result.to' txt='Result type' />, and by using the <RedSpan text='?'/> operator, any error encountered will be propagated up to the caller.
@@ -239,11 +236,11 @@
 
 					<p>
 						Annoyingly, this <RedSpan text='ReCaptchaToken'/> isn't an automated process. When searching on the CAA website, a simple captcha needs to be solved
-						in order to continue. We will have to complete one of these captchas, save the resultant <RedSpan text='ReCaptchaToken'/>, found in the Headers section of the devtools,
+						in order to continue. We will have to complete one of these captchas, save the resultant <RedSpan text='ReCaptchaToken'/>, found in the Headers section of the Developer Tools,
 						then re-use this for every request. Saving the <RedSpan text='ReCaptchaToken'/> in an .env file means it can be easily updated without having to re-compile the entire application.
 					</p>
 					<p>
-						Fortunately the generated token seems to have generous permission, isn't locked to our IP address, and has a substantial lifespan, which in testing seems valid for many, many, many hours.
+						Fortunately, the generated token provides generous permissions, it isn't locked to an IP address, and has a substantial lifespan valid for many, many, many hours.
 					</p>
 
 					<section class='my-4'>
@@ -268,7 +265,7 @@
 							<v-col cols='7' md='7'>
 								<v-row justify='center' class='ma-0 pa-0'>
 									<v-col cols='12' class='ma-0 pa-0'>
-										<v-img src='@/assets/blog/2024-05-01/token.jpg' class='ma-0 pa-0' alt='Screenshot of devtools containing the token, pixelated'>
+										<v-img src='@/assets/blog/2024-05-01/token.jpg' class='ma-0 pa-0' alt='Screenshot of developer tools containing the token, pixelated'>
 											<template #sources>
 												<source srcset='@/assets/blog/2024-05-01/token.webp'>
 											</template>
@@ -277,7 +274,7 @@
 								</v-row>
 								<v-row justify='center' class='ma-0 pa-0 mb-2'>
 									<v-col cols='auto' class='ma-0 pa-0 text-caption'>
-										Screenshot of devtools containing the token, pixelated because you never know
+										Screenshot of developer tools containing the token, pixelated because you never know
 									</v-col>
 								</v-row>
 							</v-col>
@@ -310,7 +307,7 @@
 					<p>
 						The VecDeque created from  <RedSpan text='generate_all_registrations()' />  is first split into two parts, <RedSpan text='all_registrations'/> will now contain the
 						first <RedSpan text='app_env.threads'/> number of entries, <RedSpan text='registrations_to_spawn'/> will contain all of the remaining entries.
-						After some trial-and-error testing, 375 concurrent threads seems to be roughly the greatest number that won’t overload the CAA API server.
+						After some trial-and-error testing, 375 concurrent threads seem to be roughly the greatest number that won’t overload the CAA API server.
 					</p>
 					<p>
 						<!-- <v-row justify='space-around' class='my-3' align='end' >
@@ -319,9 +316,9 @@
 						
 						For each of these first 375 <RedSpan text='Registration'/> entries we call <RedSpan text='spawn_request()' />, which will spawn a request into its own
 						<AHref :to='links.tokio_task.to' txt='tokio task thread' />.
-						When <RedSpan text='tokio::spawn()' /> is invoked, we have to to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
+						When <RedSpan text='tokio::spawn()' /> is invoked, we have to take ownership of the <RedSpan text='token' /> and <RedSpan text='sx'/> variables,
 						as the spawned thread could out live the lifetime of this borrowed data. However, the Rust compiler will simply refuse to build our application, and inform us that
-						"borrowed data escapes outside of associated function" if we had such a glaring lifetime error.
+						"borrowed data escapes outside of associated function" if we had ignored such a glaring lifetime error.
 						
 					</p>
 					<p>
@@ -333,13 +330,8 @@
 					</p>
 
 					<p>
-						Using this approach, my home internet connection can complete all 456,976 requests in under 30 minutes, a roughly 24 times improvement compared to our single-threaded estimation.
-						However, as the <RedSpan text='RecaptchaToken' /> has such generous and lax permissions, we can deploy this application on a remote server with
-						an order of magnitude more bandwidth, and potentially lower latency, to hopefully hasten the process.
-					</p>
-					
-					<p>
-						Things seem to be going well, but so far we aren't actually storing the data we receive, nor are we handling any errors, nor do we have a generic approach to make
+						All 456,976 requests are now sent and received in under 30 minutes, a roughly 24 times improvement compared to our single-threaded estimation.
+						Things look to be going well, but so far we aren't actually storing the data we receive, nor are we handling any errors, nor do we have a generic approach to make
 						the two different requests. So the next step should be to create methods that are agnostic to the request type,
 						write the response into a SQLite database, and then do something with any errors encountered.
 					</p>
@@ -347,10 +339,9 @@
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='scrape_enum' :lang='"rust"' label='ScrapeStep enum'/>
 						</v-row>
-						As there's only two kinds of requests, each with it's own url and <AHref :to='links.http_verb.to' text='http verb' />, an <AHref to='enum' txt='enum'/> is a perfect fit.
-						Methods can then be added, to create the distinct request for each of the variants.
-						Not shown here, but we should extend this implementation to cover Deserializing the data, and inserting data, or errors,  into
-						the database.
+						An <AHref to='enum' txt='enum'/> is a perfect fit for the the two kinds of requests.
+						Methods can then be added, to create requests to the specific URL with the correct <AHref :to='links.http_verb.to' text='http verb' />.
+						Not shown here, but we should extend this implementation to cover Deserializing the data, and inserting data (or error) into the database.
 					</p>
 
 					<p>
@@ -361,7 +352,7 @@
 						Next we need to alter <RedSpan text='request_thread_handler()' /> to accept a generic type, and also introduce two <AHref :to='links.trait_bounds.to' txt='trait bounds' />.
 						The first, <RedSpan text='T: Send + Sync' />, limits this generic type to one that can be safely sent and shared across threads, removing any potential data-race problems.
 						The second, <RedSpan text='ScrapeStep: std::convert::From<T>' /> further limits the generic type to only those that can be converted into a <RedSpan text='ScrapeStep' /> enum, meaning
-						we now need to <RedSpan text='impl From<>'/> for both AircraftId and Registration.
+						we now need to <RedSpan text='impl From'/> for both AircraftId and Registration.
 						<br>
 						<RedSpan text='request_thread_handler()' /> is now generic-ish, enough for us to use the same (lets ignore polymorphism) function for both the POST and GET requests,
 						so long as we use a VecDeque of items where every entry can be converted into a <RedSpan text='ScrapeStep' />.
@@ -386,30 +377,49 @@
 							<CodeBlock :code='enum_insert_data' :lang='"rust"' label='enum matching for SQL'/>
 						</v-row>
 							
-						Again by using a match expression, our <RedSpan text='ScrapeStep' /> variants will conduct specific SQL queries.
-						Here, the <RedSpan text='Search' /> variant is also Deserializing into a Vec, and using the first, optional, item to the query function.
-						Whereas with the <RedSpan text='Details' /> variant, the resposne is kept as a string. Although I have described this <AHref to='#get_body' :internal='true' text='response above'/>,
-						I coulnd't be 100% sure of the shape of the data, by just dumping it as-is into SQLite, I was able to later probe and test various Structs to Deserialize into, without
-						halting or blocking the scraping process.
+						Again, by using a match expression, each of the <RedSpan text='ScrapeStep' /> variants will have its own specific SQL query.
+						Here, the <RedSpan text='Search' /> variant is also Deserializing into a Vec, and as the <AHref to='#post_body' :internal='true' text='POST body'/>
+						will always return an array, most of the time an empty array, we pass in the <AHref :to='links.rust_std_first.to' text='first' /> item.
+						Although I have noted the <AHref to='#get_body' :internal='true' text='GET response'/>,
+						I couldn't be 100% sure of the exact shape of the data. With the <RedSpan text='Details' /> variant, it's just dumped as-is into SQLite,
+						after which I could create various different Structs to test against, in order for the entire dataset to be Deserialized, without halting or blocking the scraping process.
 							
 					</p>
 					<p>
 						<v-row justify='space-around' class='my-3' align='end' >
 							<CodeBlock :code='make_request_hash' :lang='"rust"' label='Use a hashset to stop duplicate requests'/>
 						</v-row>
-						We haven't yet dealt with the possibility of duplicate data, but there is no point scraping the same url more than once. As we're using a persistent SQLite database,
-						we can check before each request to see if that URL has already been hit. The first solution to do this was to execute a simple SQL query, but due to the number of threads active,
-						and the shear number of URL's to hit, this soon became a huge bottleneck. So, instead we create a HashSet of all the <RedSpan text='ScrapeStep' />'s
-						that are already stored in the database, afterwhich a simple <RedSpan text='contains' /> method can tell us if we need to make this
-						specific request. If we're made this request before, we just send an empty message back, which will be ignored by the <RedSpan text='rx.rec()' /> loop.
+						We haven't yet dealt with the possibility of duplicate data, but there is no point scraping the same url more than once. As we're using a persistent database,
+						we can check to see if that URL has already been hit. An easy approach would be to execute a simple SQL query before each request, but due to the number of threads active,
+						and the sheer number of URLs to visit, this soon became a huge bottleneck. So instead, we create a HashSet of all the <RedSpan text='ScrapeStep' />'s
+						that are already stored in the database, afterwhich a simple <RedSpan text='contains' /> method can tell us if it's been dealt with.
+						If so, we just send an empty message back, which will be ignored by the <RedSpan text='rx.rec()' /> loop.
 						<br>
 						<br>
-						I've also added a 60 second <AHref :to='links.tokio_timeout.to' txt='tokio timeout' /> to each request, which if exceeded will send a custom Error type back to the main thread.
-						Any and all errors received can later re-scraped, although this time we should do it single-threaded and recusrivley, as to hopefully guarantee a valid response.
+						I've also added a 60 second <AHref :to='links.tokio_timeout.to' txt='tokio timeout' /> to each request, which if exceeded will send an Error back to the main thread.
+						Any and all errors received can then be re-scraped, in series, as to hopefully guarantee an error-free response.
 					</p>
 
 					<p>
-						This is close to a working appliation, I think the final steps we need to do are error handling, and then creating our very own CSV file.
+						This is reasonably close to a fast, safe, fully working application, I think the final steps we need to do are error handling, and then creating our very own CSV file.
+					</p>
+
+					<p>
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='scrape_error_trait' :lang='"rust"' label='ScrapeError trait'/>
+						</v-row>
+						This <RedSpan text='ScrapeError' /> trait will enable a single function to be re-used. The idea being that we'll generate a <RedSpan text='Vec<ScrapeStatus>' />, which
+						will be populated with either any <RedSpan text='Registration' />'s or <RedSpan text='AircraftId' />'s that returned errors during the multi-threaded scraping process.
+						These can then, one at a time, be re-scraped, and if successful we remove the error from the database. After we've iterated over them all, we can again
+						try to re-generate a <RedSpan text='Vec<ScrapeStatus>' />, and repeat the process until we finally generate an empty Vec. This isn't perfect, theres a chance that we'll be
+						itrating over the same Vec continually, but this was supposed to be a <span class='font-italic'>quick and easy</span> way to collate all the aircraft data.
+
+						<v-row justify='space-around' class='my-3' align='end' >
+							<CodeBlock :code='check_errors' :lang='"rust"' key='check' label='check errors with TurboFish'/>
+							<CodeBlock :code='all_errors' :lang='"rust"' key='invoked' label='invoke trait method directly'/>
+						</v-row>
+						When we call this function, we use the <AHref :to='links.turbo_fish.to' txt='turbo fish' /> to inform Rust of the type to expect,
+						a type which has to have implemented the <RedSpan text='ScrapeError' /> trait. The trait method is then directly invoked on <RedSpan text='T' /> in the <RedSpan text='check_errors()' /> function.
 					</p>
 					<!-- <p>
 						<v-row justify='space-around' class='my-3' align='end' >
@@ -529,6 +539,9 @@ const links = {
 		to: 'https://doc.rust-lang.org/std',
 		txt: 'standard library'
 	},
+	rust_std_first: {
+		to: 'https://doc.rust-lang.org/std/vec/struct.Vec.html#method.first'
+	},
 	rust_match: {
 		to: 'https://doc.rust-lang.org/std/keyword.match.html'
 	},
@@ -567,6 +580,9 @@ const links = {
 	},
 	try_from: {
 		to: 'https://doc.rust-lang.org/std/convert/trait.TryFrom.html'
+	},
+	turbo_fish: {
+		to: 'https://techblog.tonsser.com/posts/what-is-rusts-turbofish'
 	},
 	wikipedia: {
 		to: 'https://en.wikipedia.org/wiki/United_Kingdom_aircraft_registration',
@@ -1053,6 +1069,22 @@ impl ScrapeStep {
         }
     }
 	
+}`;
+
+const check_errors=`check_errors::<RegCaaError>(sqlite, app_env).await?
+check_errors::<AircraftError>(sqlite, app_env).await?;`;
+
+const all_errors = ` async fn check_errors<T: ScrapeError + Send + Sync>(
+    sqlite: &SqlitePool,
+    app_env: &AppEnv,
+) -> Result<(), AppError> {
+    let all_errors = T::get_all(sqlite).await?;
+    ....
+}`;
+const scrape_error_trait =`pub trait ScrapeError {
+    async fn insert<T: Get + Send + Sync>(sqlite: &SqlitePool, data: &T) -> Result<(), AppError>;
+    async fn remove<T: Get + Send + Sync>(sqlite: &SqlitePool, data: &T) -> Result<(), AppError>;
+    async fn get_all(sqlite: &SqlitePool) -> Result<Vec<ScrapeStep>, AppError>;
 }`;
 </script>
 

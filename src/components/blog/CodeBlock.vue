@@ -69,6 +69,7 @@ const show = ref(true);
 const timeout = ref(0);
 
 onMounted(() => {
+	// show.value = false;
 	if (props.hidden) {
 		show.value = false;
 	}
@@ -76,10 +77,11 @@ onMounted(() => {
 
 // /NEED TO ADD NONCE
 
-// const addIndent = (input: string): string => {
+// if json?
+// const add_indent = (input: string): string => {
 // 	const lines = input.split('\n');
 // 	if (lines.length > 1) {
-// 		return lines.map((line) => `  ${line}`).join('\n');
+// 		return lines.map((line) => `${line}`).join('\n');
 // 	} else {
 // 		return input;
 // 	}

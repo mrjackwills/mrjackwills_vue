@@ -23,6 +23,8 @@ declare module 'vue' {
     FrontendVue: typeof import('./src/components/FrontendVue.vue')['default']
     HavnVue: typeof import('./src/components/Projects/HavnVue.vue')['default']
     IHref: typeof import('./src/components/IHref.vue')['default']
+    Job: typeof import('./src/components/job.vue')['default']
+    JobBanner: typeof import('./src/components/JobBanner.vue')['default']
     LeafcastPi: typeof import('./src/components/Projects/LeafcastPi.vue')['default']
     LeafcastSite: typeof import('./src/components/Projects/LeafcastSite.vue')['default']
     MealpedantApi: typeof import('./src/components/Projects/MealpedantApi.vue')['default']
